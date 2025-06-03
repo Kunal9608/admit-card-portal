@@ -1,274 +1,218 @@
 <!DOCTYPE html>
-<html lang="en" >
+<html lang="en">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>Login & Admin Panel with Admit Card</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Student/Admin Portal</title>
   <script src="https://cdn.tailwindcss.com"></script>
 </head>
-<body class="bg-gray-100 min-h-screen flex items-center justify-center p-4">
+<body class="bg-gradient-to-br from-gray-100 to-blue-100 min-h-screen flex items-center justify-center p-4">
 
-<div id="app" class="w-full max-w-4xl bg-white rounded-lg shadow-lg p-6">
-  <!-- Login Form -->
-  <div id="login-section" class="max-w-md mx-auto">
-    <h2 class="text-2xl font-semibold mb-6 text-center">Login</h2>
-    <form id="login-form" class="space-y-4">
-      <input type="text" id="username" placeholder="Username" required
-        class="w-full px-4 py-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-indigo-500" />
-      <input type="password" id="password" placeholder="Password" required
-        class="w-full px-4 py-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-indigo-500" />
-      <button type="submit"
-        class="w-full bg-indigo-600 text-white py-2 rounded-md hover:bg-indigo-700 transition">Login</button>
-    </form>
-    <p id="login-error" class="text-red-500 mt-2 text-center hidden">Invalid username or password.</p>
-  </div>
-
-  <!-- Student Dashboard -->
-  <div id="student-dashboard" class="hidden max-w-2xl mx-auto">
-    <h2 class="text-xl font-semibold mb-4">Welcome, <span id="student-name"></span></h2>
+  <!-- Login Page -->
+  <div id="loginPage" class="w-full max-w-md p-8 bg-white rounded-2xl shadow-2xl">
+    <h2 class="text-3xl font-bold text-center text-blue-700 mb-6">Welcome to the Portal</h2>
     <div class="mb-4">
-      <h3 class="font-semibold mb-2">Your Admit Card:</h3>
-      <a id="admit-link" href="#" download class="text-indigo-600 hover:underline">Download Admit Card</a>
+      <label class="block mb-1 font-medium text-gray-700">Username</label>
+      <input type="text" id="username" placeholder="Username" class="w-full p-2 border rounded-md" />
     </div>
-    <button id="student-logout" class="bg-red-500 text-white px-4 py-2 rounded hover:bg-red-600">Logout</button>
+    <div class="mb-6">
+      <label class="block mb-1 font-medium text-gray-700">Password</label>
+      <input type="password" id="password" placeholder="Password" class="w-full p-2 border rounded-md" />
+    </div>
+    <button onclick="login()" class="w-full bg-blue-600 text-white py-2 rounded hover:bg-blue-700 font-semibold">Login</button>
+    <p id="errorMessage" class="text-red-600 mt-4 hidden text-center">Invalid credentials</p>
   </div>
 
-  <!-- Admin Dashboard -->
-  <div id="admin-dashboard" class="hidden max-w-4xl mx-auto">
-    <h2 class="text-xl font-semibold mb-4">Admin Panel - <span id="admin-name"></span></h2>
-
-    <div class="mb-6">
-      <h3 class="font-semibold mb-2">Manage Students</h3>
-      <table class="w-full border border-gray-300 rounded-md text-left text-sm">
-        <thead class="bg-gray-200">
-          <tr>
-            <th class="border border-gray-300 px-3 py-2">Student</th>
-            <th class="border border-gray-300 px-3 py-2">Attendance (%)</th>
-            <th class="border border-gray-300 px-3 py-2">Fee Due (₹)</th>
-          </tr>
-        </thead>
-        <tbody id="student-table-body">
-          <!-- Dynamically added rows -->
-        </tbody>
-      </table>
-      <button id="save-students" class="mt-3 bg-green-600 text-white px-4 py-2 rounded hover:bg-green-700">Save Changes</button>
+  <!-- Dashboard -->
+  <div id="dashboard" class="hidden w-full max-w-5xl mx-auto p-6">
+    <div class="flex justify-between items-center mb-4">
+      <h1 class="text-3xl font-bold text-gray-800">Dashboard</h1>
+      <button onclick="logout()" class="bg-red-600 text-white px-4 py-2 rounded hover:bg-red-700">Logout</button>
     </div>
 
-    <div class="mb-6">
-      <h3 class="font-semibold mb-2">Notices</h3>
-      <textarea id="notice-text" rows="4" placeholder="Enter notices here..." class="w-full px-3 py-2 border rounded-md resize-none focus:outline-none focus:ring-2 focus:ring-indigo-500"></textarea>
-      <button id="save-notice" class="mt-3 bg-indigo-600 text-white px-4 py-2 rounded hover:bg-indigo-700">Update Notice</button>
+    <!-- Admin Controls -->
+    <div id="adminControls" class="hidden mb-6 p-4 bg-yellow-100 border border-yellow-300 rounded-xl">
+      <h2 class="text-xl font-bold mb-4 text-yellow-900">Admin Panel</h2>
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mb-4">
+        <select id="studentSelector" class="p-2 border rounded"></select>
+        <input type="text" id="updateAttendance" placeholder="Attendance %" class="p-2 border rounded">
+        <input type="text" id="updateFees" placeholder="Fee Dues" class="p-2 border rounded">
+      </div>
+      <button onclick="updateStudentData()" class="bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700">Update Student Data</button>
+      <div class="mt-6">
+        <input type="text" id="newNotice" placeholder="Enter Notice for All Students" class="w-full p-2 border rounded">
+        <button onclick="postNotice()" class="mt-2 bg-green-600 text-white px-4 py-2 rounded hover:bg-green-700">Post Notice</button>
+      </div>
     </div>
 
-    <div class="mb-6">
-      <h3 class="font-semibold mb-2">Current Notice:</h3>
-      <div id="current-notice" class="p-3 bg-gray-100 rounded border border-gray-300 min-h-[60px] whitespace-pre-wrap"></div>
+    <!-- Student Dashboard -->
+    <div id="studentDashboard" class="hidden">
+      <div class="bg-gradient-to-r from-pink-500 to-red-400 text-white p-4 rounded-xl mb-4">
+        <p class="text-xl font-semibold">Sem 4 Attendance %</p>
+        <p id="attendanceDisplay" class="text-3xl font-bold">-</p>
+        <p class="text-sm">Attendance % based on credit papers only</p>
+        <p class="text-xs bg-red-700 p-2 mt-2 rounded">*Attendance is being updated. Please contact your HoD for accurate info.</p>
+      </div>
+
+      <div class="bg-blue-500 text-white p-4 rounded-xl mb-4">
+        <p class="text-xl font-semibold">Fee Dues</p>
+        <p id="feesDisplay" class="text-2xl font-bold">-</p>
+      </div>
+
+      <div class="bg-purple-500 text-white p-4 rounded-xl mb-4">
+        <p class="text-xl font-semibold">Upcoming Holidays</p>
+        <p class="text-2xl font-bold">07-Jun-2025</p>
+        <p class="text-sm">Bakrid</p>
+      </div>
+
+      <div class="bg-indigo-500 text-white p-4 rounded-xl mb-4">
+        <p class="text-xl font-semibold">Examination Registration</p>
+        <a id="admitCardLink" href="#" download class="text-white underline">Download Card</a>
+      </div>
     </div>
 
-    <button id="admin-logout" class="bg-red-500 text-white px-4 py-2 rounded hover:bg-red-600">Logout</button>
+    <div class="bg-white rounded-xl shadow p-4">
+      <h3 class="text-xl font-bold mb-4">Important Notices</h3>
+      <ul id="notices" class="space-y-4">
+        <!-- Notices will appear here -->
+      </ul>
+    </div>
   </div>
-</div>
 
-<script>
-  // User data with passwords and admit cards
-  const users = {
-    students: {
-      KUNAL: { password: "123", attendance: 90, feeDue: 1000, admitCard: "AdmitCard_KUNAL.pdf" },
-      OM: { password: "123", attendance: 85, feeDue: 500, admitCard: "AdmitCard_OM.pdf" },
-      AKSHAT: { password: "123", attendance: 95, feeDue: 0, admitCard: "AdmitCard_AKSHAT.pdf" },
-    },
-    admins: {
-      ADMIN: { password: "456" },
-      ROHAN: { password: "789" }
-    }
-  };
+  <script>
+    const users = {
+      student: [
+        { username: "KUNAL", password: "123" },
+        { username: "AKSHAT", password: "123" },
+        { username: "OM", password: "123" }
+      ],
+      admin: [
+        { username: "ADMIN", password: "admin123" },
+        { username: "ROHAN", password: "456" }
+      ]
+    };
 
-  // Elements
-  const loginSection = document.getElementById("login-section");
-  const loginForm = document.getElementById("login-form");
-  const loginError = document.getElementById("login-error");
-  const studentDashboard = document.getElementById("student-dashboard");
-  const studentNameSpan = document.getElementById("student-name");
-  const admitLink = document.getElementById("admit-link");
-  const studentLogout = document.getElementById("student-logout");
-  const adminDashboard = document.getElementById("admin-dashboard");
-  const adminNameSpan = document.getElementById("admin-name");
-  const studentTableBody = document.getElementById("student-table-body");
-  const saveStudentsBtn = document.getElementById("save-students");
-  const noticeText = document.getElementById("notice-text");
-  const saveNoticeBtn = document.getElementById("save-notice");
-  const currentNotice = document.getElementById("current-notice");
-  const adminLogout = document.getElementById("admin-logout");
+    const studentData = {
+      KUNAL: { attendance: "82.54", fees: "0" },
+      AKSHAT: { attendance: "78.12", fees: "500" },
+      OM: { attendance: "88.90", fees: "200" }
+    };
 
-  // Local Storage Keys
-  const STORAGE_KEY_STUDENTS = "studentData";
-  const STORAGE_KEY_NOTICE = "noticeData";
+    const notices = [];
 
-  // Initialize student data from localStorage or default
-  function loadStudentData() {
-    const data = localStorage.getItem(STORAGE_KEY_STUDENTS);
-    if (data) return JSON.parse(data);
-    // Return default from users.students
-    return JSON.parse(JSON.stringify(users.students)); // deep clone
-  }
+    let currentUser = null;
+    let currentRole = null;
 
-  // Save student data to localStorage
-  function saveStudentData(data) {
-    localStorage.setItem(STORAGE_KEY_STUDENTS, JSON.stringify(data));
-  }
+    function login() {
+      const username = document.getElementById("username").value.trim().toUpperCase();
+      const password = document.getElementById("password").value;
+      const errorMessage = document.getElementById("errorMessage");
 
-  // Load notice from localStorage
-  function loadNotice() {
-    return localStorage.getItem(STORAGE_KEY_NOTICE) || "";
-  }
-
-  // Save notice to localStorage
-  function saveNotice(text) {
-    localStorage.setItem(STORAGE_KEY_NOTICE, text);
-  }
-
-  // Current logged in user info
-  let currentUser = null;
-  let currentUserType = null; // "student" or "admin"
-  let studentData = loadStudentData();
-
-  // Show / hide views
-  function showLogin() {
-    loginSection.classList.remove("hidden");
-    studentDashboard.classList.add("hidden");
-    adminDashboard.classList.add("hidden");
-    loginError.classList.add("hidden");
-    loginForm.reset();
-  }
-
-  function showStudentDashboard(username) {
-    loginSection.classList.add("hidden");
-    studentDashboard.classList.remove("hidden");
-    adminDashboard.classList.add("hidden");
-    studentNameSpan.textContent = username;
-    const admitCardFile = studentData[username].admitCard;
-    admitLink.href = admitCardFile;
-    admitLink.setAttribute("download", admitCardFile);
-  }
-
-  function showAdminDashboard(username) {
-    loginSection.classList.add("hidden");
-    studentDashboard.classList.add("hidden");
-    adminDashboard.classList.remove("hidden");
-    adminNameSpan.textContent = username;
-    populateStudentTable();
-    noticeText.value = loadNotice();
-    currentNotice.textContent = loadNotice();
-  }
-
-  // Populate student table in admin panel
-  function populateStudentTable() {
-    studentTableBody.innerHTML = "";
-    for (const student in studentData) {
-      const tr = document.createElement("tr");
-
-      const tdName = document.createElement("td");
-      tdName.textContent = student;
-      tdName.className = "border border-gray-300 px-3 py-2 font-semibold";
-      tr.appendChild(tdName);
-
-      const tdAttendance = document.createElement("td");
-      const attendanceInput = document.createElement("input");
-      attendanceInput.type = "number";
-      attendanceInput.min = 0;
-      attendanceInput.max = 100;
-      attendanceInput.value = studentData[student].attendance;
-      attendanceInput.className = "w-full border rounded px-2 py-1 focus:outline-none focus:ring-1 focus:ring-indigo-500";
-      tdAttendance.appendChild(attendanceInput);
-      tdAttendance.className = "border border-gray-300 px-3 py-2";
-      tr.appendChild(tdAttendance);
-
-      const tdFeeDue = document.createElement("td");
-      const feeInput = document.createElement("input");
-      feeInput.type = "number";
-      feeInput.min = 0;
-      feeInput.value = studentData[student].feeDue;
-      feeInput.className = "w-full border rounded px-2 py-1 focus:outline-none focus:ring-1 focus:ring-indigo-500";
-      tdFeeDue.appendChild(feeInput);
-      tdFeeDue.className = "border border-gray-300 px-3 py-2";
-      tr.appendChild(tdFeeDue);
-
-      studentTableBody.appendChild(tr);
-    }
-  }
-
-  // Save student changes from admin table
-  function saveStudentChanges() {
-    const rows = studentTableBody.querySelectorAll("tr");
-    rows.forEach(row => {
-      const name = row.cells[0].textContent;
-      const attendance = Number(row.cells[1].querySelector("input").value);
-      const feeDue = Number(row.cells[2].querySelector("input").value);
-      if (studentData[name]) {
-        studentData[name].attendance = attendance;
-        studentData[name].feeDue = feeDue;
+      if (users.student.some(u => u.username === username && u.password === password)) {
+        currentUser = username;
+        currentRole = "student";
+      } else if (users.admin.some(u => u.username === username && u.password === password)) {
+        currentUser = username;
+        currentRole = "admin";
+      } else {
+        errorMessage.classList.remove("hidden");
+        return;
       }
-    });
-    saveStudentData(studentData);
-    alert("Student data saved.");
-  }
 
-  // Handle Login submit
-  loginForm.addEventListener("submit", e => {
-    e.preventDefault();
-    const username = document.getElementById("username").value.trim().toUpperCase();
-    const password = document.getElementById("password").value;
+      document.getElementById("loginPage").classList.add("hidden");
+      document.getElementById("dashboard").classList.remove("hidden");
+      errorMessage.classList.add("hidden");
 
-    // Check admin users
-    if (users.admins[username] && users.admins[username].password === password) {
-      currentUser = username;
-      currentUserType = "admin";
-      showAdminDashboard(username);
-      return;
+      document.getElementById("adminControls").classList.toggle("hidden", currentRole !== "admin");
+      document.getElementById("studentDashboard").classList.toggle("hidden", currentRole !== "student");
+
+      if (currentRole === "student") {
+        document.getElementById("attendanceDisplay").textContent = studentData[currentUser].attendance + "%";
+        document.getElementById("feesDisplay").textContent = "Rs. " + studentData[currentUser].fees;
+        setAdmitCardLink(currentUser);
+      }
+
+      populateStudentSelector();
+      renderNotices();
     }
 
-    // Check student users
-    if (users.students[username] && users.students[username].password === password) {
-      currentUser = username;
-      currentUserType = "student";
-      showStudentDashboard(username);
-      return;
+    function logout() {
+      currentUser = null;
+      currentRole = null;
+      document.getElementById("loginPage").classList.remove("hidden");
+      document.getElementById("dashboard").classList.add("hidden");
+      document.getElementById("username").value = "";
+      document.getElementById("password").value = "";
     }
 
-    // Invalid credentials
-    loginError.classList.remove("hidden");
-  });
+    function setAdmitCardLink(username) {
+      const baseURL = "https://github.com/Kunal9608/admit-card-portal/raw/main/";
+      const fileName = `AdmitCard_${username}.pdf`;
+      const link = document.getElementById("admitCardLink");
+      link.href = baseURL + fileName;
+      link.setAttribute("download", fileName);
+    }
 
-  // Logout handlers
-  studentLogout.addEventListener("click", () => {
-    currentUser = null;
-    currentUserType = null;
-    showLogin();
-  });
+    function populateStudentSelector() {
+      const selector = document.getElementById("studentSelector");
+      selector.innerHTML = "";
+      for (let student in studentData) {
+        const opt = document.createElement("option");
+        opt.value = student;
+        opt.textContent = student;
+        selector.appendChild(opt);
+      }
+    }
 
-  adminLogout.addEventListener("click", () => {
-    currentUser = null;
-    currentUserType = null;
-    showLogin();
-  });
+    function updateStudentData() {
+      const student = document.getElementById("studentSelector").value;
+      const attendance = document.getElementById("updateAttendance").value;
+      const fees = document.getElementById("updateFees").value;
 
-  // Save student changes
-  saveStudentsBtn.addEventListener("click", () => {
-    saveStudentChanges();
-  });
+      if (attendance) studentData[student].attendance = attendance;
+      if (fees) studentData[student].fees = fees;
 
-  // Save notice
-  saveNoticeBtn.addEventListener("click", () => {
-    const text = noticeText.value.trim();
-    saveNotice(text);
-    currentNotice.textContent = text;
-    alert("Notice updated.");
-  });
+      if (currentUser === student) {
+        document.getElementById("attendanceDisplay").textContent = studentData[student].attendance + "%";
+        document.getElementById("feesDisplay").textContent = "Rs. " + studentData[student].fees;
+      }
 
-  // On page load
-  showLogin();
+      document.getElementById("updateAttendance").value = "";
+      document.getElementById("updateFees").value = "";
+    }
 
-</script>
+    function postNotice() {
+      const newNotice = document.getElementById("newNotice").value.trim();
+      if (!newNotice) return;
 
+      const today = new Date();
+      const formattedDate = today.toLocaleDateString('en-GB');
+      let noticeColor = (currentUser === "ROHAN") ? "green" : "red";
+
+      notices.unshift({
+        date: formattedDate,
+        user: currentUser,
+        color: noticeColor,
+        text: newNotice
+      });
+
+      renderNotices();
+      document.getElementById("newNotice").value = "";
+    }
+
+    function renderNotices() {
+      const list = document.getElementById("notices");
+      list.innerHTML = "";
+      notices.forEach(n => {
+        const li = document.createElement("li");
+        li.className = `border-l-4 pl-4 border-${n.color}-600`;
+        li.innerHTML = `
+          <p class="text-sm text-gray-500">[${n.date}]</p>
+          <p class="text-${n.color}-600 font-semibold">ADMIN NOTICE: ${n.text}</p>
+        `;
+        list.appendChild(li);
+      });
+    }
+  </script>
 </body>
 </html>
