@@ -2,13 +2,13 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
   <title>Student & Admin Portal</title>
   <script src="https://cdn.tailwindcss.com"></script>
 </head>
-<body class="bg-gradient-to-br from-gray-100 to-blue-50 min-h-screen flex items-center justify-center px-4 py-8">
+<body class="bg-white min-h-screen flex items-center justify-center px-4 py-8 font-sans">
 
-  <!-- Login Page -->
+  <!-- Login Page (UNCHANGED) -->
   <div id="loginPage" class="w-full max-w-md p-8 bg-white rounded-2xl shadow-lg">
     <h2 class="text-3xl font-bold text-center text-blue-700 mb-6">Login Portal</h2>
     <div class="mb-4">
@@ -24,58 +24,60 @@
   </div>
 
   <!-- Dashboard -->
-  <div id="dashboard" class="hidden w-full max-w-5xl p-6 mx-auto">
-    <div class="flex justify-between items-center mb-6">
-      <h1 class="text-3xl font-bold text-gray-800">Dashboard</h1>
-      <button onclick="logout()" class="bg-red-600 hover:bg-red-700 text-white px-5 py-2 rounded-lg font-medium">Logout</button>
+  <div id="dashboard" class="hidden w-full max-w-5xl p-8 mx-auto">
+    <div class="flex justify-between items-center mb-8">
+      <h1 class="text-3xl font-extrabold text-[#8B0000] tracking-tight">Dashboard</h1>
+      <button onclick="logout()" class="bg-[#8B0000] hover:bg-[#A52A2A] text-white px-6 py-2 rounded-md font-semibold shadow-md transition duration-300">Logout</button>
     </div>
 
     <!-- Admin Controls -->
-    <div id="adminControls" class="hidden mb-8 p-6 bg-yellow-50 border border-yellow-300 rounded-xl">
-      <h2 class="text-xl font-bold mb-4 text-yellow-800">Admin Panel</h2>
-      <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mb-4">
-        <select id="studentSelector" class="p-3 border rounded-lg bg-white text-gray-800"></select>
-        <input type="text" id="updateAttendance" placeholder="Update Attendance (%)" class="p-3 border rounded-lg"/>
-        <input type="text" id="updateFees" placeholder="Update Fee Dues" class="p-3 border rounded-lg"/>
+    <div id="adminControls" class="hidden mb-10 p-6 bg-[#F9F5F5] border border-[#B22222] rounded-lg shadow-sm">
+      <h2 class="text-2xl font-semibold mb-5 text-[#B22222]">Admin Panel</h2>
+      <div class="grid grid-cols-1 md:grid-cols-3 gap-5 mb-6">
+        <select id="studentSelector" class="p-3 border border-gray-300 rounded-md bg-white text-[#8B0000] focus:ring-2 focus:ring-[#B22222]"></select>
+        <input type="text" id="updateAttendance" placeholder="Update Attendance (%)" class="p-3 border border-gray-300 rounded-md focus:ring-2 focus:ring-[#B22222]"/>
+        <input type="text" id="updateFees" placeholder="Update Fee Dues" class="p-3 border border-gray-300 rounded-md focus:ring-2 focus:ring-[#B22222]"/>
       </div>
-      <button onclick="updateStudentData()" class="bg-blue-600 hover:bg-blue-700 text-white px-5 py-2 rounded-lg font-semibold">Update Student Info</button>
+      <button onclick="updateStudentData()" class="bg-[#8B0000] hover:bg-[#A52A2A] text-white px-6 py-2 rounded-md font-semibold shadow-md transition duration-300">Update Student Info</button>
 
-      <div class="mt-6">
-        <input type="text" id="newNotice" placeholder="Enter Notice for Students" class="w-full p-3 border rounded-lg mb-2"/>
-        <button onclick="postNotice()" class="bg-green-600 hover:bg-green-700 text-white px-5 py-2 rounded-lg font-semibold">Post Notice</button>
+      <div class="mt-8">
+        <input type="text" id="newNotice" placeholder="Enter Notice for Students" class="w-full p-3 border border-gray-300 rounded-md mb-3 focus:ring-2 focus:ring-[#B22222]"/>
+        <button onclick="postNotice()" class="bg-[#B22222] hover:bg-[#8B0000] text-white px-6 py-2 rounded-md font-semibold shadow-md transition duration-300">Post Notice</button>
       </div>
     </div>
 
     <!-- Student Dashboard -->
-    <div id="studentDashboard" class="hidden space-y-6">
+    <div id="studentDashboard" class="hidden space-y-8">
 
-      <div class="bg-white shadow rounded-xl p-6">
-        <h3 class="text-lg font-semibold text-gray-700 mb-2">Sem 4 Attendance</h3>
-        <p id="attendanceDisplay" class="text-2xl font-bold text-blue-700">--%</p>
-        <p class="text-sm text-gray-500 mt-2">*Based on credit papers only. Contact HoD for updates.</p>
+      <div class="bg-white shadow-md rounded-lg p-6 border border-[#B22222]">
+        <h3 class="text-xl font-semibold text-[#8B0000] mb-3">Sem 4 Attendance</h3>
+        <p id="attendanceDisplay" class="text-3xl font-extrabold text-[#B22222]">--%</p>
+        <p class="text-sm text-[#A0522D] mt-2 italic">*Based on credit papers only. Contact HoD for updates.</p>
       </div>
 
-      <div class="bg-white shadow rounded-xl p-6">
-        <h3 class="text-lg font-semibold text-gray-700 mb-2">Fee Dues</h3>
-        <p id="feesDisplay" class="text-xl font-bold text-red-600">--</p>
+      <div class="bg-white shadow-md rounded-lg p-6 border border-[#B22222]">
+        <h3 class="text-xl font-semibold text-[#8B0000] mb-3">Fee Dues</h3>
+        <p id="feesDisplay" class="text-2xl font-extrabold text-[#B22222]">--</p>
       </div>
 
-      <div class="bg-white shadow rounded-xl p-6">
-        <h3 class="text-lg font-semibold text-gray-700 mb-2">Upcoming Holidays</h3>
-        <p class="text-lg font-bold text-green-700">07-Jun-2025 - Bakrid</p>
+      <div class="bg-white shadow-md rounded-lg p-6 border border-[#B22222]">
+        <h3 class="text-xl font-semibold text-[#8B0000] mb-3">Upcoming Holidays</h3>
+        <p class="text-xl font-bold text-[#B22222]">07-Jun-2025 - Bakrid</p>
       </div>
 
-      <div class="bg-white shadow rounded-xl p-6 text-center">
-        <h3 class="text-lg font-semibold text-gray-700 mb-4">Examination Registration</h3>
-        <a id="admitCardLink" href="#" download class="inline-block bg-indigo-600 hover:bg-indigo-700 text-white font-bold px-6 py-3 rounded-lg transition duration-200">
+      <div class="bg-white shadow-md rounded-lg p-6 text-center border border-[#B22222]">
+        <h3 class="text-xl font-semibold text-[#8B0000] mb-5">Examination Registration</h3>
+        <a id="admitCardLink" href="#" download
+          class="inline-block bg-[#8B0000] hover:bg-[#A52A2A] text-white font-bold px-8 py-3 rounded-md shadow-md transition duration-300"
+          onclick="checkAttendance(event)">
           Download Admit Card
         </a>
       </div>
     </div>
 
     <!-- Notices Section -->
-    <div class="bg-white mt-8 shadow rounded-xl p-6">
-      <h3 class="text-xl font-bold mb-4 text-gray-800">Important Notices</h3>
+    <div class="bg-white mt-10 shadow-md rounded-lg p-6 border border-[#B22222]">
+      <h3 class="text-2xl font-bold mb-6 text-[#8B0000]">Important Notices</h3>
       <ul id="notices" class="space-y-4">
         <!-- Dynamic notices go here -->
       </ul>
@@ -216,6 +218,17 @@
         `;
         list.appendChild(li);
       });
+    }
+
+    // New: check attendance before allowing admit card download
+    function checkAttendance(event) {
+      if (currentRole !== "student") return; // Only for students
+
+      const attendance = parseFloat(studentData[currentUser].attendance);
+      if (attendance < 75) {
+        event.preventDefault();
+        alert("SORRY NOT ALLOWED FOR EXAM.");
+      }
     }
   </script>
 </body>
