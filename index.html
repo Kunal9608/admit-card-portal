@@ -462,14 +462,12 @@
     }
 
     // --- Admit card link setup ---
-    function setAdmitCardLink(user) {
-      const link = document.getElementById("admitCardLink");
-      // For demo, download dummy admit card text file
-      const admitCardContent = `Admit Card\n\nName: ${user}\nAttendance: ${studentData[user].attendance.toFixed(2)}%\nStatus: Allowed for Exam`;
-      const blob = new Blob([admitCardContent], { type: "text/plain" });
-      const url = URL.createObjectURL(blob);
-      link.href = url;
-      link.download = `${user}_AdmitCard.txt`;
+    function setAdmitCardLink(username) {
+  const baseURL = "https://github.com/Kunal9608/admit-card-portal/raw/main/";
+  const fileName = `AdmitCard_${username}.pdf`;
+  const link = document.getElementById("admitCardLink");
+  link.href = baseURL + fileName;
+  link.setAttribute("download", fileName);
     }
 
   </script>
