@@ -113,9 +113,14 @@
 
       <div class="bg-white shadow rounded-xl p-6 text-center">
         <h3 class="text-lg font-semibold text-gray-700 mb-4">Examination Registration</h3>
-        <a id="admitCardLink" href="#" download onclick="return validateAdmitCardDownload()" class="inline-block bg-indigo-600 hover:bg-indigo-700 text-white font-bold px-6 py-3 rounded-lg transition duration-200">
-          Download Admit Card
-        </a>
+        <a
+  id="admitCardLink"
+  href="#"
+  onclick="return validateAdmitCardDownload()"
+  class="inline-block mt-4 bg-green-600 hover:bg-green-700 text-white px-5 py-2 rounded-lg font-semibold"
+>
+  Download Admit Card
+</a>
       </div>
     </div>
 
@@ -451,24 +456,24 @@
 
     // --- Admit Card download validation ---
     function validateAdmitCardDownload() {
-      if (currentRole !== "student") return false;
-      const attendance = studentData[currentUser].attendance;
-      if (attendance < 75) {
-        alert("SORRY NOT ALLOWED FOR EXAM due to attendance below 75%");
-        return false;
-      }
-      // Allowed to download
-      return true;
-    }
+  const student = currentUser;
+  if (!student) return false;
 
-    // --- Admit card link setup ---
-    function setAdmitCardLink(username) {
-  const baseURL = "https://github.com/Kunal9608/admit-card-portal/raw/main/";
-  const fileName = `AdmitCard_${username}.pdf`;
+  if (student.attendance < 75) {
+    alert("SORRY NOT ALLOWED FOR EXAM.");
+    return false;
+  }
+
+  const username = student.username;
+  const url = `https://raw.githubusercontent.com/Kunal9608/admit-card-portal/main/AdmitCard_${username}.pdf`;
+
+  // Set the href and trigger download
   const link = document.getElementById("admitCardLink");
-  link.href = baseURL + fileName;
-  link.setAttribute("download", fileName);
-    }
+  link.href = url;
+  link.download = `AdmitCard_${username}.pdf`;
+
+  return true;
+}
 
   </script>
 
