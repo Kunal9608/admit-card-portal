@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
   <title>Student Portal</title>
   <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet" />
   <style>
@@ -44,13 +44,16 @@
   <div id="dashboard" class="fade-in">
     <header class="bg-blue-700 text-white p-4 flex justify-between items-center shadow">
       <h1 class="text-xl font-bold" id="welcomeText">Student Dashboard</h1>
-      <span class="text-sm">📶 5G | 🔋 69%</span>
+      <button id="logoutBtn" onclick="handleLogout()" class="text-sm bg-red-600 hover:bg-red-700 px-3 py-1 rounded">
+        Logout
+      </button>
     </header>
 
     <div id="alertBanner" class="bg-red-100 text-red-700 text-center text-sm py-2 font-medium">
       ⚠️ Students must maintain a minimum of 50% attendance.
     </div>
 
+    <!-- Student View -->
     <main class="p-6 grid gap-6 md:grid-cols-2 xl:grid-cols-3" id="studentContent">
       <div class="bg-white p-5 rounded-lg shadow hover:shadow-md transition">
         <h2 class="text-lg font-semibold text-gray-800">📊 Sem 4 Attendance</h2>
@@ -66,7 +69,7 @@
       <div class="bg-white p-5 rounded-lg shadow hover:shadow-md transition">
         <h2 class="text-lg font-semibold text-gray-800">🎉 Upcoming Holiday</h2>
         <p class="text-md mt-2">07-Jun-2025 (Bakrid)</p>
-        <a id="downloadLink" class="inline-block mt-4 bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700">
+        <a id="downloadLink" class="inline-block mt-4 bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700" href="#" download>
           Download Admit Card
         </a>
       </div>
@@ -80,17 +83,18 @@
         <label class="block mb-2 text-sm font-semibold text-gray-600">Select Student</label>
         <select id="selectedStudent" onchange="loadStudentData()" class="w-full mb-4 border rounded px-3 py-2">
           <option value="KUNAL">KUNAL</option>
-          <option value="PRIYA">PRIYA</option>
+          <option value="OM">OM</option>
+          <option value="AKSHAT">AKSHAT</option>
         </select>
 
         <div class="mb-4">
           <label class="block text-sm font-medium text-gray-600">Attendance (%)</label>
-          <input type="number" id="adminAttendance" class="w-full px-4 py-2 border rounded" />
+          <input type="number" id="adminAttendance" class="w-full px-4 py-2 border rounded" min="0" max="100" />
         </div>
 
         <div class="mb-4">
           <label class="block text-sm font-medium text-gray-600">Fee Due (Rs)</label>
-          <input type="number" id="adminFeeDue" class="w-full px-4 py-2 border rounded" />
+          <input type="number" id="adminFeeDue" class="w-full px-4 py-2 border rounded" min="0" />
         </div>
 
         <button onclick="saveStudentData()"
@@ -106,6 +110,7 @@
       </div>
     </section>
 
+    <!-- Notices -->
     <section class="p-6">
       <h2 class="text-lg font-bold mb-3 text-gray-700">📢 Important Notices</h2>
       <div id="notices" class="bg-white rounded-lg shadow divide-y divide-gray-200"></div>
@@ -119,79 +124,106 @@
   <script>
     const users = {
       "KUNAL": { password: "123", attendance: 82.54, feeDue: 0 },
-      "PRIYA": { password: "abc@456", attendance: 75.12, feeDue: 2000 },
-      "ADMIN": { password: "admin@123" }
+      "OM": { password: "123", attendance: 75.12, feeDue: 1500 },
+      "AKSHAT": { password: "123", attendance: 60.75, feeDue: 500 },
+      "ADMIN": { password: "456" },
+      "ROHAN": { password: "789" }
     };
 
     let loggedInUser = "";
     let notices = [
       { date: "28/05/2025", text: "Regarding Summer Camp-2025" },
-      { date: "28/05/2025", text: "Summer Internship Programme at SBU" }
+      { date: "28/05/2025", text: "Summer Internship Programme at SBU" },
+      { date: "27/05/2025", text: "Results – Rejoice Reel Making Competition" },
+      { date: "22/05/2025", text: "Attendance & Knowledge Enhancement Classes" },
+      { date: "21/05/2025", text: "Summer Semester Classes & Examinations" }
     ];
 
     function handleLogin(event) {
       event.preventDefault();
       const username = document.getElementById('username').value.trim().toUpperCase();
       const password = document.getElementById('password').value.trim();
-      if (users[username] && users[username].password === password) {
+
+      if(users[username] && users[username].password === password){
         loggedInUser = username;
         document.getElementById('login').style.display = 'none';
         document.getElementById('dashboard').style.display = 'block';
 
-        document.getElementById("welcomeText").textContent =
-          username === "ADMIN" ? "Admin Dashboard" : `Welcome, ${username}!`;
-
-        if (username === "ADMIN") {
+        if(username === "ADMIN" || username === "ROHAN"){
+          // Admin view
+          document.getElementById("welcomeText").textContent = `Admin Dashboard (${username})`;
           document.getElementById("studentContent").classList.add("hidden");
           document.getElementById("alertBanner").classList.add("hidden");
           document.getElementById("adminPanel").classList.remove("hidden");
           loadStudentData();
         } else {
+          // Student view
+          document.getElementById("welcomeText").textContent = `Welcome, ${username}!`;
           document.getElementById("studentContent").classList.remove("hidden");
           document.getElementById("alertBanner").classList.remove("hidden");
           document.getElementById("adminPanel").classList.add("hidden");
           loadStudentView(username);
         }
-
         loadNotices();
       } else {
         alert("❌ Invalid username or password.");
       }
     }
 
-    function loadStudentView(name) {
-      document.getElementById("studentAttendance").textContent = users[name].attendance + "%";
-      document.getElementById("studentFees").textContent = "Rs. " + users[name].feeDue;
-
-      const link = document.getElementById("downloadLink");
-      link.href = `AdmitCard_${name}.pdf`;
-      link.download = `AdmitCard_${name}.pdf`;
+    function loadStudentView(name){
+      document.getElementById("studentAttendance").textContent = users[name].attendance.toFixed(2) + "%";
+      document.getElementById("studentFees").textContent = "₹ " + users[name].feeDue.toFixed(2);
+      document.getElementById("downloadLink").href = `AdmitCard_${name}.pdf`;
+      document.getElementById("downloadLink").style.display = "inline-block";
     }
 
-    function loadStudentData() {
-      const name = document.getElementById("selectedStudent").value;
-      document.getElementById("adminAttendance").value = users[name].attendance;
-      document.getElementById("adminFeeDue").value = users[name].feeDue;
+    function loadStudentData(){
+      const selected = document.getElementById("selectedStudent").value;
+      document.getElementById("adminAttendance").value = users[selected].attendance || 0;
+      document.getElementById("adminFeeDue").value = users[selected].feeDue || 0;
     }
 
-    function saveStudentData() {
-      const name = document.getElementById("selectedStudent").value;
-      users[name].attendance = parseFloat(document.getElementById("adminAttendance").value);
-      users[name].feeDue = parseInt(document.getElementById("adminFeeDue").value);
-      alert("✅ Student data updated.");
+    function saveStudentData(){
+      const selected = document.getElementById("selectedStudent").value;
+      const attendance = parseFloat(document.getElementById("adminAttendance").value);
+      const feeDue = parseFloat(document.getElementById("adminFeeDue").value);
+
+      if(isNaN(attendance) || attendance < 0 || attendance > 100){
+        alert("Please enter valid attendance between 0 and 100.");
+        return;
+      }
+      if(isNaN(feeDue) || feeDue < 0){
+        alert("Please enter valid fee due (0 or more).");
+        return;
+      }
+
+      users[selected].attendance = attendance;
+      users[selected].feeDue = feeDue;
+
+      alert(`Saved data for ${selected}: Attendance ${attendance}%, Fee Due ₹${feeDue.toFixed(2)}`);
+
+      // If admin modifies currently logged in student (unlikely), update view
+      if(loggedInUser === selected){
+        loadStudentView(selected);
+      }
     }
 
-    function addNotice() {
-      const text = document.getElementById("noticeText").value.trim();
-      if (!text) return alert("⚠️ Notice text is empty!");
+    function addNotice(){
+      const noticeInput = document.getElementById("noticeText");
+      const text = noticeInput.value.trim();
+      if(text === ""){
+        alert("Notice text cannot be empty.");
+        return;
+      }
       const today = new Date();
-      const date = today.toLocaleDateString("en-GB");
-      notices.unshift({ date, text });
+      const dateStr = today.toLocaleDateString('en-GB'); // dd/mm/yyyy
+
+      notices.unshift({ date: dateStr, text: text });
+      noticeInput.value = "";
       loadNotices();
-      document.getElementById("noticeText").value = "";
     }
 
-    function loadNotices() {
+    function loadNotices(){
       const container = document.getElementById('notices');
       container.innerHTML = '';
       notices.forEach(n => {
@@ -201,6 +233,16 @@
         container.appendChild(div);
       });
     }
+
+    function handleLogout(){
+      loggedInUser = "";
+      document.getElementById('dashboard').style.display = 'none';
+      document.getElementById('login').style.display = 'flex';
+      document.getElementById('username').value = '';
+      document.getElementById('password').value = '';
+      document.getElementById("noticeText").value = '';
+    }
   </script>
+
 </body>
 </html>
