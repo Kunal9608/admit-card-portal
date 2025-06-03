@@ -1,0 +1,59 @@
+body {
+  font-family: Arial, sans-serif;
+  padding: 20px;
+}
+
+.menu-container {
+  position: relative;
+  display: inline-block;
+  cursor: pointer;
+  user-select: none;
+  font-size: 24px;
+  margin-bottom: 15px;
+}
+
+#menuDropdown {
+  position: absolute;
+  top: 30px;
+  right: 0;
+  background: #eee;
+  border-radius: 4px;
+  width: 160px;
+  box-shadow: 0 2px 6px rgba(0,0,0,0.2);
+  z-index: 1000;
+}
+
+#menuDropdown div {
+  padding: 10px;
+  cursor: pointer;
+}
+
+#menuDropdown div:hover {
+  background-color: #ccc;
+}
+
+.dropdown-hidden {
+  display: none;
+}
+
+#paymentPage, #receiptPage {
+  margin-top: 20px;
+  border: 1px solid #ddd;
+  padding: 15px;
+  border-radius: 6px;
+  max-width: 300px;
+}
+
+button {
+  margin-top: 10px;
+  padding: 8px 12px;
+  cursor: pointer;
+  border-radius: 4px;
+  border: none;
+  background-color: #007bff;
+  color: white;
+}
+
+button:hover {
+  background-color: #0056b3;
+}
