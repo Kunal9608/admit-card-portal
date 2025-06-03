@@ -57,13 +57,13 @@
     <main class="p-6 grid gap-6 md:grid-cols-2 xl:grid-cols-3">
       <div class="bg-white p-5 rounded-lg shadow hover:shadow-md transition">
         <h2 class="text-lg font-semibold text-gray-800">📊 Sem 4 Attendance</h2>
-        <p class="text-3xl text-blue-600 font-bold mt-2">82.54%</p>
+        <p id="attendanceValue" class="text-3xl text-blue-600 font-bold mt-2">82.54%</p>
         <p class="text-sm text-gray-500 mt-1">* Credit papers only. For accurate info, contact HoD.</p>
       </div>
 
       <div class="bg-white p-5 rounded-lg shadow hover:shadow-md transition">
         <h2 class="text-lg font-semibold text-gray-800">💰 Fee Dues</h2>
-        <p class="text-3xl text-green-600 font-bold mt-2">Rs. 0</p>
+        <p id="feesValue" class="text-3xl text-green-600 font-bold mt-2">Rs. 0</p>
       </div>
 
       <div class="bg-white p-5 rounded-lg shadow hover:shadow-md transition">
@@ -78,6 +78,36 @@
         <h2 class="text-lg font-bold mb-3 text-gray-700">📢 Important Notices</h2>
         <div id="notices" class="bg-white rounded-lg shadow divide-y divide-gray-200"></div>
       </div>
+
+      <!-- Admin Panel -->
+      <div id="adminPanel" class="col-span-full bg-yellow-50 p-6 rounded-lg shadow mt-4 hidden">
+        <h2 class="text-lg font-bold mb-4 text-yellow-700">🛠 Admin Controls</h2>
+
+        <div class="grid md:grid-cols-2 gap-4">
+          <div>
+            <label class="block mb-1 text-sm font-medium text-gray-700">Update Attendance (%)</label>
+            <input id="adminAttendance" type="number" min="0" max="100" class="w-full px-3 py-2 border rounded-md" placeholder="e.g., 85" />
+          </div>
+          <div>
+            <label class="block mb-1 text-sm font-medium text-gray-700">Update Fee Dues (Rs.)</label>
+            <input id="adminFees" type="number" class="w-full px-3 py-2 border rounded-md" placeholder="e.g., 500" />
+          </div>
+        </div>
+        <button onclick="updateStudentData()" class="mt-4 bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700">
+          Update Student Data
+        </button>
+
+        <hr class="my-4">
+
+        <div>
+          <label class="block mb-1 text-sm font-medium text-gray-700">Add New Notice</label>
+          <input id="adminNotice" type="text" class="w-full px-3 py-2 border rounded-md mb-2" placeholder="e.g., Exam postponed to next week" />
+          <button onclick="updateNoticeBoard()" class="bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700">
+            Add Notice
+          </button>
+        </div>
+      </div>
+
     </main>
 
     <footer class="text-center text-xs text-gray-500 py-4 border-t">
@@ -88,7 +118,8 @@
   <script>
     const users = {
       "KUNAL": "123",
-      "PRIYA": "abc@456"
+      "PRIYA": "abc@456",
+      "ADMIN": "admin123"
     };
 
     function handleLogin(event) {
@@ -99,8 +130,12 @@
       if (users[username] && users[username] === password) {
         document.getElementById('login').style.display = 'none';
         document.getElementById('dashboard').style.display = 'block';
-        loadNotices();
         personalizeWelcome(username);
+        loadNotices();
+
+        if (username === "ADMIN") {
+          document.getElementById('adminPanel').style.display = 'block';
+        }
       } else {
         alert("❌ Invalid username or password.");
       }
@@ -112,7 +147,7 @@
 
     function personalizeWelcome(name) {
       const header = document.querySelector("header h1");
-      header.textContent = `Welcome, ${name}!`;
+      header.textContent = name === "ADMIN" ? "Admin Dashboard" : `Welcome, ${name}!`;
 
       const downloadLink = document.getElementById("downloadLink");
       if (name === "KUNAL") {
@@ -142,6 +177,26 @@
         div.textContent = `📅 ${n.date} - ${n.text}`;
         container.appendChild(div);
       });
+    }
+
+    function updateStudentData() {
+      const att = document.getElementById("adminAttendance").value;
+      const fees = document.getElementById("adminFees").value;
+      if (att) document.getElementById("attendanceValue").textContent = att + "%";
+      if (fees) document.getElementById("feesValue").textContent = "Rs. " + fees;
+    }
+
+    function updateNoticeBoard() {
+      const newNotice = document.getElementById("adminNotice").value.trim();
+      if (newNotice) {
+        const container = document.getElementById('notices');
+        const today = new Date().toLocaleDateString("en-GB");
+        const div = document.createElement('div');
+        div.className = 'p-4 hover:bg-gray-50';
+        div.textContent = `📅 ${today} - ${newNotice}`;
+        container.prepend(div);
+        document.getElementById("adminNotice").value = "";
+      }
     }
   </script>
 </body>
