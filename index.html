@@ -304,16 +304,23 @@
 
     // --- Post new notice (admin) ---
     function postNotice() {
-      const noticeInput = document.getElementById("newNotice");
-      const noticeText = noticeInput.value.trim();
-      if (noticeText === "") {
-        alert("Please enter a notice.");
-        return;
-      }
-      notices.push(noticeText);
-      noticeInput.value = "";
-      renderNotices();
-    }
+  const noticeInput = document.getElementById("newNotice");
+  const title = noticeInput.value.trim();
+  if (!title) {
+    alert("Please enter a notice.");
+    return;
+  }
+
+  const newNotice = {
+    title: title,
+    department: "ADMIN", // or pull from a dropdown if needed
+    date: new Date().toLocaleDateString("en-GB") // e.g., 03/06/2025
+  };
+
+  notices.push(newNotice);
+  noticeInput.value = "";
+  renderNotices();
+}
 
     // --- Render notices for both admin & student ---
     function renderNotices() {
@@ -323,12 +330,21 @@
         ul.innerHTML = "<li class='text-gray-500 italic'>No notices posted yet.</li>";
         return;
       }
-      notices.forEach(notice => {
-        const li = document.createElement("li");
-        li.className = "border-l-4 border-blue-500 pl-4 text-gray-800";
-        li.textContent = notice;
-        ul.appendChild(li);
-      });
+      notices.forEach(({ title, department, date }) => {
+  const li = document.createElement("li");
+  li.className = "flex items-start gap-4 bg-gray-50 hover:bg-gray-100 rounded-lg p-4 shadow-sm";
+
+  li.innerHTML = `
+    <div class="text-xs font-semibold text-indigo-600 uppercase w-32">
+      ${department}<br/>
+      <span class="text-gray-500">${date}</span>
+    </div>
+    <div class="text-blue-900 font-bold text-lg">
+      ${title}
+    </div>
+  `;
+  ul.appendChild(li);
+});
     }
 
     // --- Payment QR Code Upload (admin) ---
@@ -422,9 +438,11 @@
         div.innerHTML = `
           <p class="font-semibold mb-2">Student: ${payment.student}</p>
           <p class="mb-2">UTR: <span class="font-mono">${payment.utr}</span></p>
-          <img src="${payment.receiptDataUrl}" alt="Payment Receipt" class="max-w-xs rounded-lg border mb-2"/>
-          <button onclick="confirmPayment(${index})" class="bg-green-600 hover:bg-green-700 text-white px-4 py-1 rounded font-semibold">Confirm Payment</button>
+         <img src="${payment.receiptDataUrl}" alt="Payment Receipt" class="w-32 h-auto rounded-lg border mb-2"/>
+          <button onclick="confirmPayment(${index})" class="bg-green-600 hover:bg-green-700 text-white px-4 py-1 rounded font-semibold">Confirm Payment</button> <br><br>
+<button onclick="rejectPayment(${index})" class="bg-red-600 hover:bg-red-700 text-white px-4 py-1 rounded font-semibold ml-2">Reject Payment</button>
         `;
+        
 
         container.appendChild(div);
       });
@@ -453,6 +471,19 @@
         loadStudentDashboard();
       }
     }
+    
+    // reject payment 
+    function rejectPayment(index) {
+  const payment = pendingPayments[index];
+  if (!payment) return;
+
+  // Remove the rejected payment
+  pendingPayments.splice(index, 1);
+  alert(`Payment request from ${payment.student} has been rejected.`);
+
+  // Refresh admin panel
+  renderPendingPayments();
+}
 
     // --- Admit Card download validation --
 
