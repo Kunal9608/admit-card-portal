@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>Student Portal</title>
   <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet" />
   <style>
@@ -20,7 +20,7 @@
   <div id="login" class="flex items-center justify-center min-h-screen px-4">
     <div class="bg-white p-10 rounded-xl shadow-xl w-full max-w-md fade-in">
       <h2 class="text-3xl font-bold text-center text-blue-700 mb-4">👋 Welcome Back</h2>
-      <p class="text-center text-sm text-gray-500 mb-6">Login to access your dashboard</p>
+      <p class="text-center text-sm text-gray-500 mb-6">Login to access your student dashboard</p>
       <form onsubmit="handleLogin(event)" class="space-y-5">
         <div>
           <label class="block text-sm font-medium text-gray-600 mb-1">Username</label>
@@ -31,6 +31,9 @@
           <label class="block text-sm font-medium text-gray-600 mb-1">Password</label>
           <input id="password" type="password" required placeholder="e.g., 123"
             class="w-full px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-400" />
+        </div>
+        <div class="text-right">
+          <a href="#" onclick="forgotPassword()" class="text-sm text-blue-600 hover:underline">Forgot password?</a>
         </div>
         <button type="submit"
           class="w-full py-2 bg-blue-600 hover:bg-blue-700 text-white font-semibold rounded-md shadow">
@@ -43,78 +46,73 @@
   <!-- Dashboard Section -->
   <div id="dashboard" class="fade-in">
     <header class="bg-blue-700 text-white p-4 flex justify-between items-center shadow">
-      <h1 class="text-xl font-bold" id="welcomeText">Student Dashboard</h1>
-      <button id="logoutBtn" onclick="handleLogout()" class="text-sm bg-red-600 hover:bg-red-700 px-3 py-1 rounded">
-        Logout
-      </button>
+      <h1 class="text-xl font-bold">Student Dashboard</h1>
+      <button onclick="handleLogout()" class="text-sm bg-blue-600 hover:bg-blue-700 px-3 py-1 rounded">Logout</button>
     </header>
 
-    <div id="alertBanner" class="bg-red-100 text-red-700 text-center text-sm py-2 font-medium">
+    <div id="studentWarning" class="bg-red-100 text-red-700 text-center text-sm py-2 font-medium">
       ⚠️ Students must maintain a minimum of 50% attendance.
     </div>
 
-    <!-- Student View -->
-    <main class="p-6 grid gap-6 md:grid-cols-2 xl:grid-cols-3" id="studentContent">
+    <main id="studentMain" class="p-6 grid gap-6 md:grid-cols-2 xl:grid-cols-3" style="display:none;">
       <div class="bg-white p-5 rounded-lg shadow hover:shadow-md transition">
         <h2 class="text-lg font-semibold text-gray-800">📊 Sem 4 Attendance</h2>
-        <p id="studentAttendance" class="text-3xl text-blue-600 font-bold mt-2">--%</p>
+        <p id="attendanceValue" class="text-3xl text-blue-600 font-bold mt-2">--%</p>
         <p class="text-sm text-gray-500 mt-1">* Credit papers only. For accurate info, contact HoD.</p>
       </div>
 
       <div class="bg-white p-5 rounded-lg shadow hover:shadow-md transition">
         <h2 class="text-lg font-semibold text-gray-800">💰 Fee Dues</h2>
-        <p id="studentFees" class="text-3xl text-green-600 font-bold mt-2">--</p>
+        <p id="feeValue" class="text-3xl text-green-600 font-bold mt-2">Rs. --</p>
       </div>
 
       <div class="bg-white p-5 rounded-lg shadow hover:shadow-md transition">
         <h2 class="text-lg font-semibold text-gray-800">🎉 Upcoming Holiday</h2>
         <p class="text-md mt-2">07-Jun-2025 (Bakrid)</p>
-        <a id="downloadLink" class="inline-block mt-4 bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700" href="#" download>
+        <a id="downloadLink" class="inline-block mt-4 bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700">
           Download Admit Card
         </a>
       </div>
+
+      <div class="col-span-full">
+        <h2 class="text-lg font-bold mb-3 text-gray-700">📢 Important Notices</h2>
+        <div id="notices" class="bg-white rounded-lg shadow divide-y divide-gray-200"></div>
+      </div>
     </main>
 
-    <!-- Admin Panel -->
-    <section id="adminPanel" class="p-6 hidden">
-      <h2 class="text-xl font-bold text-gray-700 mb-4">🛠️ Admin Control Panel</h2>
-
-      <div class="bg-white p-5 rounded-lg shadow mb-6">
-        <label class="block mb-2 text-sm font-semibold text-gray-600">Select Student</label>
-        <select id="selectedStudent" onchange="loadStudentData()" class="w-full mb-4 border rounded px-3 py-2">
-          <option value="KUNAL">KUNAL</option>
-          <option value="OM">OM</option>
-          <option value="AKSHAT">AKSHAT</option>
+    <main id="adminMain" class="p-6" style="display:none; max-width: 600px;">
+      <h2 class="text-xl font-bold mb-4 text-gray-800">Admin Panel</h2>
+      <div class="mb-4">
+        <label for="studentSelect" class="block font-medium mb-1">Select Student to Modify:</label>
+        <select id="studentSelect" class="w-full px-4 py-2 border rounded">
+          <!-- Options populated by JS -->
         </select>
+      </div>
+      <div class="mb-4">
+        <label for="attendanceInput" class="block font-medium mb-1">Attendance (%)</label>
+        <input id="attendanceInput" type="number" min="0" max="100" class="w-full px-4 py-2 border rounded" />
+      </div>
+      <div class="mb-4">
+        <label for="feeInput" class="block font-medium mb-1">Fee Due (₹)</label>
+        <input id="feeInput" type="number" min="0" step="0.01" class="w-full px-4 py-2 border rounded" />
+      </div>
+      <button onclick="saveStudentData()" class="bg-green-600 hover:bg-green-700 text-white font-semibold px-6 py-2 rounded shadow">
+        Save
+      </button>
 
-        <div class="mb-4">
-          <label class="block text-sm font-medium text-gray-600">Attendance (%)</label>
-          <input type="number" id="adminAttendance" class="w-full px-4 py-2 border rounded" min="0" max="100" />
-        </div>
-
-        <div class="mb-4">
-          <label class="block text-sm font-medium text-gray-600">Fee Due (Rs)</label>
-          <input type="number" id="adminFeeDue" class="w-full px-4 py-2 border rounded" min="0" />
-        </div>
-
-        <button onclick="saveStudentData()"
-          class="bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700">Save</button>
+      <div class="mt-8">
+        <h3 class="text-lg font-semibold mb-2">Add New Notice</h3>
+        <textarea id="noticeText" rows="3" class="w-full px-4 py-2 border rounded" placeholder="Type notice here..."></textarea>
+        <button onclick="addNotice()" class="mt-2 bg-blue-600 hover:bg-blue-700 text-white font-semibold px-6 py-2 rounded shadow">
+          Add Notice
+        </button>
       </div>
 
-      <div class="bg-white p-5 rounded-lg shadow">
-        <h3 class="text-lg font-semibold mb-2 text-gray-700">📢 Update Notices</h3>
-        <input type="text" id="noticeText" placeholder="Write notice text here"
-          class="w-full px-4 py-2 border rounded mb-2" />
-        <button onclick="addNotice()"
-          class="bg-green-600 text-white px-4 py-2 rounded hover:bg-green-700">Add Notice</button>
+      <div class="mt-8">
+        <h3 class="text-lg font-semibold mb-3">Important Notices</h3>
+        <div id="notices" class="bg-white rounded-lg shadow divide-y divide-gray-200 max-h-64 overflow-y-auto"></div>
       </div>
-    </section>
-
-    <!-- Notices -->
-    <section class="p-6">
-      <h2 class="text-lg font-bold mb-3 text-gray-700">📢 Important Notices</h2>
-      <div id="notices" class="bg-white rounded-lg shadow divide-y divide-gray-200"></div>
-    </section>
+    </main>
 
     <footer class="text-center text-xs text-gray-500 py-4 border-t">
       &copy; 2025 Student Portal. All rights reserved.
@@ -122,16 +120,16 @@
   </div>
 
   <script>
-    const users = {
+    // Default data for users (students and admins)
+    const defaultUsers = {
       "KUNAL": { password: "123", attendance: 82.54, feeDue: 0 },
-      "OM": { password: "123", attendance: 75.12, feeDue: 1500 },
-      "AKSHAT": { password: "123", attendance: 60.75, feeDue: 500 },
+      "OM": { password: "123", attendance: 75.20, feeDue: 1000 },
+      "AKSHAT": { password: "123", attendance: 88.90, feeDue: 500 },
       "ADMIN": { password: "456" },
       "ROHAN": { password: "789" }
     };
 
-    let loggedInUser = "";
-    let notices = [
+    const defaultNotices = [
       { date: "28/05/2025", text: "Regarding Summer Camp-2025" },
       { date: "28/05/2025", text: "Summer Internship Programme at SBU" },
       { date: "27/05/2025", text: "Results – Rejoice Reel Making Competition" },
@@ -139,87 +137,143 @@
       { date: "21/05/2025", text: "Summer Semester Classes & Examinations" }
     ];
 
-    function handleLogin(event) {
-      event.preventDefault();
-      const username = document.getElementById('username').value.trim().toUpperCase();
-      const password = document.getElementById('password').value.trim();
+    // Load from localStorage or use defaults
+    let users = JSON.parse(localStorage.getItem('users')) || defaultUsers;
+    let notices = JSON.parse(localStorage.getItem('notices')) || defaultNotices;
 
-      if(users[username] && users[username].password === password){
-        loggedInUser = username;
+    let loggedInUser = "";
+    let isAdmin = false;
+
+    function handleLogin(event){
+      event.preventDefault();
+      const usernameInput = document.getElementById('username').value.trim().toUpperCase();
+      const passwordInput = document.getElementById('password').value.trim();
+
+      if(users[usernameInput] && users[usernameInput].password === passwordInput){
+        loggedInUser = usernameInput;
+        isAdmin = (usernameInput === "ADMIN" || usernameInput === "ROHAN");
         document.getElementById('login').style.display = 'none';
         document.getElementById('dashboard').style.display = 'block';
 
-        if(username === "ADMIN" || username === "ROHAN"){
-          // Admin view
-          document.getElementById("welcomeText").textContent = `Admin Dashboard (${username})`;
-          document.getElementById("studentContent").classList.add("hidden");
-          document.getElementById("alertBanner").classList.add("hidden");
-          document.getElementById("adminPanel").classList.remove("hidden");
-          loadStudentData();
-        } else {
-          // Student view
-          document.getElementById("welcomeText").textContent = `Welcome, ${username}!`;
-          document.getElementById("studentContent").classList.remove("hidden");
-          document.getElementById("alertBanner").classList.remove("hidden");
-          document.getElementById("adminPanel").classList.add("hidden");
-          loadStudentView(username);
-        }
+        personalizeWelcome(loggedInUser);
         loadNotices();
+        if(isAdmin){
+          showAdminPanel();
+        } else {
+          showStudentPanel(loggedInUser);
+        }
       } else {
         alert("❌ Invalid username or password.");
       }
     }
 
-    function loadStudentView(name){
-      document.getElementById("studentAttendance").textContent = users[name].attendance.toFixed(2) + "%";
-      document.getElementById("studentFees").textContent = "₹ " + users[name].feeDue.toFixed(2);
-      document.getElementById("downloadLink").href = `AdmitCard_${name}.pdf`;
-      document.getElementById("downloadLink").style.display = "inline-block";
+    function forgotPassword(){
+      alert("📩 Please contact admin or visit helpdesk to reset your password.");
     }
 
-    function loadStudentData(){
-      const selected = document.getElementById("selectedStudent").value;
-      document.getElementById("adminAttendance").value = users[selected].attendance || 0;
-      document.getElementById("adminFeeDue").value = users[selected].feeDue || 0;
+    function personalizeWelcome(name){
+      const header = document.querySelector("header h1");
+      header.textContent = `Welcome, ${name}!`;
+    }
+
+    function showStudentPanel(name){
+      isAdmin = false;
+      document.getElementById('studentWarning').style.display = 'block';
+      document.getElementById('studentMain').style.display = 'grid';
+      document.getElementById('adminMain').style.display = 'none';
+
+      // Show attendance and fees
+      const attendanceValue = document.getElementById('attendanceValue');
+      const feeValue = document.getElementById('feeValue');
+      const downloadLink = document.getElementById('downloadLink');
+
+      attendanceValue.textContent = users[name].attendance.toFixed(2) + "%";
+      feeValue.textContent = "Rs. " + users[name].feeDue.toFixed(2);
+
+      // Set admit card download link
+      downloadLink.style.display = "inline-block";
+      downloadLink.href = `AdmitCard_${name}.pdf`;
+      downloadLink.download = `AdmitCard_${name}.pdf`;
+    }
+
+    function showAdminPanel(){
+      isAdmin = true;
+      document.getElementById('studentWarning').style.display = 'none';
+      document.getElementById('studentMain').style.display = 'none';
+      document.getElementById('adminMain').style.display = 'block';
+
+      // Populate student select dropdown
+      const select = document.getElementById('studentSelect');
+      select.innerHTML = '';
+      for(const user in users){
+        if(user !== "ADMIN" && user !== "ROHAN"){
+          const option = document.createElement('option');
+          option.value = user;
+          option.textContent = user;
+          select.appendChild(option);
+        }
+      }
+      select.selectedIndex = 0;
+      loadSelectedStudentData();
+
+      select.onchange = loadSelectedStudentData;
+    }
+
+    function loadSelectedStudentData(){
+      const select = document.getElementById('studentSelect');
+      const selected = select.value;
+      if(!selected) return;
+      document.getElementById('attendanceInput').value = users[selected].attendance ?? 0;
+      document.getElementById('feeInput').value = users[selected].feeDue ?? 0;
     }
 
     function saveStudentData(){
-      const selected = document.getElementById("selectedStudent").value;
-      const attendance = parseFloat(document.getElementById("adminAttendance").value);
-      const feeDue = parseFloat(document.getElementById("adminFeeDue").value);
+      const select = document.getElementById('studentSelect');
+      const selected = select.value;
+      if(!selected) return alert("Select a student.");
+
+      const attendanceInput = document.getElementById('attendanceInput').value.trim();
+      const feeInput = document.getElementById('feeInput').value.trim();
+
+      let attendance = parseFloat(attendanceInput);
+      let feeDue = parseFloat(feeInput);
 
       if(isNaN(attendance) || attendance < 0 || attendance > 100){
-        alert("Please enter valid attendance between 0 and 100.");
-        return;
+        return alert("Attendance must be a number between 0 and 100.");
       }
       if(isNaN(feeDue) || feeDue < 0){
-        alert("Please enter valid fee due (0 or more).");
-        return;
+        return alert("Fee Due must be a number 0 or greater.");
       }
 
       users[selected].attendance = attendance;
       users[selected].feeDue = feeDue;
 
-      alert(`Saved data for ${selected}: Attendance ${attendance}%, Fee Due ₹${feeDue.toFixed(2)}`);
+      // Save users to localStorage
+      localStorage.setItem('users', JSON.stringify(users));
 
-      // If admin modifies currently logged in student (unlikely), update view
-      if(loggedInUser === selected){
-        loadStudentView(selected);
+      alert(`Saved data for ${selected}: Attendance ${attendance.toFixed(2)}%, Fee Due ₹${feeDue.toFixed(2)}`);
+
+      // If admin modified currently logged-in student (unlikely), update student view
+      if(!isAdmin && loggedInUser === selected){
+        showStudentPanel(selected);
       }
     }
 
     function addNotice(){
-      const noticeInput = document.getElementById("noticeText");
+      const noticeInput = document.getElementById('noticeText');
       const text = noticeInput.value.trim();
       if(text === ""){
-        alert("Notice text cannot be empty.");
-        return;
+        return alert("Notice text cannot be empty.");
       }
       const today = new Date();
       const dateStr = today.toLocaleDateString('en-GB'); // dd/mm/yyyy
 
       notices.unshift({ date: dateStr, text: text });
       noticeInput.value = "";
+
+      // Save notices to localStorage
+      localStorage.setItem('notices', JSON.stringify(notices));
+
       loadNotices();
     }
 
@@ -236,13 +290,13 @@
 
     function handleLogout(){
       loggedInUser = "";
+      isAdmin = false;
       document.getElementById('dashboard').style.display = 'none';
       document.getElementById('login').style.display = 'flex';
       document.getElementById('username').value = '';
       document.getElementById('password').value = '';
-      document.getElementById("noticeText").value = '';
+      document.getElementById('noticeText').value = '';
     }
   </script>
-
 </body>
 </html>
