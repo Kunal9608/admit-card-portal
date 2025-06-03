@@ -465,7 +465,7 @@
   }
 
   const username = student.username;
-  const url = `https://raw.githubusercontent.com/Kunal9608/admit-card-portal/main/AdmitCard_${username}.pdf`;
+  const url = `https://github.com/Kunal9608/admit-card-portal/raw/main/`;
 
   // Set the href and trigger download
   const link = document.getElementById("admitCardLink");
@@ -475,36 +475,6 @@
   return true;
 }
 
-
-    function setAdmitCardLink(username) {
-  const link = document.getElementById("admitCardLink");
-
-  const attendance = parseFloat(studentData[username].attendance);
-  const fees = parseFloat(studentData[username].fees);
-
-  // Condition: Attendance must be >= 75 and Fees must be 0
-  if (attendance < 75) {
-    link.href = "#";
-    link.removeAttribute("download");
-    link.onclick = (e) => {
-      e.preventDefault();
-      alert("YOUR ATTENDANCE IS BELOW 75% YOU CAN'T SIT IN EXAM, CONTACT EXAMINATION DEPARTMENT.");
-    };
-  } else if (fees > 0) {
-    link.href = "#";
-    link.removeAttribute("download");
-    link.onclick = (e) => {
-      e.preventDefault();
-      alert("FEE DUES PENDING. PLEASE CLEAR YOUR DUES TO DOWNLOAD ADMIT CARD.");
-    };
-  } else {
-    const baseURL = "https://github.com/Kunal9608/admit-card-portal/raw/main/";
-    const fileName = `AdmitCard_${username}.pdf`;
-    link.href = baseURL + fileName;
-    link.setAttribute("download", fileName);
-    link.onclick = null;
-  }
-    }
   </script>
 
 </body>
