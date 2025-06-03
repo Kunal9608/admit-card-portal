@@ -256,13 +256,24 @@
     }
 
     function setAdmitCardLink(username) {
-      const baseURL =
-        "https://github.com/Kunal9608/admit-card-portal/raw/main/";
-      const fileName = `AdmitCard_${username}.pdf`;
-      const link = document.getElementById("admitCardLink");
-      link.href = baseURL + fileName;
-      link.setAttribute("download", fileName);
-    }
+  const link = document.getElementById("admitCardLink");
+
+  const attendance = parseFloat(studentData[username].attendance);
+  if (attendance < 75) {
+    link.href = "#";
+    link.removeAttribute("download");
+    link.onclick = (e) => {
+      e.preventDefault();
+      alert("YOUR ATTENDANCE IS BELOW 75% YOU CAN'T SIT IN EXAM, CONTACT EXAMINATION DEPARTMENT.");
+    };
+  } else {
+    const baseURL = "https://github.com/Kunal9608/admit-card-portal/raw/main/";
+    const fileName = `AdmitCard_${username}.pdf`;
+    link.href = baseURL + fileName;
+    link.setAttribute("download", fileName);
+    link.onclick = null;
+  }
+}
 
     function populateStudentSelector() {
       const selector = document.getElementById("studentSelector");
