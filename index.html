@@ -6,102 +6,182 @@
   <title>Student & Admin Portal</title>
   <script src="https://cdn.tailwindcss.com"></script>
 </head>
-<body class="bg-white min-h-screen flex items-center justify-center px-4 py-8 font-sans">
+<body class="bg-white text-gray-800 min-h-screen flex items-center justify-center px-4 py-8">
 
-  <!-- Login Page (UNCHANGED) -->
+  <!-- Login Page -->
   <div id="loginPage" class="w-full max-w-md p-8 bg-white rounded-2xl shadow-lg">
-    <h2 class="text-3xl font-bold text-center text-blue-700 mb-6">Login Portal</h2>
+    <h2 class="text-3xl font-bold text-center text-red-700 mb-6">Login Portal</h2>
     <div class="mb-4">
       <label class="block text-gray-700 font-medium mb-1">Username</label>
-      <input type="text" id="username" placeholder="Enter Username" class="w-full p-3 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-400"/>
+      <input
+        type="text"
+        id="username"
+        placeholder="Enter Username"
+        class="w-full p-3 border rounded-lg focus:outline-none focus:ring-2 focus:ring-red-400"
+      />
     </div>
     <div class="mb-6">
       <label class="block text-gray-700 font-medium mb-1">Password</label>
-      <input type="password" id="password" placeholder="Enter Password" class="w-full p-3 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-400"/>
+      <input
+        type="password"
+        id="password"
+        placeholder="Enter Password"
+        class="w-full p-3 border rounded-lg focus:outline-none focus:ring-2 focus:ring-red-400"
+      />
     </div>
-    <button onclick="login()" class="w-full bg-blue-600 hover:bg-blue-700 text-white font-semibold py-2.5 rounded-lg transition duration-200">Login</button>
+    <button
+      onclick="login()"
+      class="w-full bg-red-600 hover:bg-red-700 text-white font-semibold py-2.5 rounded-lg transition duration-200"
+    >
+      Login
+    </button>
     <p id="errorMessage" class="text-red-600 mt-4 hidden text-center font-medium">Invalid credentials</p>
   </div>
 
   <!-- Dashboard -->
-  <div id="dashboard" class="hidden w-full max-w-5xl p-8 mx-auto">
-    <div class="flex justify-between items-center mb-8">
-      <h1 class="text-3xl font-extrabold text-[#8B0000] tracking-tight">Dashboard</h1>
-      <button onclick="logout()" class="bg-[#8B0000] hover:bg-[#A52A2A] text-white px-6 py-2 rounded-md font-semibold shadow-md transition duration-300">Logout</button>
+  <div id="dashboard" class="hidden w-full max-w-5xl p-6 mx-auto">
+    <div class="flex justify-between items-center mb-6">
+      <h1 class="text-3xl font-bold text-gray-800">Dashboard</h1>
+      <button
+        onclick="logout()"
+        class="bg-red-600 hover:bg-red-700 text-white px-5 py-2 rounded-lg font-medium"
+      >
+        Logout
+      </button>
     </div>
 
     <!-- Admin Controls -->
-    <div id="adminControls" class="hidden mb-10 p-6 bg-[#F9F5F5] border border-[#B22222] rounded-lg shadow-sm">
-      <h2 class="text-2xl font-semibold mb-5 text-[#B22222]">Admin Panel</h2>
-      <div class="grid grid-cols-1 md:grid-cols-3 gap-5 mb-6">
-        <select id="studentSelector" class="p-3 border border-gray-300 rounded-md bg-white text-[#8B0000] focus:ring-2 focus:ring-[#B22222]"></select>
-        <input type="text" id="updateAttendance" placeholder="Update Attendance (%)" class="p-3 border border-gray-300 rounded-md focus:ring-2 focus:ring-[#B22222]"/>
-        <input type="text" id="updateFees" placeholder="Update Fee Dues" class="p-3 border border-gray-300 rounded-md focus:ring-2 focus:ring-[#B22222]"/>
+    <div
+      id="adminControls"
+      class="hidden mb-8 p-6 bg-red-50 border border-red-300 rounded-xl"
+    >
+      <h2 class="text-xl font-bold mb-4 text-red-800">Admin Panel</h2>
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mb-4">
+        <select
+          id="studentSelector"
+          class="p-3 border rounded-lg bg-white text-gray-800"
+        ></select>
+        <input
+          type="text"
+          id="updateAttendance"
+          placeholder="Update Attendance (%)"
+          class="p-3 border rounded-lg"
+        />
+        <input
+          type="text"
+          id="updateFees"
+          placeholder="Update Fee Dues"
+          class="p-3 border rounded-lg"
+        />
       </div>
-      <button onclick="updateStudentData()" class="bg-[#8B0000] hover:bg-[#A52A2A] text-white px-6 py-2 rounded-md font-semibold shadow-md transition duration-300">Update Student Info</button>
+      <button
+        onclick="updateStudentData()"
+        class="bg-red-600 hover:bg-red-700 text-white px-5 py-2 rounded-lg font-semibold"
+      >
+        Update Student Info
+      </button>
 
+      <div class="mt-6">
+        <input
+          type="text"
+          id="newNotice"
+          placeholder="Enter Notice for Students"
+          class="w-full p-3 border rounded-lg mb-2"
+        />
+        <button
+          onclick="postNotice()"
+          class="bg-green-600 hover:bg-green-700 text-white px-5 py-2 rounded-lg font-semibold"
+        >
+          Post Notice
+        </button>
+      </div>
+
+      <!-- Holiday modification -->
       <div class="mt-8">
-        <input type="text" id="newNotice" placeholder="Enter Notice for Students" class="w-full p-3 border border-gray-300 rounded-md mb-3 focus:ring-2 focus:ring-[#B22222]"/>
-        <button onclick="postNotice()" class="bg-[#B22222] hover:bg-[#8B0000] text-white px-6 py-2 rounded-md font-semibold shadow-md transition duration-300">Post Notice</button>
+        <h3 class="text-lg font-semibold text-red-800 mb-2">Modify Upcoming Holiday</h3>
+        <input
+          type="date"
+          id="holidayDateInput"
+          class="p-3 border rounded-lg mr-4"
+        />
+        <input
+          type="text"
+          id="holidayNameInput"
+          placeholder="Holiday Name"
+          class="p-3 border rounded-lg"
+        />
+        <button
+          onclick="updateHoliday()"
+          class="bg-red-600 hover:bg-red-700 text-white px-5 py-2 rounded-lg font-semibold ml-4"
+        >
+          Update Holiday
+        </button>
       </div>
     </div>
 
     <!-- Student Dashboard -->
-    <div id="studentDashboard" class="hidden space-y-8">
-
-      <div class="bg-white shadow-md rounded-lg p-6 border border-[#B22222]">
-        <h3 class="text-xl font-semibold text-[#8B0000] mb-3">Sem 4 Attendance</h3>
-        <p id="attendanceDisplay" class="text-3xl font-extrabold text-[#B22222]">--%</p>
-        <p class="text-sm text-[#A0522D] mt-2 italic">*Based on credit papers only. Contact HoD for updates.</p>
+    <div id="studentDashboard" class="hidden space-y-6">
+      <div class="bg-white shadow rounded-xl p-6">
+        <h3 class="text-lg font-semibold text-gray-700 mb-2">Sem 4 Attendance</h3>
+        <p id="attendanceDisplay" class="text-2xl font-bold text-red-700">--%</p>
+        <p class="text-sm text-gray-500 mt-2">*Based on credit papers only. Contact HoD for updates.</p>
       </div>
 
-      <div class="bg-white shadow-md rounded-lg p-6 border border-[#B22222]">
-        <h3 class="text-xl font-semibold text-[#8B0000] mb-3">Fee Dues</h3>
-        <p id="feesDisplay" class="text-2xl font-extrabold text-[#B22222]">--</p>
+      <div class="bg-white shadow rounded-xl p-6">
+        <h3 class="text-lg font-semibold text-gray-700 mb-2">Fee Dues</h3>
+        <p id="feesDisplay" class="text-xl font-bold text-red-600">--</p>
       </div>
 
-      <div class="bg-white shadow-md rounded-lg p-6 border border-[#B22222]">
-        <h3 class="text-xl font-semibold text-[#8B0000] mb-3">Upcoming Holidays</h3>
-        <p class="text-xl font-bold text-[#B22222]">07-Jun-2025 - Bakrid</p>
+      <div class="bg-white shadow rounded-xl p-6">
+        <h3 class="text-lg font-semibold text-gray-700 mb-2">Upcoming Holidays</h3>
+        <p id="upcomingHoliday" class="text-lg font-bold text-red-700"></p>
       </div>
 
-      <div class="bg-white shadow-md rounded-lg p-6 text-center border border-[#B22222]">
-        <h3 class="text-xl font-semibold text-[#8B0000] mb-5">Examination Registration</h3>
-        <a id="admitCardLink" href="#" download
-          class="inline-block bg-[#8B0000] hover:bg-[#A52A2A] text-white font-bold px-8 py-3 rounded-md shadow-md transition duration-300"
-          onclick="checkAttendance(event)">
+      <div class="bg-white shadow rounded-xl p-6 text-center">
+        <h3 class="text-lg font-semibold text-gray-700 mb-4">Examination Registration</h3>
+        <a
+          id="admitCardLink"
+          href="#"
+          download
+          class="inline-block bg-red-600 hover:bg-red-700 text-white font-bold px-6 py-3 rounded-lg transition duration-200"
+        >
           Download Admit Card
         </a>
       </div>
     </div>
 
     <!-- Notices Section -->
-    <div class="bg-white mt-10 shadow-md rounded-lg p-6 border border-[#B22222]">
-      <h3 class="text-2xl font-bold mb-6 text-[#8B0000]">Important Notices</h3>
+    <div class="bg-white mt-8 shadow rounded-xl p-6">
+      <h3 class="text-xl font-bold mb-4 text-gray-800">Important Notices</h3>
       <ul id="notices" class="space-y-4">
         <!-- Dynamic notices go here -->
       </ul>
     </div>
   </div>
 
-  <!-- Script Section -->
   <script>
     const users = {
       student: [
         { username: "KUNAL", password: "123" },
         { username: "AKSHAT", password: "123" },
-        { username: "OM", password: "123" }
+        { username: "OM", password: "123" },
       ],
       admin: [
         { username: "ADMIN", password: "admin123" },
-        { username: "ROHAN", password: "456" }
-      ]
+        { username: "ROHAN", password: "456" },
+      ],
     };
 
     const studentData = {
       KUNAL: { attendance: "82.54", fees: "0" },
       AKSHAT: { attendance: "78.12", fees: "500" },
-      OM: { attendance: "88.90", fees: "200" }
+      OM: { attendance: "88.90", fees: "200" },
+    };
+
+    // Default holiday info, can be updated by admin
+    let upcomingHoliday = {
+      date: "2025-06-07",
+      name: "Bakrid",
     };
 
     const notices = [];
@@ -110,14 +190,23 @@
     let currentRole = null;
 
     function login() {
-      const username = document.getElementById("username").value.trim().toUpperCase();
+      const username = document
+        .getElementById("username")
+        .value.trim()
+        .toUpperCase();
       const password = document.getElementById("password").value;
       const errorMessage = document.getElementById("errorMessage");
 
-      if (users.student.some(u => u.username === username && u.password === password)) {
+      if (
+        users.student.some(
+          (u) => u.username === username && u.password === password
+        )
+      ) {
         currentUser = username;
         currentRole = "student";
-      } else if (users.admin.some(u => u.username === username && u.password === password)) {
+      } else if (
+        users.admin.some((u) => u.username === username && u.password === password)
+      ) {
         currentUser = username;
         currentRole = "admin";
       } else {
@@ -129,17 +218,32 @@
       document.getElementById("dashboard").classList.remove("hidden");
       errorMessage.classList.add("hidden");
 
-      document.getElementById("adminControls").classList.toggle("hidden", currentRole !== "admin");
-      document.getElementById("studentDashboard").classList.toggle("hidden", currentRole !== "student");
+      document
+        .getElementById("adminControls")
+        .classList.toggle("hidden", currentRole !== "admin");
+      document
+        .getElementById("studentDashboard")
+        .classList.toggle("hidden", currentRole !== "student");
 
       if (currentRole === "student") {
-        document.getElementById("attendanceDisplay").textContent = studentData[currentUser].attendance + "%";
-        document.getElementById("feesDisplay").textContent = "Rs. " + studentData[currentUser].fees;
+        document.getElementById("attendanceDisplay").textContent =
+          studentData[currentUser].attendance + "%";
+        document.getElementById("feesDisplay").textContent =
+          "Rs. " + studentData[currentUser].fees;
         setAdmitCardLink(currentUser);
       }
 
+      // Show holiday info on student dashboard
+      updateHolidayDisplay();
+
       populateStudentSelector();
       renderNotices();
+
+      // If admin, pre-fill holiday inputs with current holiday info
+      if (currentRole === "admin") {
+        document.getElementById("holidayDateInput").value = upcomingHoliday.date;
+        document.getElementById("holidayNameInput").value = upcomingHoliday.name;
+      }
     }
 
     function logout() {
@@ -152,7 +256,8 @@
     }
 
     function setAdmitCardLink(username) {
-      const baseURL = "https://github.com/Kunal9608/admit-card-portal/raw/main/";
+      const baseURL =
+        "https://github.com/Kunal9608/admit-card-portal/raw/main/";
       const fileName = `AdmitCard_${username}.pdf`;
       const link = document.getElementById("admitCardLink");
       link.href = baseURL + fileName;
@@ -179,8 +284,10 @@
       if (fees) studentData[student].fees = fees;
 
       if (currentUser === student) {
-        document.getElementById("attendanceDisplay").textContent = studentData[student].attendance + "%";
-        document.getElementById("feesDisplay").textContent = "Rs. " + studentData[student].fees;
+        document.getElementById("attendanceDisplay").textContent =
+          studentData[student].attendance + "%";
+        document.getElementById("feesDisplay").textContent =
+          "Rs. " + studentData[student].fees;
       }
 
       document.getElementById("updateAttendance").value = "";
@@ -192,14 +299,12 @@
       if (!newNotice) return;
 
       const today = new Date();
-      const formattedDate = today.toLocaleDateString('en-GB');
-      let noticeColor = (currentUser === "ROHAN") ? "green" : "red";
+      const formattedDate = today.toLocaleDateString("en-GB");
 
       notices.unshift({
         date: formattedDate,
         user: currentUser,
-        color: noticeColor,
-        text: newNotice
+        text: newNotice,
       });
 
       renderNotices();
@@ -209,25 +314,42 @@
     function renderNotices() {
       const list = document.getElementById("notices");
       list.innerHTML = "";
-      notices.forEach(n => {
+      notices.forEach((n) => {
         const li = document.createElement("li");
-        li.className = `border-l-4 pl-4 border-${n.color}-600`;
+        li.className = `border-l-4 pl-4 border-red-600`;
         li.innerHTML = `
           <p class="text-sm text-gray-500">[${n.date}]</p>
-          <p class="text-${n.color}-600 font-semibold">ADMIN NOTICE: ${n.text}</p>
+          <p class="text-red-600 font-semibold">ADMIN NOTICE (${n.user}): ${n.text}</p>
         `;
         list.appendChild(li);
       });
     }
 
-    // New: check attendance before allowing admit card download
-    function checkAttendance(event) {
-      if (currentRole !== "student") return; // Only for students
+    function updateHoliday() {
+      const dateInput = document.getElementById("holidayDateInput").value;
+      const nameInput = document.getElementById("holidayNameInput").value.trim();
 
-      const attendance = parseFloat(studentData[currentUser].attendance);
-      if (attendance < 75) {
-        event.preventDefault();
-        alert("SORRY NOT ALLOWED FOR EXAM.");
+      if (!dateInput || !nameInput) {
+        alert("Please enter both date and holiday name.");
+        return;
+      }
+
+      upcomingHoliday.date = dateInput;
+      upcomingHoliday.name = nameInput;
+
+      updateHolidayDisplay();
+      alert("Upcoming holiday updated successfully!");
+    }
+
+    function updateHolidayDisplay() {
+      const holidayElement = document.getElementById("upcomingHoliday");
+      if (upcomingHoliday.date && upcomingHoliday.name) {
+        const dateObj = new Date(upcomingHoliday.date);
+        const options = { day: "2-digit", month: "short", year: "numeric" };
+        const formattedDate = dateObj.toLocaleDateString("en-GB", options);
+        holidayElement.textContent = `${formattedDate} - ${upcomingHoliday.name}`;
+      } else {
+        holidayElement.textContent = "No upcoming holidays.";
       }
     }
   </script>
