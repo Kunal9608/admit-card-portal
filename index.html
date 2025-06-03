@@ -454,26 +454,37 @@
       }
     }
 
-    // --- Admit Card download validation ---
-    function validateAdmitCardDownload() {
-  const student = currentUser;
-  if (!student) return false;
+    // --- Admit Card download validation --
 
-  if (student.attendance < 75) {
-    alert("SORRY NOT ALLOWED FOR EXAM.");
-    return false;
-  }
-
-  const username = student.username;
-  const url = `https://github.com/Kunal9608/admit-card-portal/raw/main/`;
-
-  // Set the href and trigger download
+    function setAdmitCardLink(username) {
   const link = document.getElementById("admitCardLink");
-  link.href = url;
-  link.download = `AdmitCard_${username}.pdf`;
 
-  return true;
-}
+  const attendance = parseFloat(studentData[username].attendance);
+  const fees = parseFloat(studentData[username].fees);
+
+  // Condition: Attendance must be >= 75 and Fees must be 0
+  if (attendance < 75) {
+    link.href = "#";
+    link.removeAttribute("download");
+    link.onclick = (e) => {
+      e.preventDefault();
+      alert("YOUR ATTENDANCE IS BELOW 75% YOU CAN'T SIT IN EXAM, CONTACT EXAMINATION DEPARTMENT.");
+    };
+  } else if (fees > 0) {
+    link.href = "#";
+    link.removeAttribute("download");
+    link.onclick = (e) => {
+      e.preventDefault();
+      alert("FEE DUES PENDING. PLEASE CLEAR YOUR DUES TO DOWNLOAD ADMIT CARD.");
+    };
+  } else {
+    const baseURL = "https://github.com/Kunal9608/admit-card-portal/raw/main/";
+    const fileName = `AdmitCard_${username}.pdf`;
+    link.href = baseURL + fileName;
+    link.setAttribute("download", fileName);
+    link.onclick = null;
+  }
+    }
 
   </script>
 
