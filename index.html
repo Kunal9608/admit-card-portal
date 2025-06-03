@@ -1,150 +1,119 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" >
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <title>Student & Admin Portal</title>
   <script src="https://cdn.tailwindcss.com"></script>
 </head>
-<body class="bg-white text-gray-800 min-h-screen flex items-center justify-center px-4 py-8">
+<body class="bg-gradient-to-br from-gray-100 to-blue-50 min-h-screen flex items-center justify-center px-4 py-8">
 
   <!-- Login Page -->
   <div id="loginPage" class="w-full max-w-md p-8 bg-white rounded-2xl shadow-lg">
-    <h2 class="text-3xl font-bold text-center text-red-700 mb-6">Login Portal</h2>
+    <h2 class="text-3xl font-bold text-center text-blue-700 mb-6">Login Portal</h2>
     <div class="mb-4">
       <label class="block text-gray-700 font-medium mb-1">Username</label>
-      <input
-        type="text"
-        id="username"
-        placeholder="Enter Username"
-        class="w-full p-3 border rounded-lg focus:outline-none focus:ring-2 focus:ring-red-400"
-      />
+      <input type="text" id="username" placeholder="Enter Username" class="w-full p-3 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-400"/>
     </div>
     <div class="mb-6">
       <label class="block text-gray-700 font-medium mb-1">Password</label>
-      <input
-        type="password"
-        id="password"
-        placeholder="Enter Password"
-        class="w-full p-3 border rounded-lg focus:outline-none focus:ring-2 focus:ring-red-400"
-      />
+      <input type="password" id="password" placeholder="Enter Password" class="w-full p-3 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-400"/>
     </div>
-    <button
-      onclick="login()"
-      class="w-full bg-red-600 hover:bg-red-700 text-white font-semibold py-2.5 rounded-lg transition duration-200"
-    >
-      Login
-    </button>
+    <button onclick="login()" class="w-full bg-blue-600 hover:bg-blue-700 text-white font-semibold py-2.5 rounded-lg transition duration-200">Login</button>
     <p id="errorMessage" class="text-red-600 mt-4 hidden text-center font-medium">Invalid credentials</p>
+  </div>
+
+  <!-- Payment Page -->
+  <div id="paymentPage" class="hidden w-full max-w-md p-6 bg-white rounded-xl shadow-xl">
+    <h2 class="text-xl font-bold text-gray-800 mb-4">Clear Dues</h2>
+
+    <!-- QR Code Display -->
+    <div class="mb-6 text-center">
+      <img id="paymentQrCode" src="" alt="Payment QR Code" class="mx-auto max-w-xs rounded-lg border p-2 bg-white shadow" />
+      <p id="qrMessage" class="text-gray-600 mt-2">Scan the QR code to pay your dues.</p>
+    </div>
+
+    <!-- Upload receipt and enter UTR -->
+    <div class="mb-4">
+      <label class="block font-medium text-gray-700 mb-1">Upload Payment Receipt</label>
+      <input type="file" id="paymentReceipt" class="w-full border p-2 rounded-lg" />
+    </div>
+    <div class="mb-4">
+      <label class="block font-medium text-gray-700 mb-1">Enter UTR Number</label>
+      <input type="text" id="utrInput" placeholder="Enter UTR" class="w-full border p-2 rounded-lg" />
+    </div>
+
+    <button onclick="submitPayment()" class="w-full bg-green-600 text-white py-2 rounded-lg font-semibold">Submit</button>
+    <button onclick="goBackToDashboard()" class="w-full mt-3 bg-gray-500 text-white py-2 rounded-lg font-semibold">Back to Dashboard</button>
   </div>
 
   <!-- Dashboard -->
   <div id="dashboard" class="hidden w-full max-w-5xl p-6 mx-auto">
     <div class="flex justify-between items-center mb-6">
       <h1 class="text-3xl font-bold text-gray-800">Dashboard</h1>
-      <button
-        onclick="logout()"
-        class="bg-red-600 hover:bg-red-700 text-white px-5 py-2 rounded-lg font-medium"
-      >
-        Logout
-      </button>
+      <button onclick="logout()" class="bg-red-600 hover:bg-red-700 text-white px-5 py-2 rounded-lg font-medium">Logout</button>
     </div>
 
     <!-- Admin Controls -->
-    <div
-      id="adminControls"
-      class="hidden mb-8 p-6 bg-red-50 border border-red-300 rounded-xl"
-    >
-      <h2 class="text-xl font-bold mb-4 text-red-800">Admin Panel</h2>
-      <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mb-4">
-        <select
-          id="studentSelector"
-          class="p-3 border rounded-lg bg-white text-gray-800"
-        ></select>
-        <input
-          type="text"
-          id="updateAttendance"
-          placeholder="Update Attendance (%)"
-          class="p-3 border rounded-lg"
-        />
-        <input
-          type="text"
-          id="updateFees"
-          placeholder="Update Fee Dues"
-          class="p-3 border rounded-lg"
-        />
-      </div>
-      <button
-        onclick="updateStudentData()"
-        class="bg-red-600 hover:bg-red-700 text-white px-5 py-2 rounded-lg font-semibold"
-      >
-        Update Student Info
-      </button>
+    <div id="adminControls" class="hidden mb-8 p-6 bg-yellow-50 border border-yellow-300 rounded-xl">
+      <h2 class="text-xl font-bold mb-4 text-yellow-800">Admin Panel</h2>
 
+      <!-- Student data update -->
+      <div class="grid grid-cols-1 md:grid-cols-3 gap-4 mb-4">
+        <select id="studentSelector" class="p-3 border rounded-lg bg-white text-gray-800"></select>
+        <input type="text" id="updateAttendance" placeholder="Update Attendance (%)" class="p-3 border rounded-lg"/>
+        <input type="text" id="updateFees" placeholder="Update Fee Dues" class="p-3 border rounded-lg"/>
+      </div>
+      <button onclick="updateStudentData()" class="bg-blue-600 hover:bg-blue-700 text-white px-5 py-2 rounded-lg font-semibold">Update Student Info</button>
+
+      <!-- Post Notice -->
       <div class="mt-6">
-        <input
-          type="text"
-          id="newNotice"
-          placeholder="Enter Notice for Students"
-          class="w-full p-3 border rounded-lg mb-2"
-        />
-        <button
-          onclick="postNotice()"
-          class="bg-green-600 hover:bg-green-700 text-white px-5 py-2 rounded-lg font-semibold"
-        >
-          Post Notice
-        </button>
+        <input type="text" id="newNotice" placeholder="Enter Notice for Students" class="w-full p-3 border rounded-lg mb-2"/>
+        <button onclick="postNotice()" class="bg-green-600 hover:bg-green-700 text-white px-5 py-2 rounded-lg font-semibold">Post Notice</button>
       </div>
 
-      <!-- Holiday modification -->
-      <div class="mt-8">
-        <h3 class="text-lg font-semibold text-red-800 mb-2">Modify Upcoming Holiday</h3>
-        <input
-          type="date"
-          id="holidayDateInput"
-          class="p-3 border rounded-lg mr-4"
-        />
-        <input
-          type="text"
-          id="holidayNameInput"
-          placeholder="Holiday Name"
-          class="p-3 border rounded-lg"
-        />
-        <button
-          onclick="updateHoliday()"
-          class="bg-red-600 hover:bg-red-700 text-white px-5 py-2 rounded-lg font-semibold ml-4"
-        >
-          Update Holiday
-        </button>
+      <!-- Payment QR Upload -->
+      <div class="mt-8 border-t pt-6">
+        <h3 class="text-lg font-semibold mb-2">Set / Update Payment QR Code</h3>
+        <input type="file" id="qrUploader" accept="image/*" class="mb-3" />
+        <br />
+        <img id="adminQrPreview" src="" alt="QR Code Preview" class="max-w-xs rounded-lg border p-2 bg-white shadow mb-4" />
+        <br />
+        <button onclick="uploadQrCode()" class="bg-indigo-600 hover:bg-indigo-700 text-white px-5 py-2 rounded-lg font-semibold">Upload QR Code</button>
+      </div>
+
+      <!-- Pending Payments Section -->
+      <div class="mt-8 p-4 bg-gray-100 rounded-lg">
+        <h3 class="text-xl font-semibold mb-2">Pending Payments</h3>
+        <div id="pendingPaymentsContainer" class="space-y-4 max-h-64 overflow-y-auto border p-3 bg-white rounded shadow-inner">
+          <!-- Pending payment entries will be added here dynamically -->
+        </div>
       </div>
     </div>
 
     <!-- Student Dashboard -->
     <div id="studentDashboard" class="hidden space-y-6">
+
       <div class="bg-white shadow rounded-xl p-6">
         <h3 class="text-lg font-semibold text-gray-700 mb-2">Sem 4 Attendance</h3>
-        <p id="attendanceDisplay" class="text-2xl font-bold text-red-700">--%</p>
+        <p id="attendanceDisplay" class="text-2xl font-bold text-blue-700">--%</p>
         <p class="text-sm text-gray-500 mt-2">*Based on credit papers only. Contact HoD for updates.</p>
       </div>
 
       <div class="bg-white shadow rounded-xl p-6">
         <h3 class="text-lg font-semibold text-gray-700 mb-2">Fee Dues</h3>
         <p id="feesDisplay" class="text-xl font-bold text-red-600">--</p>
+        <button id="clearDuesBtn" onclick="openPaymentPage()" class="mt-3 bg-indigo-600 hover:bg-indigo-700 text-white px-4 py-2 rounded-lg font-semibold hidden">Clear Dues</button>
       </div>
 
       <div class="bg-white shadow rounded-xl p-6">
         <h3 class="text-lg font-semibold text-gray-700 mb-2">Upcoming Holidays</h3>
-        <p id="upcomingHoliday" class="text-lg font-bold text-red-700"></p>
+        <p class="text-lg font-bold text-green-700" id="holidayDisplay">07-Jun-2025 - Bakrid</p>
       </div>
 
       <div class="bg-white shadow rounded-xl p-6 text-center">
         <h3 class="text-lg font-semibold text-gray-700 mb-4">Examination Registration</h3>
-        <a
-          id="admitCardLink"
-          href="#"
-          download
-          class="inline-block bg-red-600 hover:bg-red-700 text-white font-bold px-6 py-3 rounded-lg transition duration-200"
-        >
+        <a id="admitCardLink" href="#" download onclick="return validateAdmitCardDownload()" class="inline-block bg-indigo-600 hover:bg-indigo-700 text-white font-bold px-6 py-3 rounded-lg transition duration-200">
           Download Admit Card
         </a>
       </div>
@@ -160,90 +129,84 @@
   </div>
 
   <script>
+    // --- Data & Variables ---
+
     const users = {
       student: [
         { username: "KUNAL", password: "123" },
         { username: "AKSHAT", password: "123" },
-        { username: "OM", password: "123" },
+        { username: "OM", password: "123" }
       ],
       admin: [
         { username: "ADMIN", password: "admin123" },
-        { username: "ROHAN", password: "456" },
-      ],
+        { username: "ROHAN", password: "456" }
+      ]
     };
 
     const studentData = {
-      KUNAL: { attendance: "82.54", fees: "0" },
-      AKSHAT: { attendance: "78.12", fees: "500" },
-      OM: { attendance: "88.90", fees: "200" },
+      KUNAL: { attendance: 82.54, fees: 0 },
+      AKSHAT: { attendance: 78.12, fees: 500 },
+      OM: { attendance: 88.90, fees: 200 }
     };
 
-    // Default holiday info, can be updated by admin
-    let upcomingHoliday = {
-      date: "2025-06-07",
-      name: "Bakrid",
-    };
+    let notices = [];
 
-    const notices = [];
+    // Store payment QR Code as data URL or empty string initially
+    let paymentQrCodeDataUrl = "";
+
+    // Pending payments list
+    // Each pending payment: { student: string, receiptDataUrl: string, utr: string }
+    let pendingPayments = [];
 
     let currentUser = null;
     let currentRole = null;
 
+    // --- Login ---
+
     function login() {
-      const username = document
-        .getElementById("username")
-        .value.trim()
-        .toUpperCase();
-      const password = document.getElementById("password").value;
+      const usernameInput = document.getElementById("username");
+      const passwordInput = document.getElementById("password");
+      const username = usernameInput.value.trim().toUpperCase();
+      const password = passwordInput.value;
+
       const errorMessage = document.getElementById("errorMessage");
 
-      if (
-        users.student.some(
-          (u) => u.username === username && u.password === password
-        )
-      ) {
+      // Check student login
+      if (users.student.find(u => u.username === username && u.password === password)) {
         currentUser = username;
         currentRole = "student";
-      } else if (
-        users.admin.some((u) => u.username === username && u.password === password)
-      ) {
+      }
+      // Check admin login
+      else if (users.admin.find(u => u.username === username && u.password === password)) {
         currentUser = username;
         currentRole = "admin";
-      } else {
+      }
+      else {
         errorMessage.classList.remove("hidden");
         return;
       }
 
-      document.getElementById("loginPage").classList.add("hidden");
-      document.getElementById("dashboard").classList.remove("hidden");
+      // Clear error message
       errorMessage.classList.add("hidden");
 
-      document
-        .getElementById("adminControls")
-        .classList.toggle("hidden", currentRole !== "admin");
-      document
-        .getElementById("studentDashboard")
-        .classList.toggle("hidden", currentRole !== "student");
+      // Hide login page and show dashboard
+      document.getElementById("loginPage").classList.add("hidden");
+      document.getElementById("dashboard").classList.remove("hidden");
+      document.getElementById("paymentPage").classList.add("hidden");
+
+      // Show admin or student dashboard accordingly
+      document.getElementById("adminControls").classList.toggle("hidden", currentRole !== "admin");
+      document.getElementById("studentDashboard").classList.toggle("hidden", currentRole !== "student");
 
       if (currentRole === "student") {
-        document.getElementById("attendanceDisplay").textContent =
-          studentData[currentUser].attendance + "%";
-        document.getElementById("feesDisplay").textContent =
-          "Rs. " + studentData[currentUser].fees;
-        setAdmitCardLink(currentUser);
+        loadStudentDashboard();
+      } else if (currentRole === "admin") {
+        loadAdminPanel();
       }
 
-      // Show holiday info on student dashboard
-      updateHolidayDisplay();
-
-      populateStudentSelector();
-      renderNotices();
-
-      // If admin, pre-fill holiday inputs with current holiday info
-      if (currentRole === "admin") {
-        document.getElementById("holidayDateInput").value = upcomingHoliday.date;
-        document.getElementById("holidayNameInput").value = upcomingHoliday.name;
-      }
+      // Clear login inputs
+      usernameInput.value = "";
+      passwordInput.value = "";
     }
 
     function logout() {
@@ -251,128 +214,265 @@
       currentRole = null;
       document.getElementById("loginPage").classList.remove("hidden");
       document.getElementById("dashboard").classList.add("hidden");
-      document.getElementById("username").value = "";
-      document.getElementById("password").value = "";
+      document.getElementById("paymentPage").classList.add("hidden");
     }
 
-    function setAdmitCardLink(username) {
-  const link = document.getElementById("admitCardLink");
+    // --- Student Dashboard Load ---
+    function loadStudentDashboard() {
+      if (!currentUser || currentRole !== "student") return;
 
-  const attendance = parseFloat(studentData[username].attendance);
-  const fees = parseFloat(studentData[username].fees);
+      const attendance = studentData[currentUser].attendance;
+      const fees = studentData[currentUser].fees;
 
-  // Condition: Attendance must be >= 75 and Fees must be 0
-  if (attendance < 75) {
-    link.href = "#";
-    link.removeAttribute("download");
-    link.onclick = (e) => {
-      e.preventDefault();
-      alert("YOUR ATTENDANCE IS BELOW 75% YOU CAN'T SIT IN EXAM, CONTACT EXAMINATION DEPARTMENT.");
-    };
-  } else if (fees > 0) {
-    link.href = "#";
-    link.removeAttribute("download");
-    link.onclick = (e) => {
-      e.preventDefault();
-      alert("FEE DUES PENDING. PLEASE CLEAR YOUR DUES TO DOWNLOAD ADMIT CARD.");
-    };
-  } else {
-    const baseURL = "https://github.com/Kunal9608/admit-card-portal/raw/main/";
-    const fileName = `AdmitCard_${username}.pdf`;
-    link.href = baseURL + fileName;
-    link.setAttribute("download", fileName);
-    link.onclick = null;
-  }
-}
+      document.getElementById("attendanceDisplay").textContent = attendance.toFixed(2) + "%";
+      document.getElementById("feesDisplay").textContent = "Rs. " + fees.toFixed(2);
 
-    function populateStudentSelector() {
+      // Show Clear Dues button only if dues > 0
+      document.getElementById("clearDuesBtn").classList.toggle("hidden", fees <= 0);
+
+      setAdmitCardLink(currentUser);
+      renderNotices();
+    }
+
+    // --- Admin Panel Load ---
+    function loadAdminPanel() {
+      if (!currentUser || currentRole !== "admin") return;
+
+      // Populate student selector
       const selector = document.getElementById("studentSelector");
       selector.innerHTML = "";
-      for (let student in studentData) {
-        const opt = document.createElement("option");
-        opt.value = student;
-        opt.textContent = student;
-        selector.appendChild(opt);
-      }
-    }
-
-    function updateStudentData() {
-      const student = document.getElementById("studentSelector").value;
-      const attendance = document.getElementById("updateAttendance").value;
-      const fees = document.getElementById("updateFees").value;
-
-      if (attendance) studentData[student].attendance = attendance;
-      if (fees) studentData[student].fees = fees;
-
-      if (currentUser === student) {
-        document.getElementById("attendanceDisplay").textContent =
-          studentData[student].attendance + "%";
-        document.getElementById("feesDisplay").textContent =
-          "Rs. " + studentData[student].fees;
-      }
-
-      document.getElementById("updateAttendance").value = "";
-      document.getElementById("updateFees").value = "";
-    }
-
-    function postNotice() {
-      const newNotice = document.getElementById("newNotice").value.trim();
-      if (!newNotice) return;
-
-      const today = new Date();
-      const formattedDate = today.toLocaleDateString("en-GB");
-
-      notices.unshift({
-        date: formattedDate,
-        user: currentUser,
-        text: newNotice,
+      Object.keys(studentData).forEach(student => {
+        const option = document.createElement("option");
+        option.value = student;
+        option.textContent = student;
+        selector.appendChild(option);
       });
+
+      // Show uploaded QR code if any
+      const adminQrPreview = document.getElementById("adminQrPreview");
+      adminQrPreview.src = paymentQrCodeDataUrl || "";
+
+      // Load pending payments
+      renderPendingPayments();
 
       renderNotices();
-      document.getElementById("newNotice").value = "";
     }
 
+    // --- Update student data (admin) ---
+    function updateStudentData() {
+      const selector = document.getElementById("studentSelector");
+      const attendanceInput = document.getElementById("updateAttendance");
+      const feesInput = document.getElementById("updateFees");
+
+      const student = selector.value;
+      const attendanceVal = attendanceInput.value.trim();
+      const feesVal = feesInput.value.trim();
+
+      if (attendanceVal !== "") {
+        const attNum = parseFloat(attendanceVal);
+        if (isNaN(attNum) || attNum < 0 || attNum > 100) {
+          alert("Please enter valid attendance % (0-100).");
+          return;
+        }
+        studentData[student].attendance = attNum;
+      }
+      if (feesVal !== "") {
+        const feesNum = parseFloat(feesVal);
+        if (isNaN(feesNum) || feesNum < 0) {
+          alert("Please enter valid fees dues (>=0).");
+          return;
+        }
+        studentData[student].fees = feesNum;
+      }
+
+      alert("Student data updated.");
+
+      // Refresh dashboard if current user is updated student
+      if (currentRole === "student" && currentUser === student) {
+        loadStudentDashboard();
+      }
+
+      // Clear input fields
+      attendanceInput.value = "";
+      feesInput.value = "";
+    }
+
+    // --- Post new notice (admin) ---
+    function postNotice() {
+      const noticeInput = document.getElementById("newNotice");
+      const noticeText = noticeInput.value.trim();
+      if (noticeText === "") {
+        alert("Please enter a notice.");
+        return;
+      }
+      notices.push(noticeText);
+      noticeInput.value = "";
+      renderNotices();
+    }
+
+    // --- Render notices for both admin & student ---
     function renderNotices() {
-      const list = document.getElementById("notices");
-      list.innerHTML = "";
-      notices.forEach((n) => {
+      const ul = document.getElementById("notices");
+      ul.innerHTML = "";
+      if (notices.length === 0) {
+        ul.innerHTML = "<li class='text-gray-500 italic'>No notices posted yet.</li>";
+        return;
+      }
+      notices.forEach(notice => {
         const li = document.createElement("li");
-        li.className = `border-l-4 pl-4 border-red-600`;
-        li.innerHTML = `
-          <p class="text-sm text-gray-500">[${n.date}]</p>
-          <p class="text-red-600 font-semibold">ADMIN NOTICE (${n.user}): ${n.text}</p>
-        `;
-        list.appendChild(li);
+        li.className = "border-l-4 border-blue-500 pl-4 text-gray-800";
+        li.textContent = notice;
+        ul.appendChild(li);
       });
     }
 
-    function updateHoliday() {
-      const dateInput = document.getElementById("holidayDateInput").value;
-      const nameInput = document.getElementById("holidayNameInput").value.trim();
+    // --- Payment QR Code Upload (admin) ---
+    function uploadQrCode() {
+      const fileInput = document.getElementById("qrUploader");
+      const file = fileInput.files[0];
+      if (!file) {
+        alert("Please select an image file.");
+        return;
+      }
+      const reader = new FileReader();
+      reader.onload = function (e) {
+        paymentQrCodeDataUrl = e.target.result;
+        document.getElementById("adminQrPreview").src = paymentQrCodeDataUrl;
+        alert("QR Code uploaded successfully.");
+      };
+      reader.readAsDataURL(file);
+    }
 
-      if (!dateInput || !nameInput) {
-        alert("Please enter both date and holiday name.");
+    // --- Open payment page from student dashboard ---
+    function openPaymentPage() {
+      document.getElementById("dashboard").classList.add("hidden");
+      document.getElementById("paymentPage").classList.remove("hidden");
+
+      // Set QR code image src for payment
+      const qrImg = document.getElementById("paymentQrCode");
+      if (paymentQrCodeDataUrl) {
+        qrImg.src = paymentQrCodeDataUrl;
+      } else {
+        qrImg.src = "";
+        document.getElementById("qrMessage").textContent = "Payment QR code not available. Please contact admin.";
+      }
+
+      // Clear receipt and UTR inputs
+      document.getElementById("paymentReceipt").value = "";
+      document.getElementById("utrInput").value = "";
+    }
+
+    // --- Go back to dashboard from payment page ---
+    function goBackToDashboard() {
+      document.getElementById("paymentPage").classList.add("hidden");
+      document.getElementById("dashboard").classList.remove("hidden");
+    }
+
+    // --- Submit payment receipt and UTR (student) ---
+    function submitPayment() {
+      const receiptInput = document.getElementById("paymentReceipt");
+      const utrInput = document.getElementById("utrInput");
+
+      if (receiptInput.files.length === 0) {
+        alert("Please upload your payment receipt.");
         return;
       }
 
-      upcomingHoliday.date = dateInput;
-      upcomingHoliday.name = nameInput;
+      const utr = utrInput.value.trim();
+      if (!utr) {
+        alert("Please enter your payment UTR number.");
+        return;
+      }
 
-      updateHolidayDisplay();
-      alert("Upcoming holiday updated successfully!");
+      const file = receiptInput.files[0];
+      const reader = new FileReader();
+      reader.onload = function (e) {
+        // Save pending payment entry
+        pendingPayments.push({
+          student: currentUser,
+          receiptDataUrl: e.target.result,
+          utr: utr
+        });
+
+        alert("KINDLY WAIT FOR CONFIRMATION BY ADMIN");
+        goBackToDashboard();
+      };
+      reader.readAsDataURL(file);
     }
 
-    function updateHolidayDisplay() {
-      const holidayElement = document.getElementById("upcomingHoliday");
-      if (upcomingHoliday.date && upcomingHoliday.name) {
-        const dateObj = new Date(upcomingHoliday.date);
-        const options = { day: "2-digit", month: "short", year: "numeric" };
-        const formattedDate = dateObj.toLocaleDateString("en-GB", options);
-        holidayElement.textContent = `${formattedDate} - ${upcomingHoliday.name}`;
-      } else {
-        holidayElement.textContent = "No upcoming holidays.";
+    // --- Render pending payments (admin) ---
+    function renderPendingPayments() {
+      const container = document.getElementById("pendingPaymentsContainer");
+      container.innerHTML = "";
+
+      if (pendingPayments.length === 0) {
+        container.innerHTML = "<p class='text-gray-500 italic'>No pending payments.</p>";
+        return;
+      }
+
+      pendingPayments.forEach((payment, index) => {
+        const div = document.createElement("div");
+        div.className = "border rounded-lg p-3 bg-white shadow";
+
+        div.innerHTML = `
+          <p class="font-semibold mb-2">Student: ${payment.student}</p>
+          <p class="mb-2">UTR: <span class="font-mono">${payment.utr}</span></p>
+          <img src="${payment.receiptDataUrl}" alt="Payment Receipt" class="max-w-xs rounded-lg border mb-2"/>
+          <button onclick="confirmPayment(${index})" class="bg-green-600 hover:bg-green-700 text-white px-4 py-1 rounded font-semibold">Confirm Payment</button>
+        `;
+
+        container.appendChild(div);
+      });
+    }
+
+    // --- Confirm payment (admin) ---
+    function confirmPayment(index) {
+      const payment = pendingPayments[index];
+      if (!payment) return;
+
+      // Clear dues for student
+      if (studentData[payment.student]) {
+        studentData[payment.student].fees = 0;
+      }
+
+      // Remove from pending
+      pendingPayments.splice(index, 1);
+
+      alert(`Payment confirmed for ${payment.student}. Dues cleared.`);
+
+      // Refresh admin panel and student dashboard if needed
+      if (currentRole === "admin") {
+        renderPendingPayments();
+      }
+      if (currentRole === "student" && currentUser === payment.student) {
+        loadStudentDashboard();
       }
     }
+
+    // --- Admit Card download validation ---
+    function validateAdmitCardDownload() {
+      if (currentRole !== "student") return false;
+      const attendance = studentData[currentUser].attendance;
+      if (attendance < 75) {
+        alert("SORRY NOT ALLOWED FOR EXAM due to attendance below 75%");
+        return false;
+      }
+      // Allowed to download
+      return true;
+    }
+
+    // --- Admit card link setup ---
+    function setAdmitCardLink(user) {
+      const link = document.getElementById("admitCardLink");
+      // For demo, download dummy admit card text file
+      const admitCardContent = `Admit Card\n\nName: ${user}\nAttendance: ${studentData[user].attendance.toFixed(2)}%\nStatus: Allowed for Exam`;
+      const blob = new Blob([admitCardContent], { type: "text/plain" });
+      const url = URL.createObjectURL(blob);
+      link.href = url;
+      link.download = `${user}_AdmitCard.txt`;
+    }
+
   </script>
+
 </body>
 </html>
