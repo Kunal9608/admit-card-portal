@@ -1,458 +1,52 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>Student Portal</title>
-  <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet" />
-  <style>
-    #dashboard { display: none; }
-    .fade-in { animation: fadeIn 1s ease-in-out; }
-    @keyframes fadeIn {
-      from { opacity: 0; transform: translateY(20px); }
-      to { opacity: 1; transform: translateY(0); }
-    }
-  </style>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Student & Admin Dashboard</title>
+<link rel="stylesheet" href="style.css" />
 </head>
-<body class="bg-gradient-to-br from-gray-100 to-blue-200 min-h-screen">
+<body>
 
-  <!-- Login Section -->
-  <div id="login" class="flex items-center justify-center min-h-screen px-4">
-    <div class="bg-white p-10 rounded-xl shadow-xl w-full max-w-md fade-in">
-      <h2 class="text-3xl font-bold text-center text-blue-700 mb-4">👋 Welcome Back</h2>
-      <p class="text-center text-sm text-gray-500 mb-6">Login to access your student dashboard</p>
-      <form onsubmit="handleLogin(event)" class="space-y-5">
-        <div>
-          <label class="block text-sm font-medium text-gray-600 mb-1">Username</label>
-          <input id="username" type="text" required placeholder="e.g., KUNAL"
-            class="w-full px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-400" />
-        </div>
-        <div>
-          <label class="block text-sm font-medium text-gray-600 mb-1">Password</label>
-          <input id="password" type="password" required placeholder="e.g., 123"
-            class="w-full px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-400" />
-        </div>
-        <div class="text-right">
-          <a href="#" onclick="forgotPassword()" class="text-sm text-blue-600 hover:underline">Forgot password?</a>
-        </div>
-        <button type="submit"
-          class="w-full py-2 bg-blue-600 hover:bg-blue-700 text-white font-semibold rounded-md shadow">
-          Login
-        </button>
-      </form>
+<div id="login">
+  <h2>Login</h2>
+  <input type="text" id="username" placeholder="Username" autocomplete="off" /><br /><br />
+  <input type="password" id="password" placeholder="Password" autocomplete="off" /><br /><br />
+  <button id="loginBtn">Login</button>
+</div>
+
+<div id="dashboard" style="display:none;">
+  <h2>Welcome, <span id="userDisplay"></span></h2>
+  
+  <div class="menu-container">
+    <span id="menuToggle">⋮</span>
+    <div id="menuDropdown" class="dropdown-hidden">
+      <div id="clearDuesBtn">Clear Dues</div>
+      <div id="makePaymentBtn">Make Payment</div>
+      <div id="receiptBtn">Receipt of Payment</div>
     </div>
   </div>
 
-  <!-- Dashboard Section -->
-  <div id="dashboard" class="fade-in">
-
-    <header class="bg-blue-700 text-white p-4 flex justify-between items-center shadow relative">
-      <h1 class="text-xl font-bold">Student Dashboard</h1>
-      <div class="relative">
-        <button onclick="toggleMenu()" class="text-xl px-2 hover:bg-blue-600 rounded">⋮</button>
-        <div id="menuDropdown" class="hidden absolute right-0 mt-2 w-48 bg-white rounded shadow-lg text-gray-800 z-50">
-          <button onclick="showPaymentPage()" class="block w-full text-left px-4 py-2 hover:bg-gray-100">💳 Make Payment</button>
-          <button onclick="showReceipt()" class="block w-full text-left px-4 py-2 hover:bg-gray-100">📄 Receipt</button>
-          <button onclick="clearDue()" class="block w-full text-left px-4 py-2 hover:bg-gray-100">❌ Clear Dues</button>
-        </div>
-      </div>
-      <button onclick="handleLogout()" class="text-sm bg-blue-600 hover:bg-blue-700 px-3 py-1 rounded">Logout</button>
-    </header>
-
-    <div id="studentWarning" class="bg-red-100 text-red-700 text-center text-sm py-2 font-medium">
-      ⚠️ Students must maintain a minimum of 50% attendance.
-    </div>
-
-    <main id="studentMain" class="p-6 grid gap-6 md:grid-cols-2 xl:grid-cols-3" style="display:none;">
-      <div class="bg-white p-5 rounded-lg shadow hover:shadow-md transition">
-        <h2 class="text-lg font-semibold text-gray-800">📊 Sem 4 Attendance</h2>
-        <p id="attendanceValue" class="text-3xl text-blue-600 font-bold mt-2">--%</p>
-        <p class="text-sm text-gray-500 mt-1">* Credit papers only. For accurate info, contact HoD.</p>
-      </div>
-
-      <div class="bg-white p-5 rounded-lg shadow hover:shadow-md transition">
-        <h2 class="text-lg font-semibold text-gray-800">💰 Fee Dues</h2>
-        <p id="feeValue" class="text-3xl text-green-600 font-bold mt-2">Rs. --</p>
-      </div>
-
-      <div class="bg-white p-5 rounded-lg shadow hover:shadow-md transition">
-        <h2 class="text-lg font-semibold text-gray-800">🎉 Upcoming Holiday</h2>
-        <p class="text-md mt-2">07-Jun-2025 (Bakrid)</p>
-        <a id="downloadLink" class="inline-block mt-4 bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700" href="#">
-          Download Admit Card
-        </a>
-      </div>
-
-      <div class="col-span-full">
-        <h2 class="text-lg font-bold mb-3 text-gray-700">📢 Important Notices</h2>
-        <div id="notices" class="bg-white rounded-lg shadow divide-y divide-gray-200"></div>
-      </div>
-    </main>
-
-    <main id="adminMain" class="p-6" style="display:none; max-width: 600px;">
-      <h2 class="text-xl font-bold mb-4 text-gray-800">Admin Panel</h2>
-      <div class="mb-4">
-        <label for="studentSelect" class="block font-medium mb-1">Select Student to Modify:</label>
-        <select id="studentSelect" class="w-full px-4 py-2 border rounded">
-          <!-- Options populated by JS -->
-        </select>
-      </div>
-      <div class="mb-4">
-        <label for="attendanceInput" class="block font-medium mb-1">Attendance (%)</label>
-        <input id="attendanceInput" type="number" min="0" max="100" class="w-full px-4 py-2 border rounded" />
-      </div>
-      <div class="mb-4">
-        <label for="feeInput" class="block font-medium mb-1">Fee Due (₹)</label>
-        <input id="feeInput" type="number" min="0" step="0.01" class="w-full px-4 py-2 border rounded" />
-      </div>
-      <button onclick="saveStudentData()" class="bg-green-600 hover:bg-green-700 text-white font-semibold px-6 py-2 rounded shadow">
-        Save
-      </button>
-
-      <div class="mt-8">
-        <h3 class="text-lg font-semibold mb-2">Add New Notice</h3>
-        <textarea id="noticeText" rows="3" class="w-full px-4 py-2 border rounded" placeholder="Type notice here..."></textarea>
-        <button onclick="addNotice()" class="mt-2 bg-blue-600 hover:bg-blue-700 text-white font-semibold px-6 py-2 rounded shadow">
-          Add Notice
-        </button>
-      </div>
-
-      <div class="mt-8">
-        <h3 class="text-lg font-semibold mb-3">Important Notices</h3>
-        <div id="noticesAdmin" class="bg-white rounded-lg shadow divide-y divide-gray-200 max-h-64 overflow-y-auto"></div>
-      </div>
-    </main>
-
-    <!-- New Make Payment Section -->
-    <main id="paymentMain" class="p-6 max-w-xl mx-auto hidden bg-white rounded-lg shadow mt-6">
-      <h2 class="text-xl font-bold mb-4 text-gray-800">💳 Make Payment</h2>
-      <p class="mb-4 text-sm text-gray-600">Enter the amount to pay your dues.</p>
-      <div class="mb-4">
-        <label for="paymentAmount" class="block font-medium mb-1">Amount (₹)</label>
-        <input id="paymentAmount" type="number" min="1" step="0.01" class="w-full px-4 py-2 border rounded" placeholder="Enter amount to pay" />
-      </div>
-      <button onclick="processPayment()" class="bg-blue-600 hover:bg-blue-700 text-white font-semibold px-6 py-2 rounded shadow">
-        Pay Now
-      </button>
-      <button onclick="cancelPayment()" class="ml-4 bg-gray-400 hover:bg-gray-500 text-white font-semibold px-6 py-2 rounded shadow">
-        Cancel
-      </button>
-    </main>
-
-    <!-- New Receipt Section -->
-    <main id="receiptMain" class="p-6 max-w-xl mx-auto hidden bg-white rounded-lg shadow mt-6">
-      <h2 class="text-xl font-bold mb-4 text-gray-800">📄 Payment Receipt</h2>
-      <div id="receiptContent" class="text-gray-700 text-sm border p-4 rounded"></div>
-      <button onclick="closeReceipt()" class="mt-4 bg-gray-600 hover:bg-gray-700 text-white font-semibold px-6 py-2 rounded shadow">
-        Close
-      </button>
-    </main>
-
-    <footer class="text-center text-xs text-gray-500 py-4 border-t mt-12">
-      &copy; 2025 Student Portal. All rights reserved.
-    </footer>
+  <div id="studentMain">
+    <h3>Your Attendance & Fee Dues</h3>
+    <p>Attendance: <span id="attendanceValue">--</span>%</p>
+    <p>Fee Dues: Rs. <span id="feeValue">--</span></p>
   </div>
 
-  <script>
-    // Default data for users (students and admins)
-    const defaultUsers = {
-      "KUNAL": { password: "123", attendance: 82.54, feeDue: 0 },
-      "OM": { password: "123", attendance: 75.20, feeDue: 1000 },
-      "AKSHAT": { password: "123", attendance: 88.90, feeDue: 500 },
-      "ADMIN": { password: "456" },
-      "ROHAN": { password: "789" }
-    };
+  <div id="paymentPage" style="display:none;">
+    <h3>Make Payment</h3>
+    <input type="number" id="paymentAmount" min="1" placeholder="Amount to pay" />
+    <button id="payBtn">Pay</button>
+    <button id="cancelPaymentBtn">Cancel</button>
+  </div>
 
-    const defaultNotices = [
-      { date: "28/05/2025", text: "Regarding Summer Camp-2025" },
-      { date: "28/05/2025", text: "Summer Internship Programme at SBU" },
-      { date: "27/05/2025", text: "Results – Rejoice Reel Making Competition" },
-      { date: "22/05/2025", text: "Attendance & Knowledge Enhancement Classes" },
-      { date: "21/05/2025", text: "Summer Semester Classes & Examinations" }
-    ];
+  <div id="receiptPage" style="display:none;">
+    <h3>Payment Receipt</h3>
+    <p id="receiptText">No recent payments.</p>
+    <button id="closeReceiptBtn">Close</button>
+  </div>
+</div>
 
-    // Load from localStorage or use defaults
-    let users = JSON.parse(localStorage.getItem('users')) || defaultUsers;
-    let notices = JSON.parse(localStorage.getItem('notices')) || defaultNotices;
-
-    let loggedInUser = "";
-    let isAdmin = false;
-
-    // For receipt info
-    let lastPayment = null;
-
-    function handleLogin(event){
-      event.preventDefault();
-      const usernameInput = document.getElementById('username').value.trim().toUpperCase();
-      const passwordInput = document.getElementById('password').value.trim();
-
-      if(users[usernameInput] && users[usernameInput].password === passwordInput){
-        loggedInUser = usernameInput;
-        isAdmin = (usernameInput === "ADMIN" || usernameInput === "ROHAN");
-        document.getElementById('login').style.display = 'none';
-        document.getElementById('dashboard').style.display = 'block';
-
-        personalizeWelcome(loggedInUser);
-        loadNotices();
-        loadNoticesAdmin();
-        if(isAdmin){
-          showAdminPanel();
-        } else {
-          showStudentPanel(loggedInUser);
-        }
-      } else {
-        alert("❌ Invalid username or password.");
-      }
-    }
-
-    function forgotPassword(){
-      alert("📩 Please contact admin or visit helpdesk to reset yourpassword.");
-    }
-
-    function personalizeWelcome(user){
-      if(!isAdmin){
-        document.getElementById('attendanceValue').textContent = users[user].attendance.toFixed(2) + '%';
-        document.getElementById('feeValue').textContent = "Rs. " + users[user].feeDue.toFixed(2);
-        document.getElementById('studentMain').style.display = 'grid';
-        document.getElementById('adminMain').style.display = 'none';
-      }
-    }
-
-    function loadNotices(){
-      const container = document.getElementById('notices');
-      container.innerHTML = '';
-      notices.forEach(n => {
-        const div = document.createElement('div');
-        div.className = "p-3";
-        div.innerHTML = `<strong>${n.date}</strong> - ${n.text}`;
-        container.appendChild(div);
-      });
-    }
-
-    function loadNoticesAdmin(){
-      const container = document.getElementById('noticesAdmin');
-      container.innerHTML = '';
-      notices.forEach((n, i) => {
-        const div = document.createElement('div');
-        div.className = "p-3 flex justify-between items-center";
-        div.innerHTML = `
-          <span><strong>${n.date}</strong> - ${n.text}</span>
-          <button onclick="deleteNotice(${i})" class="text-red-600 hover:text-red-800">Delete</button>
-        `;
-        container.appendChild(div);
-      });
-    }
-
-    function showAdminPanel(){
-      document.getElementById('studentMain').style.display = 'none';
-      document.getElementById('adminMain').style.display = 'block';
-      populateStudentSelect();
-    }
-
-    function populateStudentSelect(){
-      const select = document.getElementById('studentSelect');
-      select.innerHTML = '';
-      for(let user in users){
-        if(user !== 'ADMIN' && user !== 'ROHAN') {
-          const option = document.createElement('option');
-          option.value = user;
-          option.textContent = user;
-          select.appendChild(option);
-        }
-      }
-      select.onchange = () => {
-        const selected = select.value;
-        if(users[selected]){
-          document.getElementById('attendanceInput').value = users[selected].attendance.toFixed(2);
-          document.getElementById('feeInput').value = users[selected].feeDue.toFixed(2);
-        }
-      };
-      select.onchange();
-    }
-
-    function saveStudentData(){
-      const selected = document.getElementById('studentSelect').value;
-      const att = parseFloat(document.getElementById('attendanceInput').value);
-      const fee = parseFloat(document.getElementById('feeInput').value);
-
-      if(selected && !isNaN(att) && !isNaN(fee)){
-        users[selected].attendance = att;
-        users[selected].feeDue = fee;
-        localStorage.setItem('users', JSON.stringify(users));
-        alert('✅ Student data saved.');
-
-        if(selected === loggedInUser){
-          personalizeWelcome(loggedInUser);
-        }
-      } else {
-        alert('⚠️ Please enter valid attendance and fee values.');
-      }
-    }
-
-    function addNotice(){
-      const noticeText = document.getElementById('noticeText').value.trim();
-      if(noticeText.length === 0){
-        alert('⚠️ Notice text cannot be empty.');
-        return;
-      }
-      const today = new Date();
-      const dateStr = today.getDate().toString().padStart(2,'0') + '/' +
-                      (today.getMonth()+1).toString().padStart(2,'0') + '/' +
-                      today.getFullYear();
-
-      notices.unshift({ date: dateStr, text: noticeText });
-      localStorage.setItem('notices', JSON.stringify(notices));
-      loadNoticesAdmin();
-      loadNotices();
-      document.getElementById('noticeText').value = '';
-      alert('✅ Notice added.');
-    }
-
-    function deleteNotice(index){
-      if(confirm('Are you sure you want to delete this notice?')){
-        notices.splice(index, 1);
-        localStorage.setItem('notices', JSON.stringify(notices));
-        loadNoticesAdmin();
-        loadNotices();
-      }
-    }
-
-    function handleLogout(){
-      if(confirm("Do you want to logout?")){
-        loggedInUser = "";
-        isAdmin = false;
-        document.getElementById('dashboard').style.display = 'none';
-        document.getElementById('login').style.display = 'flex';
-        hideAllMainSections();
-      }
-    }
-
-    // 3-dot menu toggle
-    function toggleMenu(){
-      const menu = document.getElementById('menuDropdown');
-      if(menu.classList.contains('hidden')){
-        menu.classList.remove('hidden');
-        // Close dropdown if clicked outside
-        document.addEventListener('click', outsideClickListener);
-      } else {
-        menu.classList.add('hidden');
-        document.removeEventListener('click', outsideClickListener);
-      }
-    }
-    function outsideClickListener(event){
-      const menu = document.getElementById('menuDropdown');
-      if(!menu.contains(event.target) && event.target.innerText !== '⋮'){
-        menu.classList.add('hidden');
-        document.removeEventListener('click', outsideClickListener);
-      }
-    }
-
-    // Show Make Payment UI
-    function showPaymentPage(){
-      hideAllMainSections();
-      document.getElementById('paymentMain').style.display = 'block';
-      document.getElementById('menuDropdown').classList.add('hidden');
-    }
-
-    // Show Receipt UI
-    function showReceipt(){
-      hideAllMainSections();
-      document.getElementById('menuDropdown').classList.add('hidden');
-      const receipt = document.getElementById('receiptMain');
-      const content = document.getElementById('receiptContent');
-      if(lastPayment){
-        content.innerHTML = `
-          <p><strong>Student:</strong> ${loggedInUser}</p>
-          <p><strong>Amount Paid:</strong> Rs. ${lastPayment.amount.toFixed(2)}</p>
-          <p><strong>Date:</strong> ${lastPayment.date}</p>
-          <p><strong>Transaction ID:</strong> ${lastPayment.txnId}</p>
-        `;
-      } else {
-        content.innerHTML = '<p>No payment record found.</p>';
-      }
-      receipt.style.display = 'block';
-    }
-
-    // Process payment (dummy function)
-    function processPayment(){
-      const amountInput = document.getElementById('paymentAmount');
-      const amount = parseFloat(amountInput.value);
-      if(isNaN(amount) || amount <= 0){
-        alert('⚠️ Please enter a valid payment amount.');
-        return;
-      }
-
-      if(users[loggedInUser].feeDue <= 0){
-        alert('🎉 You have no dues to pay.');
-        cancelPayment();
-        return;
-      }
-
-      if(amount > users[loggedInUser].feeDue){
-        alert('⚠️ Payment cannot exceed your fee dues.');
-        return;
-      }
-
-      // Deduct dues
-      users[loggedInUser].feeDue -= amount;
-      if(users[loggedInUser].feeDue < 0) users[loggedInUser].feeDue = 0;
-      localStorage.setItem('users', JSON.stringify(users));
-      personalizeWelcome(loggedInUser);
-
-      // Save last payment info for receipt
-      const now = new Date();
-      lastPayment = {
-        amount: amount,
-        date: now.toLocaleString(),
-        txnId: 'TXN' + Math.floor(Math.random()*1000000)
-      };
-
-      alert('✅ Payment successful!');
-
-      amountInput.value = '';
-      cancelPayment();
-      showReceipt();
-    }
-
-    function cancelPayment(){
-      document.getElementById('paymentMain').style.display = 'none';
-      if(isAdmin){
-        showAdminPanel();
-      } else {
-        document.getElementById('studentMain').style.display = 'grid';
-      }
-    }
-
-    function closeReceipt(){
-      document.getElementById('receiptMain').style.display = 'none';
-      if(isAdmin){
-        showAdminPanel();
-      } else {
-        document.getElementById('studentMain').style.display = 'grid';
-      }
-    }
-
-    // Clear dues function triggered from menu
-    function clearDue(){
-      if(confirm('Are you sure you want to clear all your fee dues?')){
-        if(users[loggedInUser]){
-          users[loggedInUser].feeDue = 0;
-          localStorage.setItem('users', JSON.stringify(users));
-          personalizeWelcome(loggedInUser);
-          alert('✅ Your dues have been cleared.');
-        }
-      }
-      document.getElementById('menuDropdown').classList.add('hidden');
-    }
-
-    function hideAllMainSections(){
-      document.getElementById('studentMain').style.display = 'none';
-      document.getElementById('adminMain').style.display = 'none';
-      document.getElementById('paymentMain').style.display = 'none';
-      document.getElementById('receiptMain').style.display = 'none';
-    }
-
-  </script>
-
+<script src="script.js"></script>
 </body>
 </html>
