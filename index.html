@@ -1,91 +1,108 @@
 <!DOCTYPE html>
 <html lang="en" >
 <head>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css"/>
+<script>tailwind.config = { darkMode: 'class' }</script>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <title>Student & Admin Portal</title>
   <script src="https://cdn.tailwindcss.com"></script>
 </head>
-<body class="bg-gradient-to-br from-gray-100 to-blue-50 min-h-screen flex items-center justify-center px-4 py-8">
+<body 
+  class="bg-gradient-to-b from-slate-900 to-gray-900 text-white flex items-center justify-center min-h-screen px-4 py-8 from-gray-900 to-gray-800 text-gray-800 text-gray-100 text-gray-100" class="bg-gradient-to-b from-slate-900 to-gray-900 text-white flex items-center justify-center min-h-screen px-4 py-8 min-h-screen flex items-center justify-center px-4 py-8">
 
   <!-- Login Page -->
-  <div id="loginPage" class="w-full max-w-md p-8 bg-white rounded-2xl shadow-lg">
+  
+<button onclick="// removed dark toggle" class="hidden">
+  Toggle Theme
+</button>
+
+<div id="loginPage" class="w-full max-w-md mx-auto p-8 bg-gradient-to-r from-pink-500 to-red-400 text-white bg-gray-900 rounded-2xl shadow-lg">
     <h2 class="text-3xl font-bold text-center text-blue-700 mb-6">Login Portal</h2>
     <div class="mb-4">
-      <label class="block text-gray-700 font-medium mb-1">Username</label>
-      <input type="text" id="username" placeholder="Enter Username" class="w-full p-3 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-400"/>
+      <label class="block text-gray-700 text-gray-200 font-medium mb-1">Username</label>
+      <input type="text" id="username" placeholder="Enter Username" class="w-full p-3 border border-gray-600 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-400"/>
     </div>
     <div class="mb-6">
-      <label class="block text-gray-700 font-medium mb-1">Password</label>
-      <input type="password" id="password" placeholder="Enter Password" class="w-full p-3 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-400"/>
+      <label class="block text-gray-700 text-gray-200 font-medium mb-1">Password</label>
+      <input type="password" id="password" placeholder="Enter Password" class="w-full p-3 border border-gray-600 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-400"/>
     </div>
-    <button onclick="login()" class="w-full bg-blue-600 hover:bg-blue-700 text-white font-semibold py-2.5 rounded-lg transition duration-200">Login</button>
+    <button onclick="login()" class="w-full bg-blue-500 hover:bg-gradient-to-r from-sky-400 to-blue-600 text-white hover:bg-blue-700 text-white font-semibold py-2.5 rounded-lg transition duration-200">Login</button>
     <p id="errorMessage" class="text-red-600 mt-4 hidden text-center font-medium">Invalid credentials</p>
   </div>
 
   <!-- Payment Page -->
-  <div id="paymentPage" class="hidden w-full max-w-md p-6 bg-white rounded-xl shadow-xl">
-    <h2 class="text-xl font-bold text-gray-800 mb-4">Clear Dues</h2>
+  <div id="paymentPage" class="hidden w-full max-w-md p-6 bg-gradient-to-r from-pink-500 to-red-400 text-white bg-gray-900 rounded-xl shadow-xl">
+    <h2 class="text-xl font-bold text-gray-800 text-gray-100 mb-4">Clear Dues</h2>
 
     <!-- QR Code Display -->
     <div class="mb-6 text-center">
-      <img id="paymentQrCode" src="" alt="Payment QR Code" class="mx-auto max-w-xs rounded-lg border p-2 bg-white shadow" />
+      <img id="paymentQrCode" src="" alt="Payment QR Code" class="mx-auto max-w-xs rounded-lg border border-gray-600 p-2 bg-gradient-to-r from-pink-500 to-red-400 text-white bg-gray-900 shadow" />
       <p id="qrMessage" class="text-gray-600 mt-2">Scan the QR code to pay your dues.</p>
     </div>
 
     <!-- Upload receipt and enter UTR -->
     <div class="mb-4">
-      <label class="block font-medium text-gray-700 mb-1">Upload Payment Receipt</label>
-      <input type="file" id="paymentReceipt" class="w-full border p-2 rounded-lg" />
+      <label class="block font-medium text-gray-700 text-gray-200 mb-1">Upload Payment Receipt</label>
+      <input type="file" id="paymentReceipt" class="w-full border border-gray-600 p-2 rounded-lg" />
     </div>
     <div class="mb-4">
-      <label class="block font-medium text-gray-700 mb-1">Enter UTR Number</label>
-      <input type="text" id="utrInput" placeholder="Enter UTR" class="w-full border p-2 rounded-lg" />
+      <label class="block font-medium text-gray-700 text-gray-200 mb-1">Enter UTR Number</label>
+      <input type="text" id="utrInput" placeholder="Enter UTR" class="w-full border border-gray-600 p-2 rounded-lg" />
     </div>
 
-    <button onclick="submitPayment()" class="w-full bg-green-600 text-white py-2 rounded-lg font-semibold">Submit</button>
+    <button onclick="submitPayment()" class="w-full bg-green-500 hover:bg-gradient-to-r from-green-400 to-green-600 text-white text-white py-2 rounded-lg font-semibold">Submit</button>
     <button onclick="goBackToDashboard()" class="w-full mt-3 bg-gray-500 text-white py-2 rounded-lg font-semibold">Back to Dashboard</button>
   </div>
 
   <!-- Dashboard -->
-  <div id="dashboard" class="hidden w-full max-w-5xl p-6 mx-auto">
+  <div id="dashboard" class="hidden w-full max-w-5xl p-6 mx-auto animate__animated animate__fadeInUp">
     <div class="flex justify-between items-center mb-6">
-      <h1 class="text-3xl font-bold text-gray-800">Dashboard</h1>
-      <button onclick="logout()" class="bg-red-600 hover:bg-red-700 text-white px-5 py-2 rounded-lg font-medium">Logout</button>
+      <h1 class="text-3xl font-bold text-gray-800 text-gray-100">Dashboard</h1>
+      <button onclick="logout()" class="bg-red-500 hover:bg-red-600 hover:bg-red-700 text-white px-5 py-2 rounded-lg font-medium">Logout</button>
     </div>
 
     <!-- Admin Controls -->
-    <div id="adminControls" class="hidden mb-8 p-6 bg-yellow-50 border border-yellow-300 rounded-xl">
+    <div id="adminControls" class="hidden mb-8 p-6 bg-yellow-100 border border-gray-600-yellow-400 border border-gray-600 border border-gray-600-yellow-300 rounded-xl">
       <h2 class="text-xl font-bold mb-4 text-yellow-800">Admin Panel</h2>
 
       <!-- Student data update -->
       <div class="grid grid-cols-1 md:grid-cols-3 gap-4 mb-4">
-        <select id="studentSelector" class="p-3 border rounded-lg bg-white text-gray-800"></select>
-        <input type="text" id="updateAttendance" placeholder="Update Attendance (%)" class="p-3 border rounded-lg"/>
-        <input type="text" id="updateFees" placeholder="Update Fee Dues" class="p-3 border rounded-lg"/>
+        <select id="studentSelector" class="p-3 border border-gray-600 rounded-lg bg-gradient-to-r from-pink-500 to-red-400 text-white bg-gray-900 text-gray-800 text-gray-100"></select>
+        <input type="text" id="updateAttendance" placeholder="Update Attendance (%)" class="p-3 border border-gray-600 rounded-lg"/>
+        <input type="text" id="updateFees" placeholder="Update Fee Dues" class="p-3 border border-gray-600 rounded-lg"/>
       </div>
-      <button onclick="updateStudentData()" class="bg-blue-600 hover:bg-blue-700 text-white px-5 py-2 rounded-lg font-semibold">Update Student Info</button>
+      <button onclick="updateStudentData()" class="bg-blue-500 hover:bg-gradient-to-r from-sky-400 to-blue-600 text-white hover:bg-blue-700 text-white px-5 py-2 rounded-lg font-semibold">Update Student Info</button>
+<div class="grid grid-cols-2 md:grid-cols-5 gap-4 mb-4">
+  <input id="C_PROGRAM_input" type="number" placeholder="C PROGRAM" class="p-2 border border-gray-600 rounded"/>
+  <input id="PYTHON_input" type="number" placeholder="PYTHON" class="p-2 border border-gray-600 rounded"/>
+  <input id="OOPS_input" type="number" placeholder="OOPS" class="p-2 border border-gray-600 rounded"/>
+  <input id="DBMS_input" type="number" placeholder="DBMS" class="p-2 border border-gray-600 rounded"/>
+  <input id="MATHS_input" type="number" placeholder="MATHS" class="p-2 border border-gray-600 rounded"/>
+</div>
+<button onclick="updateSubjectAttendance()" class="bg-purple-500 hover:bg-gradient-to-r from-purple-400 to-purple-600 text-white text-white px-4 py-2 rounded">Update Subject Attendance</button>
+
 
       <!-- Post Notice -->
       <div class="mt-6">
-        <input type="text" id="newNotice" placeholder="Enter Notice for Students" class="w-full p-3 border rounded-lg mb-2"/>
-        <button onclick="postNotice()" class="bg-green-600 hover:bg-green-700 text-white px-5 py-2 rounded-lg font-semibold">Post Notice</button>
+        <input type="text" id="newNotice" placeholder="Enter Notice for Students" class="w-full p-3 border border-gray-600 rounded-lg mb-2"/>
+        <button onclick="postNotice()" class="bg-green-500 hover:bg-gradient-to-r from-green-400 to-green-600 text-white hover:bg-green-700 text-white px-5 py-2 rounded-lg font-semibold">Post Notice</button>
       </div>
 
       <!-- Payment QR Upload -->
-      <div class="mt-8 border-t pt-6">
+      <div class="mt-8 border border-gray-600-t pt-6">
         <h3 class="text-lg font-semibold mb-2">Set / Update Payment QR Code</h3>
         <input type="file" id="qrUploader" accept="image/*" class="mb-3" />
         <br />
-        <img id="adminQrPreview" src="" alt="QR Code Preview" class="max-w-xs rounded-lg border p-2 bg-white shadow mb-4" />
+        <img id="adminQrPreview" src="" alt="QR Code Preview" class="max-w-xs rounded-lg border border-gray-600 p-2 bg-gradient-to-r from-pink-500 to-red-400 text-white bg-gray-900 shadow mb-4" />
         <br />
-        <button onclick="uploadQrCode()" class="bg-indigo-600 hover:bg-indigo-700 text-white px-5 py-2 rounded-lg font-semibold">Upload QR Code</button>
+        <button onclick="uploadQrCode()" class="bg-indigo-500 hover:bg-gradient-to-r from-blue-500 to-indigo-600 text-white hover:bg-indigo-700 text-white px-5 py-2 rounded-lg font-semibold">Upload QR Code</button>
       </div>
 
       <!-- Pending Payments Section -->
       <div class="mt-8 p-4 bg-gray-100 rounded-lg">
         <h3 class="text-xl font-semibold mb-2">Pending Payments</h3>
-        <div id="pendingPaymentsContainer" class="space-y-4 max-h-64 overflow-y-auto border p-3 bg-white rounded shadow-inner">
+        <div id="pendingPaymentsContainer" class="space-y-4 max-h-64 overflow-y-auto border border-gray-600 p-3 bg-gradient-to-r from-pink-500 to-red-400 text-white bg-gray-900 rounded shadow-inner">
           <!-- Pending payment entries will be added here dynamically -->
         </div>
       </div>
@@ -94,30 +111,38 @@
     <!-- Student Dashboard -->
     <div id="studentDashboard" class="hidden space-y-6">
 
-      <div class="bg-white shadow rounded-xl p-6">
-        <h3 class="text-lg font-semibold text-gray-700 mb-2">Sem 4 Attendance</h3>
-        <p id="attendanceDisplay" class="text-2xl font-bold text-blue-700">--%</p>
-        <p class="text-sm text-gray-500 mt-2">*Based on credit papers only. Contact HoD for updates.</p>
+      <div class="bg-gradient-to-br from-white to-blue-100 shadow-xl border border-gray-600 border border-gray-600-blue-200 rounded-2xl p-6">
+        <h3 class="text-lg font-semibold text-gray-700 text-gray-200 mb-2">Sem 4 Attendance</h3>
+        
+<div class="bg-gradient-to-br from-white to-blue-100 shadow-xl border border-gray-600 border border-gray-600-blue-200 rounded-2xl p-6">
+  <h3 class="text-lg font-semibold text-gray-700 text-gray-200 mb-2">Sem 4 Attendance</h3>
+  <p id="attendanceDisplay" class="text-2xl font-bold text-blue-700">--%</p>
+  <button onclick="toggleAttendanceDetails()" class="mt-3 bg-orange-400 hover:bg-gradient-to-r from-orange-400 to-pink-500 text-white text-white px-4 py-2 rounded-lg font-semibold">VIEW</button>
+  <div id="subjectAttendanceDetails" class="mt-4 hidden text-sm text-gray-700 text-gray-200 space-y-1"></div>
+  <p class="text-sm text-gray-500 text-gray-400 mt-2">*Based on credit papers only. Contact HoD for updates.</p>
+</div>
+
+        <p class="text-sm text-gray-500 text-gray-400 mt-2">*Based on credit papers only. Contact HoD for updates.</p>
       </div>
 
-      <div class="bg-white shadow rounded-xl p-6">
-        <h3 class="text-lg font-semibold text-gray-700 mb-2">Fee Dues</h3>
+      <div class="bg-gradient-to-br from-white to-blue-100 shadow-xl border border-gray-600 border border-gray-600-blue-200 rounded-2xl p-6">
+        <h3 class="text-lg font-semibold text-gray-700 text-gray-200 mb-2">Fee Dues</h3>
         <p id="feesDisplay" class="text-xl font-bold text-red-600">--</p>
-        <button id="clearDuesBtn" onclick="openPaymentPage()" class="mt-3 bg-indigo-600 hover:bg-indigo-700 text-white px-4 py-2 rounded-lg font-semibold hidden">Clear Dues</button>
+        <button id="clearDuesBtn" onclick="openPaymentPage()" class="mt-3 bg-indigo-500 hover:bg-gradient-to-r from-blue-500 to-indigo-600 text-white hover:bg-indigo-700 text-white px-4 py-2 rounded-lg font-semibold hidden">Clear Dues</button>
       </div>
 
-      <div class="bg-white shadow rounded-xl p-6">
-        <h3 class="text-lg font-semibold text-gray-700 mb-2">Upcoming Holidays</h3>
+      <div class="bg-gradient-to-br from-white to-blue-100 shadow-xl border border-gray-600 border border-gray-600-blue-200 rounded-2xl p-6">
+        <h3 class="text-lg font-semibold text-gray-700 text-gray-200 mb-2">Upcoming Holidays</h3>
         <p class="text-lg font-bold text-green-700" id="holidayDisplay">07-Jun-2025 - Bakrid</p>
       </div>
 
-      <div class="bg-white shadow rounded-xl p-6 text-center">
-        <h3 class="text-lg font-semibold text-gray-700 mb-4">Examination Registration</h3>
+      <div class="bg-gradient-to-br from-white to-blue-100 shadow-xl border border-gray-600 border border-gray-600-blue-200 rounded-2xl p-6 text-center">
+        <h3 class="text-lg font-semibold text-gray-700 text-gray-200 mb-4">Examination Registration</h3>
         <a
   id="admitCardLink"
   href="#"
   onclick="return validateAdmitCardDownload()"
-  class="inline-block mt-4 bg-green-600 hover:bg-green-700 text-white px-5 py-2 rounded-lg font-semibold"
+  class="inline-block mt-4 bg-green-500 hover:bg-gradient-to-r from-green-400 to-green-600 text-white hover:bg-green-700 text-white px-5 py-2 rounded-lg font-semibold"
 >
   Download Admit Card
 </a>
@@ -125,8 +150,8 @@
     </div>
 
     <!-- Notices Section -->
-    <div class="bg-white mt-8 shadow rounded-xl p-6">
-      <h3 class="text-xl font-bold mb-4 text-gray-800">Important Notices</h3>
+    <div class="bg-gradient-to-r from-pink-500 to-red-400 text-white bg-gray-900 mt-8 shadow rounded-xl p-6">
+      <h3 class="text-xl font-bold mb-4 text-gray-800 text-gray-100">Important Notices</h3>
       <ul id="notices" class="space-y-4">
         <!-- Dynamic notices go here -->
       </ul>
@@ -327,7 +352,7 @@
       const ul = document.getElementById("notices");
       ul.innerHTML = "";
       if (notices.length === 0) {
-        ul.innerHTML = "<li class='text-gray-500 italic'>No notices posted yet.</li>";
+        ul.innerHTML = "<li class='text-gray-500 text-gray-400 italic'>No notices posted yet.</li>";
         return;
       }
       notices.forEach(({ title, department, date }) => {
@@ -337,7 +362,7 @@
   li.innerHTML = `
     <div class="text-xs font-semibold text-indigo-600 uppercase w-32">
       ${department}<br/>
-      <span class="text-gray-500">${date}</span>
+      <span class="text-gray-500 text-gray-400">${date}</span>
     </div>
     <div class="text-blue-900 font-bold text-lg">
       ${title}
@@ -427,97 +452,6 @@
       container.innerHTML = "";
 
       if (pendingPayments.length === 0) {
-        container.innerHTML = "<p class='text-gray-500 italic'>No pending payments.</p>";
+        container.innerHTML = "<p class='text-gray-500 text-gray-400 italic'>No pending payments.</p>";
         return;
-      }
-
-      pendingPayments.forEach((payment, index) => {
-        const div = document.createElement("div");
-        div.className = "border rounded-lg p-3 bg-white shadow";
-
-        div.innerHTML = `
-          <p class="font-semibold mb-2">Student: ${payment.student}</p>
-          <p class="mb-2">UTR: <span class="font-mono">${payment.utr}</span></p>
-         <img src="${payment.receiptDataUrl}" alt="Payment Receipt" class="w-32 h-auto rounded-lg border mb-2"/>
-          <button onclick="confirmPayment(${index})" class="bg-green-600 hover:bg-green-700 text-white px-4 py-1 rounded font-semibold">Confirm Payment</button> <br><br>
-<button onclick="rejectPayment(${index})" class="bg-red-600 hover:bg-red-700 text-white px-4 py-1 rounded font-semibold ml-2">Reject Payment</button>
-        `;
-        
-
-        container.appendChild(div);
-      });
-    }
-
-    // --- Confirm payment (admin) ---
-    function confirmPayment(index) {
-      const payment = pendingPayments[index];
-      if (!payment) return;
-
-      // Clear dues for student
-      if (studentData[payment.student]) {
-        studentData[payment.student].fees = 0;
-      }
-
-      // Remove from pending
-      pendingPayments.splice(index, 1);
-
-      alert(`Payment confirmed for ${payment.student}. Dues cleared.`);
-
-      // Refresh admin panel and student dashboard if needed
-      if (currentRole === "admin") {
-        renderPendingPayments();
-      }
-      if (currentRole === "student" && currentUser === payment.student) {
-        loadStudentDashboard();
-      }
-    }
     
-    // reject payment 
-    function rejectPayment(index) {
-  const payment = pendingPayments[index];
-  if (!payment) return;
-
-  // Remove the rejected payment
-  pendingPayments.splice(index, 1);
-  alert(`Payment request from ${payment.student} has been rejected.`);
-
-  // Refresh admin panel
-  renderPendingPayments();
-}
-
-    // --- Admit Card download validation --
-
-    function setAdmitCardLink(username) {
-  const link = document.getElementById("admitCardLink");
-
-  const attendance = parseFloat(studentData[username].attendance);
-  const fees = parseFloat(studentData[username].fees);
-
-  // Condition: Attendance must be >= 75 and Fees must be 0
-  if (attendance < 75) {
-    link.href = "#";
-    link.removeAttribute("download");
-    link.onclick = (e) => {
-      e.preventDefault();
-      alert("YOUR ATTENDANCE IS BELOW 75% YOU CAN'T SIT IN EXAM, CONTACT EXAMINATION DEPARTMENT.");
-    };
-  } else if (fees > 0) {
-    link.href = "#";
-    link.removeAttribute("download");
-    link.onclick = (e) => {
-      e.preventDefault();
-      alert("FEE DUES PENDING. PLEASE CLEAR YOUR DUES TO DOWNLOAD ADMIT CARD.");
-    };
-  } else {
-    const baseURL = "https://github.com/Kunal9608/admit-card-portal/raw/main/";
-    const fileName = `AdmitCard_${username}.pdf`;
-    link.href = baseURL + fileName;
-    link.setAttribute("download", fileName);
-    link.onclick = null;
-  }
-    }
-
-  </script>
-
-</body>
-</html>
