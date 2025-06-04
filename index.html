@@ -8,8 +8,7 @@
   <title>Student & Admin Portal</title>
   <script src="https://cdn.tailwindcss.com"></script>
 </head>
-<body 
-  class="bg-gradient-to-b from-slate-900 to-gray-900 text-white flex items-center justify-center min-h-screen px-4 py-8 from-gray-900 to-gray-800 text-gray-800 text-gray-100 text-gray-100" class="bg-gradient-to-b from-slate-900 to-gray-900 text-white flex items-center justify-center min-h-screen px-4 py-8 min-h-screen flex items-center justify-center px-4 py-8">
+<body class="bg-gradient-to-b from-slate-900 to-gray-900 text-white flex items-center justify-center min-h-screen px-4 py-8">
 
   <!-- Login Page -->
   
@@ -17,15 +16,15 @@
   Toggle Theme
 </button>
 
-<div id="loginPage" class="w-full max-w-md mx-auto p-8 bg-gradient-to-r from-pink-500 to-red-400 text-white bg-gray-900 rounded-2xl shadow-lg">
+<div id="loginPage" class="w-full max-w-md mx-auto p-8 bg-white text-blue-900 rounded-xl shadow-lg">
     <h2 class="text-3xl font-bold text-center text-blue-700 mb-6">Login Portal</h2>
     <div class="mb-4">
-      <label class="block text-gray-700 text-gray-200 font-medium mb-1">Username</label>
-      <input type="text" id="username" placeholder="Enter Username" class="w-full p-3 border border-gray-600 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-400"/>
+      <label class="block text-gray-700 text-gray-200 font-medium mb-1" class="text-white">Username</label>
+      <input type="text" id="username" placeholder="Enter Username" class="w-full p-3 border border-gray-600 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-400 text-blue-900"/>
     </div>
     <div class="mb-6">
-      <label class="block text-gray-700 text-gray-200 font-medium mb-1">Password</label>
-      <input type="password" id="password" placeholder="Enter Password" class="w-full p-3 border border-gray-600 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-400"/>
+      <label class="block text-gray-700 text-gray-200 font-medium mb-1" class="text-white">Password</label>
+      <input type="password" id="password" placeholder="Enter Password" class="w-full p-3 border border-gray-600 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-400 text-blue-900"/>
     </div>
     <button onclick="login()" class="w-full bg-blue-500 hover:bg-gradient-to-r from-sky-400 to-blue-600 text-white hover:bg-blue-700 text-white font-semibold py-2.5 rounded-lg transition duration-200">Login</button>
     <p id="errorMessage" class="text-red-600 mt-4 hidden text-center font-medium">Invalid credentials</p>
@@ -43,12 +42,12 @@
 
     <!-- Upload receipt and enter UTR -->
     <div class="mb-4">
-      <label class="block font-medium text-gray-700 text-gray-200 mb-1">Upload Payment Receipt</label>
-      <input type="file" id="paymentReceipt" class="w-full border border-gray-600 p-2 rounded-lg" />
+      <label class="block font-medium text-gray-700 text-gray-200 mb-1" class="text-white">Upload Payment Receipt</label>
+      <input type="file" id="paymentReceipt" class="w-full border border-gray-600 p-2 rounded-lg text-blue-900" />
     </div>
     <div class="mb-4">
-      <label class="block font-medium text-gray-700 text-gray-200 mb-1">Enter UTR Number</label>
-      <input type="text" id="utrInput" placeholder="Enter UTR" class="w-full border border-gray-600 p-2 rounded-lg" />
+      <label class="block font-medium text-gray-700 text-gray-200 mb-1" class="text-white">Enter UTR Number</label>
+      <input type="text" id="utrInput" placeholder="Enter UTR" class="w-full border border-gray-600 p-2 rounded-lg text-blue-900" />
     </div>
 
     <button onclick="submitPayment()" class="w-full bg-green-500 hover:bg-gradient-to-r from-green-400 to-green-600 text-white text-white py-2 rounded-lg font-semibold">Submit</button>
@@ -69,30 +68,30 @@
       <!-- Student data update -->
       <div class="grid grid-cols-1 md:grid-cols-3 gap-4 mb-4">
         <select id="studentSelector" class="p-3 border border-gray-600 rounded-lg bg-gradient-to-r from-pink-500 to-red-400 text-white bg-gray-900 text-gray-800 text-gray-100"></select>
-        <input type="text" id="updateAttendance" placeholder="Update Attendance (%)" class="p-3 border border-gray-600 rounded-lg"/>
-        <input type="text" id="updateFees" placeholder="Update Fee Dues" class="p-3 border border-gray-600 rounded-lg"/>
+        <input type="number" id="updateAttendance" placeholder="Update Attendance (%)" class="p-3 border border-gray-600 rounded-lg text-blue-900"/>
+        <input type="number" id="updateFees" placeholder="Update Fee Dues" class="p-3 border border-gray-600 rounded-lg text-blue-900"/>
       </div>
       <button onclick="updateStudentData()" class="bg-blue-500 hover:bg-gradient-to-r from-sky-400 to-blue-600 text-white hover:bg-blue-700 text-white px-5 py-2 rounded-lg font-semibold">Update Student Info</button>
 <div class="grid grid-cols-2 md:grid-cols-5 gap-4 mb-4">
-  <input id="C_PROGRAM_input" type="number" placeholder="C PROGRAM" class="p-2 border border-gray-600 rounded"/>
-  <input id="PYTHON_input" type="number" placeholder="PYTHON" class="p-2 border border-gray-600 rounded"/>
-  <input id="OOPS_input" type="number" placeholder="OOPS" class="p-2 border border-gray-600 rounded"/>
-  <input id="DBMS_input" type="number" placeholder="DBMS" class="p-2 border border-gray-600 rounded"/>
-  <input id="MATHS_input" type="number" placeholder="MATHS" class="p-2 border border-gray-600 rounded"/>
+  <input id="C_PROGRAM_input" type="number" placeholder="C PROGRAM" class="p-2 border border-gray-600 rounded text-blue-900"/>
+  <input id="PYTHON_input" type="number" placeholder="PYTHON" class="p-2 border border-gray-600 rounded text-blue-900"/>
+  <input id="OOPS_input" type="number" placeholder="OOPS" class="p-2 border border-gray-600 rounded text-blue-900"/>
+  <input id="DBMS_input" type="number" placeholder="DBMS" class="p-2 border border-gray-600 rounded text-blue-900"/>
+  <input id="MATHS_input" type="number" placeholder="MATHS" class="p-2 border border-gray-600 rounded text-blue-900"/>
 </div>
 <button onclick="updateSubjectAttendance()" class="bg-purple-500 hover:bg-gradient-to-r from-purple-400 to-purple-600 text-white text-white px-4 py-2 rounded">Update Subject Attendance</button>
 
 
       <!-- Post Notice -->
       <div class="mt-6">
-        <input type="text" id="newNotice" placeholder="Enter Notice for Students" class="w-full p-3 border border-gray-600 rounded-lg mb-2"/>
+        <input type="text" id="newNotice" placeholder="Enter Notice for Students" class="w-full p-3 border border-gray-600 rounded-lg mb-2 text-blue-900"/>
         <button onclick="postNotice()" class="bg-green-500 hover:bg-gradient-to-r from-green-400 to-green-600 text-white hover:bg-green-700 text-white px-5 py-2 rounded-lg font-semibold">Post Notice</button>
       </div>
 
       <!-- Payment QR Upload -->
       <div class="mt-8 border border-gray-600-t pt-6">
         <h3 class="text-lg font-semibold mb-2">Set / Update Payment QR Code</h3>
-        <input type="file" id="qrUploader" accept="image/*" class="mb-3" />
+        <input type="file" id="qrUploader" accept="image/*" class="mb-3 text-blue-900" />
         <br />
         <img id="adminQrPreview" src="" alt="QR Code Preview" class="max-w-xs rounded-lg border border-gray-600 p-2 bg-gradient-to-r from-pink-500 to-red-400 text-white bg-gray-900 shadow mb-4" />
         <br />
@@ -454,7 +453,7 @@
       if (pendingPayments.length === 0) {
         container.innerHTML = "<p class='text-gray-500 text-gray-400 italic'>No pending payments.</p>";
         return;
-        }
+      }
 
       pendingPayments.forEach((payment, index) => {
         const div = document.createElement("div");
