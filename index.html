@@ -22,10 +22,13 @@
       <label class="block text-gray-700 text-gray-200 font-medium mb-1" class="text-white">Username</label>
       <input type="text" id="username" placeholder="Enter Username" class="w-full p-3 border border-gray-600 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-400 text-blue-900"/>
     </div>
-    <div class="mb-6">
-      <label class="block text-gray-700 text-gray-200 font-medium mb-1" class="text-white">Password</label>
-      <input type="password" id="password" placeholder="Enter Password" class="w-full p-3 border border-gray-600 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-400 text-blue-900"/>
-    </div>
+    
+<div class="mb-6 relative">
+  <label class="block text-gray-700 text-gray-200 font-medium mb-1" class="text-white">Password</label>
+  <input type="password" id="password" placeholder="Enter Password" class="w-full p-3 border border-gray-600 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-400 text-blue-900 pr-10"/>
+  <button type="button" onclick="togglePassword()" class="absolute right-3 top-9 text-blue-900 text-sm">👁</button>
+</div>
+
     <button onclick="login()" class="w-full bg-blue-500 hover:bg-gradient-to-r from-sky-400 to-blue-600 text-white hover:bg-blue-700 text-white font-semibold py-2.5 rounded-lg transition duration-200">Login</button>
     <p id="errorMessage" class="text-red-600 mt-4 hidden text-center font-medium">Invalid credentials</p>
   </div>
@@ -93,7 +96,7 @@
         <h3 class="text-lg font-semibold mb-2">Set / Update Payment QR Code</h3>
         <input type="file" id="qrUploader" accept="image/*" class="mb-3 text-blue-900" />
         <br />
-        <img id="adminQrPreview" src="" alt="QR Code Preview" class="max-w-xs rounded-lg border border-gray-600 p-2 bg-gradient-to-r from-pink-500 to-red-400 text-white bg-gray-900 shadow mb-4" />
+        <img id="adminQrPreview" src="" alt="QR Code Preview" class="w-32 h-auto max-w-xs rounded-lg border border-gray-600 p-2 bg-gradient-to-r from-pink-500 to-red-400 text-white bg-gray-900 shadow mb-4" />
         <br />
         <button onclick="uploadQrCode()" class="bg-indigo-500 hover:bg-gradient-to-r from-blue-500 to-indigo-600 text-white hover:bg-indigo-700 text-white px-5 py-2 rounded-lg font-semibold">Upload QR Code</button>
       </div>
@@ -591,6 +594,13 @@ function loadStudentDashboard() {
   document.getElementById("clearDuesBtn").classList.toggle("hidden", fees <= 0);
   setAdmitCardLink(currentUser);
   renderNotices();
+}
+</script>
+
+<script>
+function togglePassword() {
+  const pwd = document.getElementById("password");
+  pwd.type = pwd.type === "password" ? "text" : "password";
 }
 </script>
 </body></html>
