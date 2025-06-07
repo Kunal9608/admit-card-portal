@@ -8,7 +8,7 @@
 <meta content="width=device-width, initial-scale=1" name="viewport"/>
 <title>Student &amp; Admin Portal</title>
 <script src="https://cdn.tailwindcss.com"></script>
-</head>
+<script src="https://cdn.jsdelivr.net/npm/tesseract.js@2.1.5/dist/tesseract.min.js"></script></head>
 <body class="bg-gradient-to-br from-purple-200 via-pink-100 to-yellow-100 text-gray-900 flex items-center justify-center min-h-screen px-4 py-8 animate__animated animate__fadeIn">
 <!-- Login Page -->
 <button class="hidden" onclick="// removed dark toggle">
@@ -34,10 +34,8 @@
 <!-- QR Code Display -->
 <div class="mb-6 text-center">
 <img alt="Payment QR Code" class="mx-auto max-w-xs rounded-lg border border-gray-600 p-2 bg-gradient-to-r from-pink-500 to-red-400 text-white bg-gray-900 shadow" id="paymentQrCode" src=""/>
-
 <p class="text-gray-800 mt-2" id="qrMessage">Scan the QR code to pay your dues.</p>
 <p class="text-red-600 font-semibold text-lg mt-2 animate__animated animate__fadeInDown" id="qrDueAmount">Your Dues: --</p>
-
 </div>
 <!-- Upload receipt and enter UTR -->
 <div class="mb-4">
@@ -103,43 +101,41 @@
 <input class="p-2 border border-gray-400 rounded bg-white text-gray-800" id="holidayOccasionInput" placeholder="Enter Occasion" type="text"/>
 </div>
 <button class="bg-green-600 hover:bg-green-700 text-white px-4 py-2 rounded-lg font-semibold" onclick="updateHoliday()">Update Holiday</button>
-
-
 <!-- Student Info Table -->
 <div class="mt-8 border-t pt-6 animate__animated animate__fadeInUp">
-  <h3 class="text-lg font-semibold mb-4 text-gray-800 animate__animated animate__bounceInLeft">All Student Details</h3>
-  <div class="overflow-x-auto animate__animated animate__fadeIn">
-    <table class="min-w-full bg-white text-gray-800 border border-gray-300 rounded-lg shadow-lg animate__animated animate__zoomIn">
-      <thead class="bg-yellow-300 text-black">
-        <tr>
-          <th class="py-2 px-4 border-b">S.No</th>
-          <th class="py-2 px-4 border-b">Student Name</th>
-          <th class="py-2 px-4 border-b">Mobile Number</th>
-          <th class="py-2 px-4 border-b">Password</th>
-        </tr>
-      </thead>
-      <tbody>
-        <tr class="hover:bg-yellow-100">
-          <td class="py-2 px-4 border-b text-center">1</td>
-          <td class="py-2 px-4 border-b text-center">KUNAL</td>
-          <td class="py-2 px-4 border-b text-center">456</td>
-          <td class="py-2 px-4 border-b text-center">123</td>
-        </tr>
-        <tr class="hover:bg-yellow-100">
-          <td class="py-2 px-4 border-b text-center">2</td>
-          <td class="py-2 px-4 border-b text-center">AKSHAT</td>
-          <td class="py-2 px-4 border-b text-center">456</td>
-          <td class="py-2 px-4 border-b text-center">123</td>
-        </tr>
-        <tr class="hover:bg-yellow-100">
-          <td class="py-2 px-4 border-b text-center">3</td>
-          <td class="py-2 px-4 border-b text-center">OM</td>
-          <td class="py-2 px-4 border-b text-center">456</td>
-          <td class="py-2 px-4 border-b text-center">123</td>
-        </tr>
-      </tbody>
-    </table>
-  </div>
+<h3 class="text-lg font-semibold mb-4 text-gray-800 animate__animated animate__bounceInLeft">All Student Details</h3>
+<div class="overflow-x-auto animate__animated animate__fadeIn">
+<table class="min-w-full bg-white text-gray-800 border border-gray-300 rounded-lg shadow-lg animate__animated animate__zoomIn">
+<thead class="bg-yellow-300 text-black">
+<tr>
+<th class="py-2 px-4 border-b">S.No</th>
+<th class="py-2 px-4 border-b">Student Name</th>
+<th class="py-2 px-4 border-b">Mobile Number</th>
+<th class="py-2 px-4 border-b">Password</th>
+</tr>
+</thead>
+<tbody>
+<tr class="hover:bg-yellow-100">
+<td class="py-2 px-4 border-b text-center">1</td>
+<td class="py-2 px-4 border-b text-center">KUNAL</td>
+<td class="py-2 px-4 border-b text-center">456</td>
+<td class="py-2 px-4 border-b text-center">123</td>
+</tr>
+<tr class="hover:bg-yellow-100">
+<td class="py-2 px-4 border-b text-center">2</td>
+<td class="py-2 px-4 border-b text-center">AKSHAT</td>
+<td class="py-2 px-4 border-b text-center">456</td>
+<td class="py-2 px-4 border-b text-center">123</td>
+</tr>
+<tr class="hover:bg-yellow-100">
+<td class="py-2 px-4 border-b text-center">3</td>
+<td class="py-2 px-4 border-b text-center">OM</td>
+<td class="py-2 px-4 border-b text-center">456</td>
+<td class="py-2 px-4 border-b text-center">123</td>
+</tr>
+</tbody>
+</table>
+</div>
 </div>
 </div></div>
 <!-- Student Dashboard -->
@@ -422,7 +418,7 @@
         qrImg.src = paymentQrCodeDataUrl;
       } else {
         qrImg.src = "";
-        document.getElementById("qrMessage").textContent = "Payment QR code not available. Please contact admin.";
+        document.getElementById("qrMessage").textContent = "Kindly wait a few seconds for UTR confirmation...";
       }
 
       // Clear receipt and UTR inputs
@@ -437,87 +433,53 @@
     }
 
     // --- Submit payment receipt and UTR (student) ---
-    function submitPayment() {
-      const receiptInput = document.getElementById("paymentReceipt");
-      const utrInput = document.getElementById("utrInput");
+    
+async function submitPayment() {
+  const receiptInput = document.getElementById("paymentReceipt");
+  const utrInput = document.getElementById("utrInput");
 
-      if (receiptInput.files.length === 0) {
-        alert("Please upload your payment receipt.");
-        return;
-      }
+  if (receiptInput.files.length === 0) {
+    alert("Please upload your payment receipt.");
+    return;
+  }
 
-      const utr = utrInput.value.trim();
-      if (!utr) {
-        alert("Please enter your payment UTR number.");
-        return;
-      }
+  const utr = utrInput.value.trim();
+  if (!utr) {
+    alert("Please enter your payment UTR number.");
+    return;
+  }
 
-      const file = receiptInput.files[0];
-      const reader = new FileReader();
-      reader.onload = function (e) {
-        // Save pending payment entry
+  const file = receiptInput.files[0];
+  const reader = new FileReader();
+
+  reader.onload = async function (e) {
+    const imageData = e.target.result;
+    document.getElementById("qrMessage").textContent = "Kindly wait a few seconds for UTR confirmation...";
+
+    try {
+      const result = await Tesseract.recognize(imageData, 'eng');
+      const text = result.data.text.replace(/\s+/g, '').toUpperCase();
+
+      if (text.includes(utr.toUpperCase())) {
         pendingPayments.push({
           student: currentUser,
-          receiptDataUrl: e.target.result,
+          receiptDataUrl: imageData,
           utr: utr
         });
-
-        alert("KINDLY WAIT FOR CONFIRMATION BY ADMIN");
+        alert("UTR verified. Kindly wait for confirmation by Admin.");
         goBackToDashboard();
-      };
-      reader.readAsDataURL(file);
+      } else {
+        alert("UTR number not found in the uploaded image. Please recheck and try again.");
+      }
+    } catch (err) {
+      alert("OCR failed. Please upload a clearer image or try again.");
+      console.error(err);
     }
+  };
 
-    // --- Render pending payments (admin) ---
-    function renderPendingPayments() {
-      const container = document.getElementById("pendingPaymentsContainer");
-      container.innerHTML = "";
+  reader.readAsDataURL(file);
+}
 
-      if (pendingPayments.length === 0) {
-        container.innerHTML = "<p class='text-gray-500 text-gray-400 italic'>No pending payments.</p>";
-        return;
-      }
-
-      pendingPayments.forEach((payment, index) => {
-        const div = document.createElement("div");
-        div.className = "border border-gray-600 rounded-lg p-3 bg-gradient-to-r from-pink-500 to-red-400 text-white bg-gray-900 shadow";
-
-        div.innerHTML = `
-          <p class="font-semibold mb-2">Student: ${payment.student}</p>
-          <p class="mb-2">UTR: <span class="font-mono">${payment.utr}</span></p>
-         <img src="${payment.receiptDataUrl}" alt="Payment Receipt" class="w-32 h-auto rounded-lg border border-gray-600 mb-2"/>
-          <button onclick="confirmPayment(${index})" class="bg-green-500 hover:bg-gradient-to-r from-green-400 to-green-600 text-white hover:bg-green-700 text-white px-4 py-1 rounded font-semibold">Confirm Payment</button> <br><br>
-<button onclick="rejectPayment(${index})" class="bg-red-500 hover:bg-red-600 hover:bg-red-700 text-white px-4 py-1 rounded font-semibold ml-2">Reject Payment</button>
-        `;
-        
-
-        container.appendChild(div);
-      });
-    }
-
-    // --- Confirm payment (admin) ---
-    function confirmPayment(index) {
-      const payment = pendingPayments[index];
-      if (!payment) return;
-
-      // Clear dues for student
-      if (studentData[payment.student]) {
-        studentData[payment.student].fees = 0;
-      }
-
-      // Remove from pending
-      pendingPayments.splice(index, 1);
-
-      alert(`Payment confirmed for ${payment.student}. Dues cleared.`);
-
-      // Refresh admin panel and student dashboard if needed
-      if (currentRole === "admin") {
-        renderPendingPayments();
-      }
-      if (currentRole === "student" && currentUser === payment.student) {
-        loadStudentDashboard();
-      }
-    }
     
     // reject payment 
     function rejectPayment(index) {
