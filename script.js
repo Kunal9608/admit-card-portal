@@ -88,19 +88,22 @@
 
     // --- Student Dashboard Load ---
     function loadStudentDashboard() {
-      if (!currentUser || currentRole !== "student") return;
+  if (!currentUser || currentRole !== "student") return;
 
-      const attendance = studentData[currentUser].attendance;
-      const fees = studentData[currentUser].fees;
+  const stored = sessionStorage.getItem("studentData");
+  if (stored) {
+    Object.assign(studentData, JSON.parse(stored));
+  }
 
-      document.getElementById("attendanceDisplay").textContent = attendance.toFixed(2) + "%";
-      document.getElementById("feesDisplay").textContent = "Rs. " + fees.toFixed(2);
+  const attendance = studentData[currentUser].attendance;
+  const fees = studentData[currentUser].fees;
 
-      // Show Clear Dues button only if dues > 0
-      document.getElementById("clearDuesBtn").classList.toggle("hidden", fees <= 0);
+  document.getElementById("attendanceDisplay").textContent = attendance.toFixed(2) + "%";
+  document.getElementById("feesDisplay").textContent = "Rs. " + fees.toFixed(2);
+  document.getElementById("clearDuesBtn").classList.toggle("hidden", fees <= 0);
 
-      setAdmitCardLink(currentUser);
-      renderNotices();
+  setAdmitCardLink(currentUser);
+  renderNotices();
     }
 
     // --- Admin Panel Load ---
@@ -129,32 +132,36 @@
 
     // --- Update student data (admin) ---
     function updateStudentData() {
-      const selector = document.getElementById("studentSelector");
-      const attendanceInput = document.getElementById("updateAttendance");
-      const feesInput = document.getElementById("updateFees");
+  const selector = document.getElementById("studentSelector");
+  const attendanceInput = document.getElementById("updateAttendance");
+  const feesInput = document.getElementById("updateFees");
 
-      const student = selector.value;
-      const attendanceVal = attendanceInput.value.trim();
-      const feesVal = feesInput.value.trim();
+  const student = selector.value;
+  const attendanceVal = attendanceInput.value.trim();
+  const feesVal = feesInput.value.trim();
 
-      if (attendanceVal !== "") {
-        const attNum = parseFloat(attendanceVal);
-        if (isNaN(attNum) || attNum < 0 || attNum > 100) {
-          alert("Please enter valid attendance % (0-100).");
-          return;
-        }
-        studentData[student].attendance = attNum;
-      }
-      if (feesVal !== "") {
-        const feesNum = parseFloat(feesVal);
-        if (isNaN(feesNum) || feesNum < 0) {
-          alert("Please enter valid fees dues (>=0).");
-          return;
-        }
-        studentData[student].fees = feesNum;
-      }
+  if (attendanceVal !== "") {
+    const attNum = parseFloat(attendanceVal);
+    if (isNaN(attNum) || attNum < 0 || attNum > 100) {
+      alert("Please enter valid attendance % (0-100).");
+      return;
+    }
+    studentData[student].attendance = attNum;
+  }
+  if (feesVal !== "") {
+    const feesNum = parseFloat(feesVal);
+    if (isNaN(feesNum) || feesNum < 0) {
+      alert("Please enter valid fees dues (>=0).");
+      return;
+    }
+    studentData[student].fees = feesNum;
+  }
 
-      alert("Student data updated.");
+  // Save studentData to sessionStorage
+  sessionStorage.setItem("studentData", JSON.stringify(studentData));
+
+  alert("Student data updated.");
+
 
       // Refresh dashboard if current user is updated student
       if (currentRole === "student" && currentUser === student) {
@@ -230,14 +237,8 @@
 
     // --- Open payment page from student dashboard ---
     function openPaymentPage() {
-      document.getElementById("dashboard").classList.add("hidden");
-      document.getElementById("paymentPage").classList.remove("hidden");
-
-      // Set QR code image src for payment
-      const qrImg = document.getElementById("paymentQrCode");
-      if (paymentQrCodeDataUrl) {
-        qrImg.src = paymentQrCodeDataUrl;
-      } else {
+  window.location.href = "pay.html";
+} else {
         qrImg.src = "";
         document.getElementById("qrMessage").textContent = "Payment QR code not available. Please contact admin.";
       }
@@ -428,12 +429,19 @@ function toggleAttendanceDetails() {
 
 function loadStudentDashboard() {
   if (!currentUser || currentRole !== "student") return;
-  const subjects = subjectWiseData[currentUser];
-  const avg = Object.values(subjects).reduce((a, b) => a + b, 0) / Object.values(subjects).length;
-  document.getElementById("attendanceDisplay").textContent = avg.toFixed(2) + "%";
+
+  const stored = sessionStorage.getItem("studentData");
+  if (stored) {
+    Object.assign(studentData, JSON.parse(stored));
+  }
+
+  const attendance = studentData[currentUser].attendance;
   const fees = studentData[currentUser].fees;
+
+  document.getElementById("attendanceDisplay").textContent = attendance.toFixed(2) + "%";
   document.getElementById("feesDisplay").textContent = "Rs. " + fees.toFixed(2);
   document.getElementById("clearDuesBtn").classList.toggle("hidden", fees <= 0);
+
   setAdmitCardLink(currentUser);
   renderNotices();
 }
