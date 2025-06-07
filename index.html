@@ -34,7 +34,10 @@
 <!-- QR Code Display -->
 <div class="mb-6 text-center">
 <img alt="Payment QR Code" class="mx-auto max-w-xs rounded-lg border border-gray-600 p-2 bg-gradient-to-r from-pink-500 to-red-400 text-white bg-gray-900 shadow" id="paymentQrCode" src=""/>
+
 <p class="text-gray-800 mt-2" id="qrMessage">Scan the QR code to pay your dues.</p>
+<p class="text-red-600 font-semibold text-lg mt-2 animate__animated animate__fadeInDown" id="qrDueAmount">Your Dues: --</p>
+
 </div>
 <!-- Upload receipt and enter UTR -->
 <div class="mb-4">
@@ -100,6 +103,44 @@
 <input class="p-2 border border-gray-400 rounded bg-white text-gray-800" id="holidayOccasionInput" placeholder="Enter Occasion" type="text"/>
 </div>
 <button class="bg-green-600 hover:bg-green-700 text-white px-4 py-2 rounded-lg font-semibold" onclick="updateHoliday()">Update Holiday</button>
+
+
+<!-- Student Info Table -->
+<div class="mt-8 border-t pt-6 animate__animated animate__fadeInUp">
+  <h3 class="text-lg font-semibold mb-4 text-gray-800 animate__animated animate__bounceInLeft">All Student Details</h3>
+  <div class="overflow-x-auto animate__animated animate__fadeIn">
+    <table class="min-w-full bg-white text-gray-800 border border-gray-300 rounded-lg shadow-lg animate__animated animate__zoomIn">
+      <thead class="bg-yellow-300 text-black">
+        <tr>
+          <th class="py-2 px-4 border-b">S.No</th>
+          <th class="py-2 px-4 border-b">Student Name</th>
+          <th class="py-2 px-4 border-b">Mobile Number</th>
+          <th class="py-2 px-4 border-b">Password</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr class="hover:bg-yellow-100">
+          <td class="py-2 px-4 border-b text-center">1</td>
+          <td class="py-2 px-4 border-b text-center">KUNAL</td>
+          <td class="py-2 px-4 border-b text-center">456</td>
+          <td class="py-2 px-4 border-b text-center">123</td>
+        </tr>
+        <tr class="hover:bg-yellow-100">
+          <td class="py-2 px-4 border-b text-center">2</td>
+          <td class="py-2 px-4 border-b text-center">AKSHAT</td>
+          <td class="py-2 px-4 border-b text-center">456</td>
+          <td class="py-2 px-4 border-b text-center">123</td>
+        </tr>
+        <tr class="hover:bg-yellow-100">
+          <td class="py-2 px-4 border-b text-center">3</td>
+          <td class="py-2 px-4 border-b text-center">OM</td>
+          <td class="py-2 px-4 border-b text-center">456</td>
+          <td class="py-2 px-4 border-b text-center">123</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+</div>
 </div></div>
 <!-- Student Dashboard -->
 <div class="space-y-6" id="studentDashboard">
@@ -162,7 +203,7 @@
     let notices = [];
 
     // Store payment QR Code as data URL or empty string initially
-    let paymentQrCodeDataUrl = "";
+    let paymentQrCodeDataUrl = "https://github.com/Kunal9608/admit-card-portal/raw/main/kunal.png";
 
     // Pending payments list
     // Each pending payment: { student: string, receiptDataUrl: string, utr: string }
@@ -375,6 +416,7 @@
       document.getElementById("paymentPage").classList.remove("hidden");
 
       // Set QR code image src for payment
+  document.getElementById("qrDueAmount").textContent = "Your Dues: Rs. " + studentData[currentUser].fees.toFixed(2);
       const qrImg = document.getElementById("paymentQrCode");
       if (paymentQrCodeDataUrl) {
         qrImg.src = paymentQrCodeDataUrl;
