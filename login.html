@@ -35,7 +35,6 @@
       const passwordInput = document.getElementById("password");
       const username = usernameInput.value.trim().toUpperCase();
       const password = passwordInput.value;
-
       const errorMessage = document.getElementById("errorMessage");
 
       const studentUsers = [
@@ -60,7 +59,6 @@
         window.location.href = "admin.html";
         return;
       }
-
       errorMessage.classList.remove("hidden");
     }
 

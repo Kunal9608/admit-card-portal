@@ -82,12 +82,11 @@ tailwind.config = { darkMode: 'class' }
     }
 
     function logout() {
-      currentUser = null;
-      currentRole = null;
-      document.getElementById("loginPage").classList.remove("hidden");
-      document.getElementById("dashboard").classList.add("hidden");
-      document.getElementById("paymentPage").classList.add("hidden");
-    }
+  currentUser = null;
+  currentRole = null;
+  sessionStorage.clear();
+  window.location.href = "login.html";
+}
 
     // --- Student Dashboard Load ---
     function loadStudentDashboard() {
@@ -402,6 +401,11 @@ function updateSubjectAttendance() {
     const val = parseFloat(document.getElementById(id).value);
     subjectWiseData[student][subject] = !isNaN(val) ? val : 0;
   }
+  alert("Subject attendance updated for " + student);
+  if (currentUser === student && currentRole === "student") {
+    loadStudentDashboard();
+  }
+}
   alert("Subject attendance updated for " + student);
   if (currentUser === student && currentRole === "student") {
     loadStudentDashboard();
