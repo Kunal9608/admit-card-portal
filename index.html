@@ -592,4 +592,59 @@ function updateHoliday() {
   alert("Holiday updated successfully.");
 }
 </script>
-</body></html>
+<script>
+function renderPendingPayments() {
+  const container = document.getElementById("pendingPaymentsContainer");
+  container.innerHTML = "";
+
+  if (pendingPayments.length === 0) {
+    container.innerHTML = "<p class='text-gray-400 italic'>No pending payments.</p>";
+    return;
+  }
+
+  pendingPayments.forEach((payment, index) => {
+    const div = document.createElement("div");
+    div.className = "border border-gray-600 rounded-lg p-3 bg-gradient-to-r from-pink-500 to-red-400 text-white bg-gray-900 shadow";
+
+    div.innerHTML = `
+      <p class="font-semibold mb-2">Student: ${payment.student}</p>
+      <p class="mb-2">UTR: <span class="font-mono">${payment.utr}</span></p>
+      <img src="${payment.receiptDataUrl}" alt="Payment Receipt" class="w-32 h-auto rounded-lg border border-gray-600 mb-2"/>
+      <button onclick="confirmPayment(${index})" class="bg-green-500 hover:bg-green-600 text-white px-4 py-1 rounded font-semibold">Confirm</button>
+      <button onclick="rejectPayment(${index})" class="bg-red-500 hover:bg-red-600 text-white px-4 py-1 rounded font-semibold ml-2">Reject</button>
+    `;
+
+    container.appendChild(div);
+  });
+}
+</script><script>
+function confirmPayment(index) {
+  const payment = pendingPayments[index];
+  if (!payment) return;
+
+  // Clear dues for student
+  if (studentData[payment.student]) {
+    studentData[payment.student].fees = 0;
+  }
+
+  // Remove from pending
+  pendingPayments.splice(index, 1);
+
+  alert(`Payment confirmed for ${payment.student}. Dues cleared.`);
+
+  // Refresh admin panel
+  renderPendingPayments();
+  if (currentRole === "student" && currentUser === payment.student) {
+    loadStudentDashboard();
+  }
+}
+
+function rejectPayment(index) {
+  const payment = pendingPayments[index];
+  if (!payment) return;
+
+  pendingPayments.splice(index, 1);
+  alert(`Payment request from ${payment.student} has been rejected.`);
+  renderPendingPayments();
+}
+</script></body></html>
