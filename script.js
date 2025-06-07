@@ -82,11 +82,12 @@ tailwind.config = { darkMode: 'class' }
     }
 
     function logout() {
-      currentUser = null;
-      currentRole = null;
-      document.getElementById("loginPage").classList.remove("hidden");
-      document.getElementById("dashboard").classList.add("hidden");
-      document.getElementById("paymentPage").classList.add("hidden");
+      document.getElementById("logoutBtn").addEventListener("click", function () {
+    localStorage.removeItem("username"); // if stored
+    localStorage.removeItem("loginTime");
+    localStorage.removeItem("balance");
+    window.location.href = "login.html"; // redirect to login page
+});
     }
 
     // --- Student Dashboard Load ---
