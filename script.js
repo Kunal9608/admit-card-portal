@@ -80,12 +80,11 @@
     }
 
     function logout() {
-      currentUser = null;
-      currentRole = null;
-      document.getElementById("loginPage").classList.remove("hidden");
-      document.getElementById("dashboard").classList.add("hidden");
-      document.getElementById("paymentPage").classList.add("hidden");
-    }
+  currentUser = null;
+  currentRole = null;
+  sessionStorage.clear();
+  window.location.href = "login.html";
+}
 
     // --- Student Dashboard Load ---
     function loadStudentDashboard() {
@@ -250,9 +249,15 @@
 
     // --- Go back to dashboard from payment page ---
     function goBackToDashboard() {
-      document.getElementById("paymentPage").classList.add("hidden");
-      document.getElementById("dashboard").classList.remove("hidden");
-    }
+  const role = sessionStorage.getItem("role");
+  if (role === "student") {
+    window.location.href = "student.html";
+  } else if (role === "admin") {
+    window.location.href = "admin.html";
+  } else {
+    window.location.href = "login.html";
+  }
+}
 
     // --- Submit payment receipt and UTR (student) ---
     function submitPayment() {
