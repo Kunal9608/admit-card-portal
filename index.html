@@ -8,7 +8,7 @@
 <meta content="width=device-width, initial-scale=1" name="viewport"/>
 <title>Student &amp; Admin Portal</title>
 <script src="https://cdn.tailwindcss.com"></script>
-<script src="https://cdn.jsdelivr.net/npm/tesseract.js@2.1.5/dist/tesseract.min.js"></script></head>
+</head>
 <body class="bg-gradient-to-br from-purple-200 via-pink-100 to-yellow-100 text-gray-900 flex items-center justify-center min-h-screen px-4 py-8 animate__animated animate__fadeIn">
 <!-- Login Page -->
 <button class="hidden" onclick="// removed dark toggle">
@@ -249,6 +249,7 @@
         loadStudentDashboard();
       } else if (currentRole === "admin") {
         loadAdminPanel();
+        renderPendingPayments();
       }
 
       // Clear login inputs
@@ -434,7 +435,8 @@
 
     // --- Submit payment receipt and UTR (student) ---
     
-async function submitPayment() {
+
+function submitPayment() {
   const receiptInput = document.getElementById("paymentReceipt");
   const utrInput = document.getElementById("utrInput");
 
@@ -452,33 +454,20 @@ async function submitPayment() {
   const file = receiptInput.files[0];
   const reader = new FileReader();
 
-  reader.onload = async function (e) {
-    const imageData = e.target.result;
-    document.getElementById("qrMessage").textContent = "Kindly wait a few seconds for UTR confirmation...";
+  reader.onload = function (e) {
+    pendingPayments.push({
+      student: currentUser,
+      receiptDataUrl: e.target.result,
+      utr: utr
+    });
 
-    try {
-      const result = await Tesseract.recognize(imageData, 'eng');
-      const text = result.data.text.replace(/\s+/g, '').toUpperCase();
-
-      if (text.includes(utr.toUpperCase())) {
-        pendingPayments.push({
-          student: currentUser,
-          receiptDataUrl: imageData,
-          utr: utr
-        });
-        alert("UTR verified. Kindly wait for confirmation by Admin.");
-        goBackToDashboard();
-      } else {
-        alert("UTR number not found in the uploaded image. Please recheck and try again.");
-      }
-    } catch (err) {
-      alert("OCR failed. Please upload a clearer image or try again.");
-      console.error(err);
-    }
+    alert("KINDLY WAIT FOR CONFIRMATION BY ADMIN");
+    goBackToDashboard();
   };
 
   reader.readAsDataURL(file);
 }
+            
 
     
     // reject payment 
