@@ -1,7 +1,3 @@
-tailwind.config = { darkMode: 'class' }
-
-
-
 
     // --- Data & Variables ---
 
