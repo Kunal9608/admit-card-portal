@@ -81,7 +81,8 @@ tailwind.config = { darkMode: 'class' }
       passwordInput.value = "";
     }
 
-    function logout() {
+    
+function logout() {
   currentUser = null;
   currentRole = null;
   sessionStorage.clear();
@@ -391,6 +392,7 @@ let subjectWiseData = {
   AKSHAT: { "C PROGRAM": 65, PYTHON: 75, OOPS: 60, DBMS: 72, MATHS: 68 },
   OM: { "C PROGRAM": 90, PYTHON: 85, OOPS: 88, DBMS: 92, MATHS: 91 }
 };
+
 
 function updateSubjectAttendance() {
   const student = document.getElementById("studentSelector").value;
