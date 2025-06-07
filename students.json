@@ -1,0 +1,13 @@
+{
+  "KUNAL": {
+    "attendance": 85,
+    "fees": 1000,
+    "subjects": {
+      "C_PROGRAM": 92,
+      "PYTHON": 88,
+      "OOPS": 85,
+      "DBMS": 90,
+      "MATHS": 78
+    }
+  }
+}

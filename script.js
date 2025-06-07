@@ -442,3 +442,73 @@ function togglePassword() {
   const pwd = document.getElementById("password");
   pwd.type = pwd.type === "password" ? "text" : "password";
 }
+
+
+// --- LocalStorage Sync Logic ---
+
+// Save updated student data (called from admin panel)
+function updateStudentData() {
+    const student = document.getElementById('studentSelector').value;
+    const attendance = document.getElementById('updateAttendance').value;
+    const fees = document.getElementById('updateFees').value;
+
+    let studentData = JSON.parse(localStorage.getItem('studentData') || '{}');
+
+    if (!studentData[student]) studentData[student] = {};
+
+    if (attendance) studentData[student].attendance = attendance;
+    if (fees) studentData[student].fees = fees;
+
+    localStorage.setItem('studentData', JSON.stringify(studentData));
+    alert('Student data updated!');
+}
+
+// Update individual subject attendance
+function updateSubjectAttendance() {
+    const student = document.getElementById('studentSelector').value;
+    const subjects = ['C_PROGRAM', 'PYTHON', 'OOPS', 'DBMS', 'MATHS'];
+
+    let studentData = JSON.parse(localStorage.getItem('studentData') || '{}');
+    if (!studentData[student]) studentData[student] = {};
+
+    subjects.forEach(sub => {
+        const val = document.getElementById(sub + '_input').value;
+        if (!studentData[student].subjects) studentData[student].subjects = {};
+        if (val) studentData[student].subjects[sub] = val;
+    });
+
+    localStorage.setItem('studentData', JSON.stringify(studentData));
+    alert('Subject attendance updated!');
+}
+
+// Load student data on student.html
+function loadStudentDashboard(username) {
+    let studentData = JSON.parse(localStorage.getItem('studentData') || '{}');
+    if (!studentData[username]) return;
+
+    const data = studentData[username];
+    if (data.attendance) {
+        document.getElementById('attendanceDisplay').innerText = data.attendance + '%';
+    }
+
+    if (data.fees) {
+        document.getElementById('feesDisplay').innerText = '₹' + data.fees;
+        document.getElementById('clearDuesBtn').classList.remove('hidden');
+    }
+
+    if (data.subjects) {
+        const detailsDiv = document.getElementById('subjectAttendanceDetails');
+        detailsDiv.innerHTML = '';
+        for (let [subject, value] of Object.entries(data.subjects)) {
+            detailsDiv.innerHTML += `<p><strong>${subject}</strong>: ${value}%</p>`;
+        }
+    }
+}
+
+// Call this on student.html after login
+window.addEventListener('load', () => {
+    if (window.location.pathname.includes('student.html')) {
+        const username = localStorage.getItem('loggedInStudent');
+        if (username) loadStudentDashboard(username);
+    }
+});
