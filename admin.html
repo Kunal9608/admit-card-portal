@@ -17,54 +17,80 @@
 <body class="bg-gradient-to-b from-slate-900 to-gray-900 text-white min-h-screen px-4 py-8">
   <div id="dashboard" class="w-full max-w-5xl p-6 mx-auto">
     <div class="flex justify-between items-center mb-6">
-<h1 class="text-3xl font-bold text-gray-800 text-gray-100">Dashboard</h1>
-<button class="bg-red-500 hover:bg-red-600 hover:bg-red-700 text-white px-5 py-2 rounded-lg font-medium" onclick="logout()">Logout</button>
+ <h1 class="text-3xl font-bold text-gray-800 text-gray-100">
+  Dashboard
+ </h1>
+ <button class="bg-red-500 hover:bg-red-600 hover:bg-red-700 text-white px-5 py-2 rounded-lg font-medium" onclick="logout()">
+  Logout
+ </button>
 </div>
-    <div class="hidden mb-8 p-6 bg-yellow-100 border border-gray-600-yellow-400 border border-gray-600 border border-gray-600-yellow-300 rounded-xl" id="adminControls">
-<h2 class="text-xl font-bold mb-4 text-yellow-800">Admin Panel</h2>
-<!-- Student data update -->
-<div class="grid grid-cols-1 md:grid-cols-3 gap-4 mb-4">
-<select class="p-3 border border-gray-600 rounded-lg bg-gradient-to-r from-pink-500 to-red-400 text-white bg-gray-900 text-gray-800 text-gray-100" id="studentSelector"></select>
-<input class="p-3 border border-gray-600 rounded-lg text-blue-900" id="updateAttendance" placeholder="Update Attendance (%)" type="number"/>
-<input class="p-3 border border-gray-600 rounded-lg text-blue-900" id="updateFees" placeholder="Update Fee Dues" type="number"/>
+
+    <div id="adminControls">
+      <div class="hidden mb-8 p-6 bg-yellow-100 border border-gray-600-yellow-400 border border-gray-600 border border-gray-600-yellow-300 rounded-xl" id="adminControls">
+ <h2 class="text-xl font-bold mb-4 text-yellow-800">
+  Admin Panel
+ </h2>
+ <!-- Student data update -->
+ <div class="grid grid-cols-1 md:grid-cols-3 gap-4 mb-4">
+  <select class="p-3 border border-gray-600 rounded-lg bg-gradient-to-r from-pink-500 to-red-400 text-white bg-gray-900 text-gray-800 text-gray-100" id="studentSelector">
+  </select>
+  <input class="p-3 border border-gray-600 rounded-lg text-blue-900" id="updateAttendance" placeholder="Update Attendance (%)" type="number"/>
+  <input class="p-3 border border-gray-600 rounded-lg text-blue-900" id="updateFees" placeholder="Update Fee Dues" type="number"/>
+ </div>
+ <button class="bg-blue-500 hover:bg-gradient-to-r from-sky-400 to-blue-600 text-white hover:bg-blue-700 text-white px-5 py-2 rounded-lg font-semibold" onclick="updateStudentData()">
+  Update Student Info
+ </button>
+ <div class="grid grid-cols-2 md:grid-cols-5 gap-4 mb-4">
+  <input class="p-2 border border-gray-600 rounded text-blue-900" id="C_PROGRAM_input" placeholder="C PROGRAM" type="number"/>
+  <input class="p-2 border border-gray-600 rounded text-blue-900" id="PYTHON_input" placeholder="PYTHON" type="number"/>
+  <input class="p-2 border border-gray-600 rounded text-blue-900" id="OOPS_input" placeholder="OOPS" type="number"/>
+  <input class="p-2 border border-gray-600 rounded text-blue-900" id="DBMS_input" placeholder="DBMS" type="number"/>
+  <input class="p-2 border border-gray-600 rounded text-blue-900" id="MATHS_input" placeholder="MATHS" type="number"/>
+ </div>
+ <button class="bg-purple-500 hover:bg-gradient-to-r from-purple-400 to-purple-600 text-white text-white px-4 py-2 rounded" onclick="updateSubjectAttendance()">
+  Update Subject Attendance
+ </button>
+ <!-- Post Notice -->
+ <div class="mt-6">
+  <input class="w-full p-3 border border-gray-600 rounded-lg mb-2 text-blue-900" id="newNotice" placeholder="Enter Notice for Students" type="text"/>
+  <button class="bg-green-500 hover:bg-gradient-to-r from-green-400 to-green-600 text-white hover:bg-green-700 text-white px-5 py-2 rounded-lg font-semibold" onclick="postNotice()">
+   Post Notice
+  </button>
+ </div>
+ <!-- Payment QR Upload -->
+ <div class="mt-8 border border-gray-600-t pt-6">
+  <h3 class="text-lg font-semibold mb-2">
+   Set / Update Payment QR Code
+  </h3>
+  <input accept="image/*" class="mb-3 text-blue-900" id="qrUploader" type="file"/>
+  <br/>
+  <img alt="QR Code Preview" class="w-32 h-auto max-w-xs rounded-lg border border-gray-600 p-2 bg-gradient-to-r from-pink-500 to-red-400 text-white bg-gray-900 shadow mb-4" id="adminQrPreview" src=""/>
+  <br/>
+  <button class="bg-indigo-500 hover:bg-gradient-to-r from-blue-500 to-indigo-600 text-white hover:bg-indigo-700 text-white px-5 py-2 rounded-lg font-semibold" onclick="uploadQrCode()">
+   Upload QR Code
+  </button>
+ </div>
+ <!-- Pending Payments Section -->
+ <div class="mt-8 p-4 bg-gray-100 rounded-lg">
+  <h3 class="text-xl font-semibold mb-2">
+   Pending Payments
+  </h3>
+  <div class="space-y-4 max-h-64 overflow-y-auto border border-gray-600 p-3 bg-gradient-to-r from-pink-500 to-red-400 text-white bg-gray-900 rounded shadow-inner" id="pendingPaymentsContainer">
+   <!-- Pending payment entries will be added here dynamically -->
+  </div>
+ </div>
 </div>
-<button class="bg-blue-500 hover:bg-gradient-to-r from-sky-400 to-blue-600 text-white hover:bg-blue-700 text-white px-5 py-2 rounded-lg font-semibold" onclick="updateStudentData()">Update Student Info</button>
-<div class="grid grid-cols-2 md:grid-cols-5 gap-4 mb-4">
-<input class="p-2 border border-gray-600 rounded text-blue-900" id="C_PROGRAM_input" placeholder="C PROGRAM" type="number"/>
-<input class="p-2 border border-gray-600 rounded text-blue-900" id="PYTHON_input" placeholder="PYTHON" type="number"/>
-<input class="p-2 border border-gray-600 rounded text-blue-900" id="OOPS_input" placeholder="OOPS" type="number"/>
-<input class="p-2 border border-gray-600 rounded text-blue-900" id="DBMS_input" placeholder="DBMS" type="number"/>
-<input class="p-2 border border-gray-600 rounded text-blue-900" id="MATHS_input" placeholder="MATHS" type="number"/>
-</div>
-<button class="bg-purple-500 hover:bg-gradient-to-r from-purple-400 to-purple-600 text-white text-white px-4 py-2 rounded" onclick="updateSubjectAttendance()">Update Subject Attendance</button>
-<!-- Post Notice -->
-<div class="mt-6">
-<input class="w-full p-3 border border-gray-600 rounded-lg mb-2 text-blue-900" id="newNotice" placeholder="Enter Notice for Students" type="text"/>
-<button class="bg-green-500 hover:bg-gradient-to-r from-green-400 to-green-600 text-white hover:bg-green-700 text-white px-5 py-2 rounded-lg font-semibold" onclick="postNotice()">Post Notice</button>
-</div>
-<!-- Payment QR Upload -->
-<div class="mt-8 border border-gray-600-t pt-6">
-<h3 class="text-lg font-semibold mb-2">Set / Update Payment QR Code</h3>
-<input accept="image/*" class="mb-3 text-blue-900" id="qrUploader" type="file"/>
-<br/>
-<img alt="QR Code Preview" class="w-32 h-auto max-w-xs rounded-lg border border-gray-600 p-2 bg-gradient-to-r from-pink-500 to-red-400 text-white bg-gray-900 shadow mb-4" id="adminQrPreview" src=""/>
-<br/>
-<button class="bg-indigo-500 hover:bg-gradient-to-r from-blue-500 to-indigo-600 text-white hover:bg-indigo-700 text-white px-5 py-2 rounded-lg font-semibold" onclick="uploadQrCode()">Upload QR Code</button>
-</div>
-<!-- Pending Payments Section -->
-<div class="mt-8 p-4 bg-gray-100 rounded-lg">
-<h3 class="text-xl font-semibold mb-2">Pending Payments</h3>
-<div class="space-y-4 max-h-64 overflow-y-auto border border-gray-600 p-3 bg-gradient-to-r from-pink-500 to-red-400 text-white bg-gray-900 rounded shadow-inner" id="pendingPaymentsContainer">
-<!-- Pending payment entries will be added here dynamically -->
-</div>
-</div>
-</div>
+
+    </div>
     <div class="bg-gradient-to-r from-pink-500 to-red-400 text-white bg-gray-900 mt-8 shadow rounded-xl p-6">
-<h3 class="text-xl font-bold mb-4 text-gray-800 text-gray-100">Important Notices</h3>
-<ul class="space-y-4" id="notices">
-<!-- Dynamic notices go here -->
-</ul>
+ <h3 class="text-xl font-bold mb-4 text-gray-800 text-gray-100">
+  Important Notices
+ </h3>
+ <ul class="space-y-4" id="notices">
+  <!-- Dynamic notices go here -->
+ </ul>
 </div>
+
   </div>
   <script src="script.js"></script>
   <script>
