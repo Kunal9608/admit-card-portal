@@ -81,13 +81,13 @@ tailwind.config = { darkMode: 'class' }
       passwordInput.value = "";
     }
 
-    
-function logout() {
-  currentUser = null;
-  currentRole = null;
-  sessionStorage.clear();
-  window.location.href = "login.html";
-}
+    function logout() {
+      currentUser = null;
+      currentRole = null;
+      document.getElementById("loginPage").classList.remove("hidden");
+      document.getElementById("dashboard").classList.add("hidden");
+      document.getElementById("paymentPage").classList.add("hidden");
+    }
 
     // --- Student Dashboard Load ---
     function loadStudentDashboard() {
@@ -393,7 +393,6 @@ let subjectWiseData = {
   OM: { "C PROGRAM": 90, PYTHON: 85, OOPS: 88, DBMS: 92, MATHS: 91 }
 };
 
-
 function updateSubjectAttendance() {
   const student = document.getElementById("studentSelector").value;
   const fields = ["C PROGRAM", "PYTHON", "OOPS", "DBMS", "MATHS"];
@@ -403,11 +402,6 @@ function updateSubjectAttendance() {
     const val = parseFloat(document.getElementById(id).value);
     subjectWiseData[student][subject] = !isNaN(val) ? val : 0;
   }
-  alert("Subject attendance updated for " + student);
-  if (currentUser === student && currentRole === "student") {
-    loadStudentDashboard();
-  }
-}
   alert("Subject attendance updated for " + student);
   if (currentUser === student && currentRole === "student") {
     loadStudentDashboard();
