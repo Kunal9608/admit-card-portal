@@ -160,6 +160,10 @@
   // Save studentData to sessionStorage
   sessionStorage.setItem("studentData", JSON.stringify(studentData));
 
+  
+  if (currentRole === "student" && currentUser === student) {
+    loadStudentDashboard();
+  }
   alert("Student data updated.");
 
 
