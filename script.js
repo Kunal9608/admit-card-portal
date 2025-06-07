@@ -131,7 +131,8 @@
     }
 
     // --- Update student data (admin) ---
-    function updateStudentData() {
+    
+function updateStudentData() {
   const selector = document.getElementById("studentSelector");
   const attendanceInput = document.getElementById("updateAttendance");
   const feesInput = document.getElementById("updateFees");
@@ -157,13 +158,30 @@
     studentData[student].fees = feesNum;
   }
 
-  // Save studentData to sessionStorage
-  sessionStorage.setItem("studentData", JSON.stringify(studentData));
-
-  
+  // Refresh if logged-in student is same
   if (currentRole === "student" && currentUser === student) {
     loadStudentDashboard();
   }
+
+  alert("Student data updated.");
+  attendanceInput.value = "";
+  feesInput.value = "";
+}
+
+    studentData[student].attendance = attNum;
+  }
+  if (feesVal !== "") {
+    const feesNum = parseFloat(feesVal);
+    if (isNaN(feesNum) || feesNum < 0) {
+      alert("Please enter valid fees dues (>=0).");
+      return;
+    }
+    studentData[student].fees = feesNum;
+  }
+
+  // Save studentData to sessionStorage
+  sessionStorage.setItem("studentData", JSON.stringify(studentData));
+
   alert("Student data updated.");
 
 
@@ -240,12 +258,11 @@
     }
 
     // --- Open payment page from student dashboard ---
-    function openPaymentPage() {
+    
+function openPaymentPage() {
   window.location.href = "pay.html";
-} else {
-        qrImg.src = "";
-        document.getElementById("qrMessage").textContent = "Payment QR code not available. Please contact admin.";
-      }
+}
+
 
       // Clear receipt and UTR inputs
       document.getElementById("paymentReceipt").value = "";
