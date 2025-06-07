@@ -30,5 +30,37 @@
 <p class="text-red-600 mt-4 hidden text-center font-medium" id="errorMessage">Invalid credentials</p>
 </div>
   <script src="script.js"></script>
+  <script>
+    function login() {
+      const usernameInput = document.getElementById("username");
+      const passwordInput = document.getElementById("password");
+      const username = usernameInput.value.trim().toUpperCase();
+      const password = passwordInput.value;
+      const errorMessage = document.getElementById("errorMessage");
+
+      const studentUsers = [{'username': 'KUNAL', 'password': '123'}, {'username': 'AKSHAT', 'password': '123'}, {'username': 'OM', 'password': '123'}];
+      const adminUsers = [{'username': 'ADMIN', 'password': 'admin123'}, {'username': 'ROHAN', 'password': '456'}];
+
+      if (studentUsers.find(u => u.username === username && u.password === password)) {
+        sessionStorage.setItem("username", username);
+        sessionStorage.setItem("role", "student");
+        window.location.href = "student.html";
+        return;
+      }
+      if (adminUsers.find(u => u.username === username && u.password === password)) {
+        sessionStorage.setItem("username", username);
+        sessionStorage.setItem("role", "admin");
+        window.location.href = "admin.html";
+        return;
+      }
+
+      errorMessage.classList.remove("hidden");
+    }
+
+    function togglePassword() {
+      const pwd = document.getElementById("password");
+      pwd.type = pwd.type === "password" ? "text" : "password";
+    }
+  </script>
 </body>
 </html>
