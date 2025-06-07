@@ -1,166 +1,144 @@
 <!DOCTYPE html>
-<html lang="en" >
-<head>
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css"/>
-<script>tailwind.config = { darkMode: 'class' }</script>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>Student & Admin Portal</title>
-  <script src="https://cdn.tailwindcss.com"></script>
-</head>
-<body class="bg-gradient-to-b from-slate-900 to-gray-900 text-white flex items-center justify-center min-h-screen px-4 py-8">
 
-  <!-- Login Page -->
-  
-<button onclick="// removed dark toggle" class="hidden">
+<html lang="en">
+<head>
+<link href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css" rel="stylesheet"/>
+<script>tailwind.config = { darkMode: 'class' }</script>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1" name="viewport"/>
+<title>Student &amp; Admin Portal</title>
+<script src="https://cdn.tailwindcss.com"></script>
+</head>
+<body class="bg-gradient-to-br from-purple-200 via-pink-100 to-yellow-100 text-gray-900 flex items-center justify-center min-h-screen px-4 py-8 animate__animated animate__fadeIn">
+<!-- Login Page -->
+<button class="hidden" onclick="// removed dark toggle">
   Toggle Theme
 </button>
-
-<div id="loginPage" class="w-full max-w-md mx-auto p-8 bg-white text-blue-900 rounded-xl shadow-lg">
-    <h2 class="text-3xl font-bold text-center text-blue-700 mb-6">Login Portal</h2>
-    <div class="mb-4">
-      <label class="block text-gray-700 text-gray-200 font-medium mb-1" class="text-white">Username</label>
-      <input type="text" id="username" placeholder="Enter Username" class="w-full p-3 border border-gray-600 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-400 text-blue-900"/>
-    </div>
-    
+<div class="w-full max-w-md mx-auto p-8 bg-black text-yellow-400 rounded-xl shadow-lg border border-yellow-500" id="loginPage">
+<h2 class="text-3xl font-extrabold text-center text-yellow-400 mb-6 animate__animated animate__bounce">LOGIN PORTAL</h2>
+<div class="mb-4">
+<label class="block text-yellow-300 font-medium mb-1">Username</label>
+<input class="w-full p-3 border border-yellow-500 rounded-lg focus:outline-none focus:ring-2 focus:ring-yellow-400 bg-black text-yellow-200" id="username" placeholder="Enter Username" type="text"/>
+</div>
 <div class="mb-6 relative">
-  <label class="block text-gray-700 text-gray-200 font-medium mb-1" class="text-white">Password</label>
-  <input type="password" id="password" placeholder="Enter Password" class="w-full p-3 border border-gray-600 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-400 text-blue-900 pr-10"/>
-  <button type="button" onclick="togglePassword()" class="absolute right-3 top-9 text-blue-900 text-sm">👁</button>
+<label class="block text-yellow-300 font-medium mb-1">Password</label>
+<input class="w-full p-3 border border-yellow-500 rounded-lg focus:outline-none focus:ring-2 focus:ring-yellow-400 bg-black text-yellow-200" id="password" placeholder="Enter Password" type="password"/>
+<button class="absolute right-3 top-[38px] text-yellow-300 text-base" onclick="togglePassword()" type="button">👁</button>
 </div>
-
-    <button onclick="login()" class="w-full bg-blue-500 hover:bg-gradient-to-r from-sky-400 to-blue-600 text-white hover:bg-blue-700 text-white font-semibold py-2.5 rounded-lg transition duration-200">Login</button>
-    <p id="errorMessage" class="text-red-600 mt-4 hidden text-center font-medium">Invalid credentials</p>
-  </div>
-
-  <!-- Payment Page -->
-  <div id="paymentPage" class="hidden w-full max-w-md p-6 bg-gradient-to-r from-pink-500 to-red-400 text-white bg-gray-900 rounded-xl shadow-xl">
-    <h2 class="text-xl font-bold text-gray-800 text-gray-100 mb-4">Clear Dues</h2>
-
-    <!-- QR Code Display -->
-    <div class="mb-6 text-center">
-      <img id="paymentQrCode" src="" alt="Payment QR Code" class="mx-auto max-w-xs rounded-lg border border-gray-600 p-2 bg-gradient-to-r from-pink-500 to-red-400 text-white bg-gray-900 shadow" />
-      <p id="qrMessage" class="text-gray-600 mt-2">Scan the QR code to pay your dues.</p>
-    </div>
-
-    <!-- Upload receipt and enter UTR -->
-    <div class="mb-4">
-      <label class="block font-medium text-gray-700 text-gray-200 mb-1" class="text-white">Upload Payment Receipt</label>
-      <input type="file" id="paymentReceipt" class="w-full border border-gray-600 p-2 rounded-lg text-blue-900" />
-    </div>
-    <div class="mb-4">
-      <label class="block font-medium text-gray-700 text-gray-200 mb-1" class="text-white">Enter UTR Number</label>
-      <input type="text" id="utrInput" placeholder="Enter UTR" class="w-full border border-gray-600 p-2 rounded-lg text-blue-900" />
-    </div>
-
-    <button onclick="submitPayment()" class="w-full bg-green-500 hover:bg-gradient-to-r from-green-400 to-green-600 text-white text-white py-2 rounded-lg font-semibold">Submit</button>
-    <button onclick="goBackToDashboard()" class="w-full mt-3 bg-gray-500 text-white py-2 rounded-lg font-semibold">Back to Dashboard</button>
-  </div>
-
-  <!-- Dashboard -->
-  <div id="dashboard" class="hidden w-full max-w-5xl p-6 mx-auto animate__animated animate__fadeInUp">
-    <div class="flex justify-between items-center mb-6">
-      <h1 class="text-3xl font-bold text-gray-800 text-gray-100">Dashboard</h1>
-      <button onclick="logout()" class="bg-red-500 hover:bg-red-600 hover:bg-red-700 text-white px-5 py-2 rounded-lg font-medium">Logout</button>
-    </div>
-
-    <!-- Admin Controls -->
-    <div id="adminControls" class="hidden mb-8 p-6 bg-yellow-100 border border-gray-600-yellow-400 border border-gray-600 border border-gray-600-yellow-300 rounded-xl">
-      <h2 class="text-xl font-bold mb-4 text-yellow-800">Admin Panel</h2>
-
-      <!-- Student data update -->
-      <div class="grid grid-cols-1 md:grid-cols-3 gap-4 mb-4">
-        <select id="studentSelector" class="p-3 border border-gray-600 rounded-lg bg-gradient-to-r from-pink-500 to-red-400 text-white bg-gray-900 text-gray-800 text-gray-100"></select>
-        <input type="number" id="updateAttendance" placeholder="Update Attendance (%)" class="p-3 border border-gray-600 rounded-lg text-blue-900"/>
-        <input type="number" id="updateFees" placeholder="Update Fee Dues" class="p-3 border border-gray-600 rounded-lg text-blue-900"/>
-      </div>
-      <button onclick="updateStudentData()" class="bg-blue-500 hover:bg-gradient-to-r from-sky-400 to-blue-600 text-white hover:bg-blue-700 text-white px-5 py-2 rounded-lg font-semibold">Update Student Info</button>
+<button class="mx-auto block bg-yellow-400 hover:bg-yellow-300 text-black font-semibold py-2.5 px-6 rounded-lg transition duration-200" onclick="login()">Login</button>
+<p class="text-gray-800 mt-4 hidden text-gray-800 font-medium" id="errorMessage">Invalid credentials</p>
+</div>
+<!-- Payment Page -->
+<div class="hidden w-full max-w-md p-6 bg-gradient-to-br from-pink-100 via-red-100 to-white text-gray-900 rounded-xl shadow-xl animate__animated animate__fadeInRight" id="paymentPage">
+<h2 class="text-gray-800 font-bold text-gray-800 text-gray-800 mb-4">Clear Dues</h2>
+<!-- QR Code Display -->
+<div class="mb-6 text-center">
+<img alt="Payment QR Code" class="mx-auto max-w-xs rounded-lg border border-gray-600 p-2 bg-gradient-to-r from-pink-500 to-red-400 text-white bg-gray-900 shadow" id="paymentQrCode" src=""/>
+<p class="text-gray-800 mt-2" id="qrMessage">Scan the QR code to pay your dues.</p>
+</div>
+<!-- Upload receipt and enter UTR -->
+<div class="mb-4">
+<label class="text-gray-800">Upload Payment Receipt</label>
+<input class="w-full p-3 border border-gray-300 rounded bg-white text-gray-800 shadow-sm focus:ring-2 focus:ring-purple-400" id="paymentReceipt" type="file"/>
+</div>
+<div class="mb-4">
+<label class="text-gray-800">Enter UTR Number</label>
+<input class="w-full p-3 border border-gray-300 rounded bg-white text-gray-800 shadow-sm focus:ring-2 focus:ring-purple-400" id="utrInput" placeholder="Enter UTR" type="text"/>
+</div>
+<button class="bg-gradient-to-r from-purple-500 to-indigo-600 hover:from-indigo-500 hover:to-purple-700 text-white px-4 py-2 rounded-lg font-semibold transition-all duration-300 hover:scale-105 animate__animated animate__pulse" onclick="submitPayment()">Submit</button>
+<button class="bg-gradient-to-r from-purple-500 to-indigo-600 hover:from-indigo-500 hover:to-purple-700 text-white px-4 py-2 rounded-lg font-semibold transition-all duration-300 hover:scale-105 animate__animated animate__pulse" onclick="goBackToDashboard()">Back to Dashboard</button>
+</div>
+<!-- Dashboard -->
+<div class="hidden w-full max-w-6xl p-6 mx-auto bg-gradient-to-br from-white via-blue-50 to-pink-100 text-gray-900 rounded-xl shadow-2xl animate__animated animate__fadeInUp" id="dashboard">
+<div class="flex justify-between items-center mb-6">
+<h1 class="text-gray-800 font-bold text-gray-800 text-gray-800">Dashboard</h1>
+<button class="bg-gradient-to-r from-purple-500 to-indigo-600 hover:from-indigo-500 hover:to-purple-700 text-white px-4 py-2 rounded-lg font-semibold transition-all duration-300 hover:scale-105 animate__animated animate__pulse" onclick="logout()">Logout</button>
+</div>
+<!-- Admin Controls -->
+<div class="mb-8 p-6 bg-gradient-to-br from-orange-100 via-yellow-100 to-white border border-yellow-300 rounded-xl shadow-lg animate__animated animate__zoomIn" id="adminControls">
+<h2 class="text-gray-800 font-bold mb-4 text-gray-800">Admin Panel</h2>
+<!-- Student data update -->
+<div class="grid grid-cols-1 md:grid-cols-3 gap-4 mb-4">
+<select class="p-3 border border-gray-600 rounded-lg bg-gradient-to-r from-pink-500 to-red-400 text-white bg-gray-900 text-gray-800 text-gray-100" id="studentSelector"></select>
+<input class="w-full p-3 border border-gray-300 rounded bg-white text-gray-800 shadow-sm focus:ring-2 focus:ring-purple-400" id="updateAttendance" placeholder="Update Attendance (%)" type="number"/>
+<input class="w-full p-3 border border-gray-300 rounded bg-white text-gray-800 shadow-sm focus:ring-2 focus:ring-purple-400" id="updateFees" placeholder="Update Fee Dues" type="number"/>
+</div>
+<button class="bg-gradient-to-r from-purple-500 to-indigo-600 hover:from-indigo-500 hover:to-purple-700 text-white px-4 py-2 rounded-lg font-semibold transition-all duration-300 hover:scale-105 animate__animated animate__pulse" onclick="updateStudentData()">Update Student Info</button>
 <div class="grid grid-cols-2 md:grid-cols-5 gap-4 mb-4">
-  <input id="C_PROGRAM_input" type="number" placeholder="C PROGRAM" class="p-2 border border-gray-600 rounded text-blue-900"/>
-  <input id="PYTHON_input" type="number" placeholder="PYTHON" class="p-2 border border-gray-600 rounded text-blue-900"/>
-  <input id="OOPS_input" type="number" placeholder="OOPS" class="p-2 border border-gray-600 rounded text-blue-900"/>
-  <input id="DBMS_input" type="number" placeholder="DBMS" class="p-2 border border-gray-600 rounded text-blue-900"/>
-  <input id="MATHS_input" type="number" placeholder="MATHS" class="p-2 border border-gray-600 rounded text-blue-900"/>
+<input class="w-full p-3 border border-gray-300 rounded bg-white text-gray-800 shadow-sm focus:ring-2 focus:ring-purple-400" id="C_PROGRAM_input" placeholder="C PROGRAM" type="number"/>
+<input class="w-full p-3 border border-gray-300 rounded bg-white text-gray-800 shadow-sm focus:ring-2 focus:ring-purple-400" id="PYTHON_input" placeholder="PYTHON" type="number"/>
+<input class="w-full p-3 border border-gray-300 rounded bg-white text-gray-800 shadow-sm focus:ring-2 focus:ring-purple-400" id="OOPS_input" placeholder="OOPS" type="number"/>
+<input class="w-full p-3 border border-gray-300 rounded bg-white text-gray-800 shadow-sm focus:ring-2 focus:ring-purple-400" id="DBMS_input" placeholder="DBMS" type="number"/>
+<input class="w-full p-3 border border-gray-300 rounded bg-white text-gray-800 shadow-sm focus:ring-2 focus:ring-purple-400" id="MATHS_input" placeholder="MATHS" type="number"/>
 </div>
-<button onclick="updateSubjectAttendance()" class="bg-purple-500 hover:bg-gradient-to-r from-purple-400 to-purple-600 text-white text-white px-4 py-2 rounded">Update Subject Attendance</button>
-
-
-      <!-- Post Notice -->
-      <div class="mt-6">
-        <input type="text" id="newNotice" placeholder="Enter Notice for Students" class="w-full p-3 border border-gray-600 rounded-lg mb-2 text-blue-900"/>
-        <button onclick="postNotice()" class="bg-green-500 hover:bg-gradient-to-r from-green-400 to-green-600 text-white hover:bg-green-700 text-white px-5 py-2 rounded-lg font-semibold">Post Notice</button>
-      </div>
-
-      <!-- Payment QR Upload -->
-      <div class="mt-8 border border-gray-600-t pt-6">
-        <h3 class="text-lg font-semibold mb-2">Set / Update Payment QR Code</h3>
-        <input type="file" id="qrUploader" accept="image/*" class="mb-3 text-blue-900" />
-        <br />
-        <img id="adminQrPreview" src="" alt="QR Code Preview" class="w-32 h-auto max-w-xs rounded-lg border border-gray-600 p-2 bg-gradient-to-r from-pink-500 to-red-400 text-white bg-gray-900 shadow mb-4" />
-        <br />
-        <button onclick="uploadQrCode()" class="bg-indigo-500 hover:bg-gradient-to-r from-blue-500 to-indigo-600 text-white hover:bg-indigo-700 text-white px-5 py-2 rounded-lg font-semibold">Upload QR Code</button>
-      </div>
-
-      <!-- Pending Payments Section -->
-      <div class="mt-8 p-4 bg-gray-100 rounded-lg">
-        <h3 class="text-xl font-semibold mb-2">Pending Payments</h3>
-        <div id="pendingPaymentsContainer" class="space-y-4 max-h-64 overflow-y-auto border border-gray-600 p-3 bg-gradient-to-r from-pink-500 to-red-400 text-white bg-gray-900 rounded shadow-inner">
-          <!-- Pending payment entries will be added here dynamically -->
-        </div>
-      </div>
-    </div>
-
-    <!-- Student Dashboard -->
-    <div id="studentDashboard" class="hidden space-y-6">
-
-      <div class="bg-gradient-to-br from-white to-blue-100 shadow-xl border border-gray-600 border border-gray-600-blue-200 rounded-2xl p-6">
-        <h3 class="text-lg font-semibold text-gray-700 text-gray-200 mb-2">Sem 4 Attendance</h3>
-        
+<button class="bg-gradient-to-r from-purple-500 to-indigo-600 hover:from-indigo-500 hover:to-purple-700 text-white px-4 py-2 rounded-lg font-semibold transition-all duration-300 hover:scale-105 animate__animated animate__pulse" onclick="updateSubjectAttendance()">Update Subject Attendance</button>
+<!-- Post Notice -->
+<div class="mt-6">
+<input class="w-full p-3 border border-gray-300 rounded bg-white text-gray-800 shadow-sm focus:ring-2 focus:ring-purple-400" id="newNotice" placeholder="Enter Notice for Students" type="text"/>
+<button class="bg-gradient-to-r from-purple-500 to-indigo-600 hover:from-indigo-500 hover:to-purple-700 text-white px-4 py-2 rounded-lg font-semibold transition-all duration-300 hover:scale-105 animate__animated animate__pulse" onclick="postNotice()">Post Notice</button>
+</div>
+<!-- Payment QR Upload -->
+<div class="mt-8 border border-gray-600-t pt-6">
+<h3 class="text-gray-800 font-semibold mb-2">Set / Update Payment QR Code</h3>
+<input accept="image/*" class="w-full p-3 border border-gray-300 rounded bg-white text-gray-800 shadow-sm focus:ring-2 focus:ring-purple-400" id="qrUploader" type="file"/>
+<br/>
+<img alt="QR Code Preview" class="w-32 h-auto max-w-xs rounded-lg border border-gray-600 p-2 bg-gradient-to-r from-pink-500 to-red-400 text-white bg-gray-900 shadow mb-4" id="adminQrPreview" src=""/>
+<br/>
+<button class="bg-gradient-to-r from-purple-500 to-indigo-600 hover:from-indigo-500 hover:to-purple-700 text-white px-4 py-2 rounded-lg font-semibold transition-all duration-300 hover:scale-105 animate__animated animate__pulse" onclick="uploadQrCode()">Upload QR Code</button>
+</div>
+<!-- Pending Payments Section -->
+<div class="mt-8 p-4 bg-gray-100 rounded-lg">
+<h3 class="text-gray-800 font-semibold mb-2">Pending Payments</h3>
+<div class="space-y-4 max-h-64 overflow-y-auto border border-gray-600 p-3 bg-gradient-to-r from-pink-500 to-red-400 text-white bg-gray-900 rounded shadow-inner" id="pendingPaymentsContainer">
+<!-- Pending payment entries will be added here dynamically -->
+</div>
+</div>
+<div class="mt-8 border-t pt-6">
+<h3 class="text-lg font-semibold mb-2 text-gray-800">Update Upcoming Holiday</h3>
+<div class="grid grid-cols-1 md:grid-cols-2 gap-4 mb-4">
+<input class="p-2 border border-gray-400 rounded bg-white text-gray-800" id="holidayDateInput" type="date"/>
+<input class="p-2 border border-gray-400 rounded bg-white text-gray-800" id="holidayOccasionInput" placeholder="Enter Occasion" type="text"/>
+</div>
+<button class="bg-green-600 hover:bg-green-700 text-white px-4 py-2 rounded-lg font-semibold" onclick="updateHoliday()">Update Holiday</button>
+</div></div>
+<!-- Student Dashboard -->
+<div class="space-y-6" id="studentDashboard">
+<div class="bg-gradient-to-br from-yellow-50 via-white to-green-100 border border-gray-300 shadow-xl rounded-2xl p-6 transition-all duration-300 hover:scale-105 animate__animated animate__fadeInUp">
+<h3 class="text-gray-800 font-semibold text-gray-800 text-gray-800 mb-2">Sem 4 Attendance</h3>
 <div class="bg-gradient-to-br from-white to-blue-100 shadow-xl border border-gray-600 border border-gray-600-blue-200 rounded-2xl p-6">
-  <h3 class="text-lg font-semibold text-gray-700 text-gray-200 mb-2">Sem 4 Attendance</h3>
-  <p id="attendanceDisplay" class="text-2xl font-bold text-blue-700">--%</p>
-  <button onclick="toggleAttendanceDetails()" class="mt-3 bg-orange-400 hover:bg-gradient-to-r from-orange-400 to-pink-500 text-white text-white px-4 py-2 rounded-lg font-semibold">VIEW</button>
-  <div id="subjectAttendanceDetails" class="mt-4 hidden text-sm text-gray-700 text-gray-200 space-y-1"></div>
-  <p class="text-sm text-gray-500 text-gray-400 mt-2">*Based on credit papers only. Contact HoD for updates.</p>
+<h3 class="text-gray-800 font-semibold text-gray-800 text-gray-800 mb-2">Sem 4 Attendance</h3>
+<p class="text-gray-800 font-bold text-gray-800" id="attendanceDisplay">--%</p>
+<button class="bg-gradient-to-r from-purple-500 to-indigo-600 hover:from-indigo-500 hover:to-purple-700 text-white px-4 py-2 rounded-lg font-semibold transition-all duration-300 hover:scale-105 animate__animated animate__pulse" onclick="toggleAttendanceDetails()">VIEW</button>
+<div class="mt-4 hidden text-sm text-gray-700 text-gray-200 space-y-1" id="subjectAttendanceDetails"></div>
+<p class="text-gray-800 text-gray-800 text-gray-800 mt-2">*Based on credit papers only. Contact HoD for updates.</p>
 </div>
-
-        <p class="text-sm text-gray-500 text-gray-400 mt-2">*Based on credit papers only. Contact HoD for updates.</p>
-      </div>
-
-      <div class="bg-gradient-to-br from-white to-blue-100 shadow-xl border border-gray-600 border border-gray-600-blue-200 rounded-2xl p-6">
-        <h3 class="text-lg font-semibold text-gray-700 text-gray-200 mb-2">Fee Dues</h3>
-        <p id="feesDisplay" class="text-xl font-bold text-red-600">--</p>
-        <button id="clearDuesBtn" onclick="openPaymentPage()" class="mt-3 bg-indigo-500 hover:bg-gradient-to-r from-blue-500 to-indigo-600 text-white hover:bg-indigo-700 text-white px-4 py-2 rounded-lg font-semibold hidden">Clear Dues</button>
-      </div>
-
-      <div class="bg-gradient-to-br from-white to-blue-100 shadow-xl border border-gray-600 border border-gray-600-blue-200 rounded-2xl p-6">
-        <h3 class="text-lg font-semibold text-gray-700 text-gray-200 mb-2">Upcoming Holidays</h3>
-        <p class="text-lg font-bold text-green-700" id="holidayDisplay">07-Jun-2025 - Bakrid</p>
-      </div>
-
-      <div class="bg-gradient-to-br from-white to-blue-100 shadow-xl border border-gray-600 border border-gray-600-blue-200 rounded-2xl p-6 text-center">
-        <h3 class="text-lg font-semibold text-gray-700 text-gray-200 mb-4">Examination Registration</h3>
-        <a
-  id="admitCardLink"
-  href="#"
-  onclick="return validateAdmitCardDownload()"
-  class="inline-block mt-4 bg-green-500 hover:bg-gradient-to-r from-green-400 to-green-600 text-white hover:bg-green-700 text-white px-5 py-2 rounded-lg font-semibold"
->
+<p class="text-gray-800 text-gray-800 text-gray-800 mt-2">*Based on credit papers only. Contact HoD for updates.</p>
+</div>
+<div class="bg-gradient-to-br from-yellow-50 via-white to-green-100 border border-gray-300 shadow-xl rounded-2xl p-6 transition-all duration-300 hover:scale-105 animate__animated animate__fadeInUp">
+<h3 class="text-gray-800 font-semibold text-gray-800 text-gray-800 mb-2">Fee Dues</h3>
+<p class="text-gray-800 font-bold text-gray-800" id="feesDisplay">--</p>
+<button class="bg-gradient-to-r from-purple-500 to-indigo-600 hover:from-indigo-500 hover:to-purple-700 text-white px-4 py-2 rounded-lg font-semibold transition-all duration-300 hover:scale-105 animate__animated animate__pulse" id="clearDuesBtn" onclick="openPaymentPage()">Clear Dues</button>
+</div>
+<div class="bg-gradient-to-br from-yellow-50 via-white to-green-100 border border-gray-300 shadow-xl rounded-2xl p-6 transition-all duration-300 hover:scale-105 animate__animated animate__fadeInUp">
+<h3 class="text-gray-800 font-semibold text-gray-800 text-gray-800 mb-2">Upcoming Holidays</h3>
+<p class="text-gray-800 font-bold text-gray-800" id="holidayDisplay">07-Jun-2025 - Bakrid</p>
+</div>
+<div class="bg-gradient-to-br from-yellow-50 via-white to-green-100 border border-gray-300 shadow-xl rounded-2xl p-6 transition-all duration-300 hover:scale-105 animate__animated animate__fadeInUp">
+<h3 class="text-gray-800 font-semibold text-gray-800 text-gray-800 mb-4">Examination Registration</h3>
+<a class="bg-gradient-to-r from-green-500 to-lime-500 hover:from-lime-500 hover:to-green-600 text-white px-4 py-2 rounded-lg font-semibold transition duration-300 animate__animated animate__fadeIn" href="#" id="admitCardLink" onclick="return validateAdmitCardDownload()">
   Download Admit Card
 </a>
-      </div>
-    </div>
-
-    <!-- Notices Section -->
-    <div class="bg-gradient-to-r from-pink-500 to-red-400 text-white bg-gray-900 mt-8 shadow rounded-xl p-6">
-      <h3 class="text-xl font-bold mb-4 text-gray-800 text-gray-100">Important Notices</h3>
-      <ul id="notices" class="space-y-4">
-        <!-- Dynamic notices go here -->
-      </ul>
-    </div>
-  </div>
-
-  <script>
+</div>
+</div>
+<!-- Notices Section -->
+<div class="bg-gradient-to-br from-pink-100 via-yellow-100 to-white mt-8 shadow-lg rounded-xl p-6 animate__animated animate__fadeIn">
+<h3 class="text-gray-800 font-bold mb-4 text-gray-800 text-gray-800">Important Notices</h3>
+<ul class="space-y-4" id="notices">
+<!-- Dynamic notices go here -->
+</ul>
+</div>
+</div>
+<script>
     // --- Data & Variables ---
 
     const users = {
@@ -545,8 +523,6 @@
     }
 
   </script>
-
-
 <script>
 let subjectWiseData = {
   KUNAL: { "C PROGRAM": 80, PYTHON: 70, OOPS: 80, DBMS: 77, MATHS: 86 },
@@ -596,11 +572,31 @@ function loadStudentDashboard() {
   renderNotices();
 }
 </script>
-
 <script>
 function togglePassword() {
   const pwd = document.getElementById("password");
-  pwd.type = pwd.type === "password" ? "text" : "password";
+  const btn = document.querySelector('button[onclick="togglePassword()"]');
+  if (pwd.type === "password") {
+    pwd.type = "text";
+    btn.textContent = "👁‍🗨";
+  } else {
+    pwd.type = "password";
+    btn.textContent = "👁";
+  }
+}
+
+
+function updateHoliday() {
+  const date = document.getElementById("holidayDateInput").value;
+  const occasion = document.getElementById("holidayOccasionInput").value.trim();
+  if (!date || !occasion) {
+    alert("Please fill both date and occasion.");
+    return;
+  }
+  const formatted = new Date(date).toLocaleDateString("en-GB", { day: "2-digit", month: "short", year: "numeric" });
+  const holidayDisplay = document.getElementById("holidayDisplay");
+  holidayDisplay.textContent = `${formatted} - ${occasion}`;
+  alert("Holiday updated successfully.");
 }
 </script>
 </body></html>
