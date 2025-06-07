@@ -1,15 +1,22 @@
-<!DOCTYPE html>
 
+<!DOCTYPE html>
 <html lang="en">
 <head>
-<link href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css" rel="stylesheet"/>
-<script>tailwind.config = { darkMode: 'class' }</script>
-<meta charset="utf-8"/>
-<meta content="width=device-width, initial-scale=1" name="viewport"/>
-<title>Student &amp; Admin Portal</title>
-<script src="https://cdn.tailwindcss.com"></script>
+  <meta charset="utf-8"/>
+  <meta content="width=device-width, initial-scale=1" name="viewport"/>
+  <title>Student & Admin Portal</title>
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css" rel="stylesheet"/>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&display=swap" rel="stylesheet"/>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <style>
+    * {
+      font-family: 'Poppins', sans-serif;
+    }
+  </style>
 </head>
 <body class="bg-gradient-to-br from-purple-200 via-pink-100 to-yellow-100 text-gray-900 flex items-center justify-center min-h-screen px-4 py-8 animate__animated animate__fadeIn">
+  <!-- The rest of the content will be filled in from original file -->
+
 <!-- Login Page -->
 <button class="hidden" onclick="// removed dark toggle">
   Toggle Theme
@@ -53,7 +60,7 @@
 <div class="hidden w-full max-w-6xl p-6 mx-auto bg-gradient-to-br from-white via-blue-50 to-pink-100 text-gray-900 rounded-xl shadow-2xl animate__animated animate__fadeInUp" id="dashboard">
 <div class="flex justify-between items-center mb-6">
 <h1 class="text-gray-800 font-bold text-gray-800 text-gray-800">Dashboard</h1>
-<button class="bg-gradient-to-r from-purple-500 to-indigo-600 hover:from-indigo-500 hover:to-purple-700 text-white px-4 py-2 rounded-lg font-semibold transition-all duration-300 hover:scale-105 animate__animated animate__pulse" onclick="logout()">Logout</button>
+<button class="bg-red-500 hover:bg-red-600 text-black px-4 py-2 rounded-lg font-semibold transition-all duration-300 hover:scale-105 animate__animated animate__pulse" onclick="logout()">Logout</button>
 </div>
 <!-- Admin Controls -->
 <div class="mb-8 p-6 bg-gradient-to-br from-orange-100 via-yellow-100 to-white border border-yellow-300 rounded-xl shadow-lg animate__animated animate__zoomIn" id="adminControls">
@@ -118,13 +125,13 @@
 <tr class="hover:bg-yellow-100">
 <td class="py-2 px-4 border-b text-center">1</td>
 <td class="py-2 px-4 border-b text-center">KUNAL</td>
-<td class="py-2 px-4 border-b text-center">456</td>
+<td class="py-2 px-4 border-b text-center">890</td>
 <td class="py-2 px-4 border-b text-center">123</td>
 </tr>
 <tr class="hover:bg-yellow-100">
 <td class="py-2 px-4 border-b text-center">2</td>
 <td class="py-2 px-4 border-b text-center">AKSHAT</td>
-<td class="py-2 px-4 border-b text-center">456</td>
+<td class="py-2 px-4 border-b text-center">678</td>
 <td class="py-2 px-4 border-b text-center">123</td>
 </tr>
 <tr class="hover:bg-yellow-100">
@@ -647,4 +654,6 @@ function rejectPayment(index) {
   alert(`Payment request from ${payment.student} has been rejected.`);
   renderPendingPayments();
 }
-</script></body></html>
+</script>
+</body>
+</html>
