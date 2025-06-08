@@ -20,15 +20,15 @@
     }
   </style>
 </head>
-<body class="bg-black text-white flex items-center justify-center min-h-screen px-4 py-8 animate__animated animate__fadeIn">
+<body class="bg-black text-white flex items-center justify-center min-h-screen px-4 py-8  ">
   <!-- The rest of the content will be filled in from original file -->
 
 <!-- Login Page -->
 <button class="hidden" onclick="// removed dark toggle">
   Toggle Theme
 </button>
-<div class="w-full max-w-md mx-auto p-8 bg-black text-yellow-400 rounded-xl shadow-lg border border-yellow-500 animate__animated animate__fadeInDown" id="loginPage">
-<h2 class="text-3xl font-extrabold text-center text-yellow-400 mb-6 animate__animated animate__fadeInDownBig animate__faster animate__delay-1s">LOGIN PORTAL</h2>
+<div class="w-full max-w-md mx-auto p-8 bg-black text-yellow-400 rounded-xl shadow-lg border border-yellow-500  " id="loginPage">
+<h2 class="text-3xl font-extrabold text-center text-yellow-400 mb-6    -1s">LOGIN PORTAL</h2>
 <div class="mb-4">
 <label class="block text-yellow-300 font-medium mb-1">Username</label>
 <input class="w-full p-3 border border-yellow-500 rounded-lg focus:outline-none focus:ring-2 focus:ring-yellow-400 bg-black text-yellow-200 hover:shadow-xl hover:shadow-purple-500/40 transition-shadow duration-300" id="username" placeholder="Enter Username" type="text"/>
@@ -42,35 +42,59 @@
 <p class="text-gray-800 mt-4 hidden text-gray-800 font-medium" id="errorMessage">Invalid credentials</p>
 </div>
 <!-- Payment Page -->
-<div class="hidden w-full max-w-md p-6 bg-gradient-to-br from-pink-100 via-red-100 to-white text-gray-900 rounded-xl shadow-xl animate__animated animate__fadeInUp animate__faster animate__slow" id="paymentPage">
+<div class="hidden w-full max-w-md p-6 bg-gradient-to-br from-pink-100 via-red-100 to-white text-gray-900 rounded-xl shadow-xl           " id="paymentPage">
 <h2 class="text-gray-800 font-bold text-gray-800 text-gray-800 mb-4">Clear Dues</h2>
 <!-- QR Code Display -->
-<div class="mb-6 text-center animate__animated animate__fadeIn animate__faster">
-<img alt="Payment QR Code" class="mx-auto max-w-xs rounded-lg border border-gray-600 p-2 bg-gradient-to-r from-pink-500 to-red-400 text-white bg-gray-900 shadow hover:shadow-xl hover:shadow-purple-500/40 transition-shadow duration-300" id="paymentQrCode" class="animate__animated animate__bounceIn animate__fast" src=""/>
+<div class="mb-6 text-center   ">
+<img alt="Payment QR Code" class="mx-auto max-w-xs rounded-lg border border-gray-600 p-2 bg-gradient-to-r from-pink-500 to-red-400 text-white bg-gray-900 shadow hover:shadow-xl hover:shadow-purple-500/40 transition-shadow duration-300" id="paymentQrCode" class="  " src=""/>
 <p class="text-gray-800 mt-2" id="qrMessage">Scan the QR code to pay your dues.</p>
-<p class="text-red-600 font-semibold text-lg mt-2 animate__animated animate__fadeInDown" id="qrDueAmount">Your Dues: --</p>
+<p class="text-red-600 font-semibold text-lg mt-2  " id="qrDueAmount">Your Dues: --</p>
 </div>
 <!-- Upload receipt and enter UTR -->
 <div class="mb-4">
 <label class="text-gray-800">Upload Payment Receipt</label>
-<input class="w-full p-3 border border-gray-300 rounded bg-white text-gray-800 shadow-sm focus:ring-2 focus:ring-purple-400" id="paymentReceipt" type="file"/>
+<input class="w-full p-3 border border-gray-300 rounded bg-white text-gray-800 shadow-sm focus:ring-2 focus:ring-purple-400" id="paymentReceipt" accept="image/*" type="file"/>
 </div>
 <div class="mb-4">
 <label class="text-gray-800">Enter UTR Number</label>
 <input class="w-full p-3 border border-gray-300 rounded bg-white text-gray-800 shadow-sm focus:ring-2 focus:ring-purple-400" id="utrInput" placeholder="Enter UTR" type="text"/>
 </div>
-<button class="bg-gradient-to-r from-purple-500 to-indigo-600 hover:from-indigo-500 hover:to-purple-700 text-white px-4 py-2 rounded-lg font-semibold transition-all duration-300 hover:scale-105 animate__animated animate__pulse animate__fast hover:shadow-xl hover:shadow-purple-500/40 transition-shadow duration-300" onclick="submitPayment()">Submit</button>
-<button class="bg-gradient-to-r from-purple-500 to-indigo-600 hover:from-indigo-500 hover:to-purple-700 text-white px-4 py-2 rounded-lg font-semibold transition-all duration-300 hover:scale-105 animate__animated animate__pulse animate__fast hover:shadow-xl hover:shadow-purple-500/40 transition-shadow duration-300" onclick="goBackToDashboard()">Back to Dashboard</button>
+<button class="bg-gradient-to-r from-purple-500 to-indigo-600 hover:from-indigo-500 hover:to-purple-700 text-white px-4 py-2 rounded-lg font-semibold transition-all duration-300 hover:scale-105    hover:shadow-xl hover:shadow-purple-500/40 transition-shadow duration-300" onclick="submitPayment()">Submit</button>
+<button class="bg-gradient-to-r from-purple-500 to-indigo-600 hover:from-indigo-500 hover:to-purple-700 text-white px-4 py-2 rounded-lg font-semibold transition-all duration-300 hover:scale-105    hover:shadow-xl hover:shadow-purple-500/40 transition-shadow duration-300" onclick="goBackToDashboard()">Back to Dashboard</button>
+
+
+<!-- Payment History -->
+<div class="mt-6 border border-gray-300 rounded-xl shadow-lg p-4 bg-white text-gray-800">
+  <h3 class="text-lg font-bold text-gray-800 mb-4">Payment History</h3>
+  <div class="overflow-x-auto">
+    <table class="min-w-full bg-white text-gray-800 border border-gray-300 rounded-lg shadow-sm">
+      <thead class="bg-gray-100">
+        <tr>
+          <th class="py-2 px-4 border-b text-left">S.No</th>
+          <th class="py-2 px-4 border-b text-left">UTR</th>
+          <th class="py-2 px-4 border-b text-left">Amount</th>
+          <th class="py-2 px-4 border-b text-left">Status</th>
+          <th class="py-2 px-4 border-b text-left">Date & Time (IST)</th>
+        </tr>
+      </thead>
+      <tbody id="paymentHistoryTable">
+        <!-- Payment history rows go here -->
+      </tbody>
+    </table>
+  </div>
+</div>
+
+
 </div>
 <!-- Dashboard -->
 <div class="hidden w-full max-w-6xl p-6 mx-auto bg-gradient-to-br from-white via-blue-50 to-pink-100 text-gray-900 rounded-xl shadow-2xl" id="dashboard">
 <div class="flex justify-between items-center mb-6">
 <h1 class="text-gray-800 font-bold text-gray-800 text-gray-800">Dashboard</h1>
-<button class="bg-red-500 hover:bg-red-600 text-black px-4 py-2 rounded-lg font-semibold transition-all duration-300 hover:scale-105 animate__animated animate__bounceInRight animate__delay-1s hover:shadow-xl hover:shadow-purple-500/40 transition-shadow duration-300" onclick="logout()">Logout</button>
+<button class="bg-red-500 hover:bg-red-600 text-black px-4 py-2 rounded-lg font-semibold transition-all duration-300 hover:scale-105   -1s hover:shadow-xl hover:shadow-purple-500/40 transition-shadow duration-300" onclick="logout()">Logout</button>
 </div>
 <!-- Admin Controls -->
-<div class="animate__animated animate__fadeInDown" style="animation-delay: 0.5s;">
-<div class="mb-8 p-6 bg-gradient-to-br from-orange-100 via-yellow-100 to-white border border-yellow-300 rounded-xl shadow-lg animate__animated animate__zoomIn" id="adminControls">
+<div class=" " style="animation-delay: 0.5s;">
+<div class="mb-8 p-6 bg-gradient-to-br from-orange-100 via-yellow-100 to-white border border-yellow-300 rounded-xl shadow-lg  " id="adminControls">
 <h2 class="text-gray-800 font-bold mb-4 text-gray-800">Admin Panel</h2>
 <!-- Student data update -->
 <div class="grid grid-cols-1 md:grid-cols-3 gap-4 mb-4">
@@ -78,7 +102,7 @@
 <input class="w-full p-3 border border-gray-300 rounded bg-white text-gray-800 shadow-sm focus:ring-2 focus:ring-purple-400" id="updateAttendance" placeholder="Update Attendance (%)" type="number"/>
 <input class="w-full p-3 border border-gray-300 rounded bg-white text-gray-800 shadow-sm focus:ring-2 focus:ring-purple-400" id="updateFees" placeholder="Update Fee Dues" type="number"/>
 </div>
-<button class="bg-gradient-to-r from-purple-500 to-indigo-600 hover:from-indigo-500 hover:to-purple-700 text-white px-4 py-2 rounded-lg font-semibold transition-all duration-300 hover:scale-105 animate__animated animate__pulse animate__fast hover:shadow-xl hover:shadow-purple-500/40 transition-shadow duration-300" onclick="updateStudentData()">Update Student Info</button>
+<button class="bg-gradient-to-r from-purple-500 to-indigo-600 hover:from-indigo-500 hover:to-purple-700 text-white px-4 py-2 rounded-lg font-semibold transition-all duration-300 hover:scale-105    hover:shadow-xl hover:shadow-purple-500/40 transition-shadow duration-300" onclick="updateStudentData()">Update Student Info</button>
 <div class="grid grid-cols-2 md:grid-cols-5 gap-4 mb-4">
 <input class="w-full p-3 border border-gray-300 rounded bg-white text-gray-800 shadow-sm focus:ring-2 focus:ring-purple-400" id="C_PROGRAM_input" placeholder="C PROGRAM" type="number"/>
 <input class="w-full p-3 border border-gray-300 rounded bg-white text-gray-800 shadow-sm focus:ring-2 focus:ring-purple-400" id="PYTHON_input" placeholder="PYTHON" type="number"/>
@@ -86,11 +110,11 @@
 <input class="w-full p-3 border border-gray-300 rounded bg-white text-gray-800 shadow-sm focus:ring-2 focus:ring-purple-400" id="DBMS_input" placeholder="DBMS" type="number"/>
 <input class="w-full p-3 border border-gray-300 rounded bg-white text-gray-800 shadow-sm focus:ring-2 focus:ring-purple-400" id="MATHS_input" placeholder="MATHS" type="number"/>
 </div>
-<button class="bg-gradient-to-r from-purple-500 to-indigo-600 hover:from-indigo-500 hover:to-purple-700 text-white px-4 py-2 rounded-lg font-semibold transition-all duration-300 hover:scale-105 animate__animated animate__pulse animate__fast hover:shadow-xl hover:shadow-purple-500/40 transition-shadow duration-300" onclick="updateSubjectAttendance()">Update Subject Attendance</button>
+<button class="bg-gradient-to-r from-purple-500 to-indigo-600 hover:from-indigo-500 hover:to-purple-700 text-white px-4 py-2 rounded-lg font-semibold transition-all duration-300 hover:scale-105    hover:shadow-xl hover:shadow-purple-500/40 transition-shadow duration-300" onclick="updateSubjectAttendance()">Update Subject Attendance</button>
 <!-- Post Notice -->
 <div class="mt-6">
-<input class="w-full p-3 border border-gray-300 rounded bg-white text-gray-800 shadow-sm focus:ring-2 focus:ring-purple-400" id="newNotice" placeholder="Enter Notice for Students" class="animate__animated animate__fadeInLeft animate__faster" type="text"/>
-<button class="bg-gradient-to-r from-purple-500 to-indigo-600 hover:from-indigo-500 hover:to-purple-700 text-white px-4 py-2 rounded-lg font-semibold transition-all duration-300 hover:scale-105 animate__animated animate__pulse animate__fast hover:shadow-xl hover:shadow-purple-500/40 transition-shadow duration-300" onclick="postNotice()">Post Notice</button>
+<input class="w-full p-3 border border-gray-300 rounded bg-white text-gray-800 shadow-sm focus:ring-2 focus:ring-purple-400" id="newNotice" placeholder="Enter Notice for Students" class="  " type="text"/>
+<button class="bg-gradient-to-r from-purple-500 to-indigo-600 hover:from-indigo-500 hover:to-purple-700 text-white px-4 py-2 rounded-lg font-semibold transition-all duration-300 hover:scale-105    hover:shadow-xl hover:shadow-purple-500/40 transition-shadow duration-300" onclick="postNotice()">Post Notice</button>
 </div>
 <!-- Payment QR Upload -->
 <div class="mt-8 border border-gray-600-t pt-6">
@@ -99,11 +123,16 @@
 <br/>
 <img alt="QR Code Preview" class="w-32 h-auto max-w-xs rounded-lg border border-gray-600 p-2 bg-gradient-to-r from-pink-500 to-red-400 text-white bg-gray-900 shadow mb-4 hover:shadow-xl hover:shadow-purple-500/40 transition-shadow duration-300" id="adminQrPreview" src=""/>
 <br/>
-<button class="bg-gradient-to-r from-purple-500 to-indigo-600 hover:from-indigo-500 hover:to-purple-700 text-white px-4 py-2 rounded-lg font-semibold transition-all duration-300 hover:scale-105 animate__animated animate__pulse animate__fast hover:shadow-xl hover:shadow-purple-500/40 transition-shadow duration-300" onclick="uploadQrCode()">Upload QR Code</button>
+<button class="bg-gradient-to-r from-purple-500 to-indigo-600 hover:from-indigo-500 hover:to-purple-700 text-white px-4 py-2 rounded-lg font-semibold transition-all duration-300 hover:scale-105    hover:shadow-xl hover:shadow-purple-500/40 transition-shadow duration-300" onclick="uploadQrCode()">Upload QR Code</button>
 </div>
 <!-- Pending Payments Section -->
 <div class="mt-8 p-4 bg-gray-100 rounded-lg hover:shadow-xl hover:shadow-purple-500/40 transition-shadow duration-300">
 <h3 class="text-gray-800 font-semibold mb-2">Pending Payments</h3>
+
+<button onclick="scrollPendingToBottom()" class="bg-yellow-400 hover:bg-yellow-300 text-black font-semibold px-4 py-2 rounded-lg mt-2 shadow hover:shadow-xl transition-all duration-300">
+  ⬇ Scroll to Bottom
+</button>
+
 <div class="space-y-4 max-h-64 overflow-y-auto border border-gray-600 p-3 bg-gradient-to-r from-pink-500 to-red-400 text-white bg-gray-900 rounded shadow-inner" id="pendingPaymentsContainer">
 <!-- Pending payment entries will be added here dynamically -->
 </div>
@@ -116,10 +145,10 @@
 </div>
 <button class="bg-green-600 hover:bg-green-700 text-white px-4 py-2 rounded-lg font-semibold hover:shadow-xl hover:shadow-purple-500/40 transition-shadow duration-300" onclick="updateHoliday()">Update Holiday</button>
 <!-- Student Info Table -->
-<div class="mt-8 border-t pt-6 animate__animated animate__fadeInUp">
-<h3 class="text-lg font-semibold mb-4 text-gray-800 animate__animated animate__wobble animate__delay-1s">All Student Details</h3>
-<div class="overflow-x-auto animate__animated animate__fadeIn">
-<table class="min-w-full bg-white text-gray-800 border border-gray-300 rounded-lg shadow-lg animate__animated animate__zoomIn hover:shadow-xl hover:shadow-purple-500/40 transition-shadow duration-300">
+<div class="mt-8 border-t pt-6         ">
+<h3 class="text-lg font-semibold mb-4 text-gray-800   -1s">All Student Details</h3>
+<div class="overflow-x-auto  ">
+<table class="min-w-full bg-white text-gray-800 border border-gray-300 rounded-lg shadow-lg   hover:shadow-xl hover:shadow-purple-500/40 transition-shadow duration-300">
 <thead class="bg-yellow-300 text-black">
 <tr>
 <th class="py-2 px-4 border-b">S.No</th>
@@ -129,19 +158,19 @@
 </tr>
 </thead>
 <tbody>
-<tr class="hover:bg-yellow-100 animate__animated animate__fadeInLeft animate__faster">
+<tr class="hover:bg-yellow-100   ">
 <td class="py-2 px-4 border-b text-center">1</td>
 <td class="py-2 px-4 border-b text-center">KUNAL</td>
 <td class="py-2 px-4 border-b text-center">890</td>
 <td class="py-2 px-4 border-b text-center">123</td>
 </tr>
-<tr class="hover:bg-yellow-100 animate__animated animate__fadeInLeft animate__faster">
+<tr class="hover:bg-yellow-100   ">
 <td class="py-2 px-4 border-b text-center">2</td>
 <td class="py-2 px-4 border-b text-center">AKSHAT</td>
 <td class="py-2 px-4 border-b text-center">678</td>
 <td class="py-2 px-4 border-b text-center">123</td>
 </tr>
-<tr class="hover:bg-yellow-100 animate__animated animate__fadeInLeft animate__faster">
+<tr class="hover:bg-yellow-100   ">
 <td class="py-2 px-4 border-b text-center">3</td>
 <td class="py-2 px-4 border-b text-center">OM</td>
 <td class="py-2 px-4 border-b text-center">456</td>
@@ -153,40 +182,40 @@
 </div>
 </div>
 </div>
-<div class="animate__animated animate__fadeInUp" style="animation-delay: 0.5s;">
+<div class="        " style="animation-delay: 0.5s;">
 <!-- Student Dashboard -->
 <div class="space-y-6" id="studentDashboard">
-<div class="bg-gradient-to-br from-yellow-50 via-white to-green-100 border border-gray-300 shadow-xl rounded-2xl p-6 animate__animated animate__fadeInUp animate__fast animate__delay-1s hover:animate__pulse transition-all duration-300 hover:scale-105 animate__animated animate__fadeInUp animate__slow">
+<div class="bg-gradient-to-br from-yellow-50 via-white to-green-100 border border-gray-300 shadow-xl rounded-2xl p-6           -1s hover: transition-all duration-300 hover:scale-105   ">
 <h3 class="text-gray-800 font-semibold text-gray-800 text-gray-800 mb-2">Sem 4 Attendance</h3>
 <div class="bg-gradient-to-br from-white to-blue-100 shadow-xl border border-gray-600 border border-gray-600-blue-200 rounded-2xl p-6">
 <h3 class="text-gray-800 font-semibold text-gray-800 text-gray-800 mb-2">Sem 4 Attendance</h3>
-<p class="text-gray-800 font-bold text-gray-800 animate__animated animate__bounceInDown animate__faster" id="attendanceDisplay">--%</p>
-<button class="bg-gradient-to-r from-purple-500 to-indigo-600 hover:from-indigo-500 hover:to-purple-700 text-white px-4 py-2 rounded-lg font-semibold transition-all duration-300 hover:scale-105 animate__animated animate__pulse animate__fast hover:shadow-xl hover:shadow-purple-500/40 transition-shadow duration-300" onclick="toggleAttendanceDetails()">VIEW</button>
-<div class="mt-4 hidden text-sm text-gray-700 text-gray-200 space-y-1" id="subjectAttendanceDetails" class="animate__animated animate__fadeInUp animate__faster hidden text-sm text-gray-700 text-gray-200 space-y-1"></div>
+<p class="text-gray-800 font-bold text-gray-800   " id="attendanceDisplay">--%</p>
+<button class="bg-gradient-to-r from-purple-500 to-indigo-600 hover:from-indigo-500 hover:to-purple-700 text-white px-4 py-2 rounded-lg font-semibold transition-all duration-300 hover:scale-105    hover:shadow-xl hover:shadow-purple-500/40 transition-shadow duration-300" onclick="toggleAttendanceDetails()">VIEW</button>
+<div class="mt-4 hidden text-sm text-gray-700 text-gray-200 space-y-1" id="subjectAttendanceDetails" class="          hidden text-sm text-gray-700 text-gray-200 space-y-1"></div>
 <p class="text-gray-800 text-gray-800 text-gray-800 mt-2">*Based on credit papers only. Contact HoD for updates.</p>
 </div>
 <p class="text-gray-800 text-gray-800 text-gray-800 mt-2">*Based on credit papers only. Contact HoD for updates.</p>
 </div>
-<div class="bg-gradient-to-br from-yellow-50 via-white to-green-100 border border-gray-300 shadow-xl rounded-2xl p-6 animate__animated animate__fadeInUp animate__fast animate__delay-1s hover:animate__pulse transition-all duration-300 hover:scale-105 animate__animated animate__fadeInUp animate__slow">
+<div class="bg-gradient-to-br from-yellow-50 via-white to-green-100 border border-gray-300 shadow-xl rounded-2xl p-6           -1s hover: transition-all duration-300 hover:scale-105   ">
 <h3 class="text-gray-800 font-semibold text-gray-800 text-gray-800 mb-2">Fee Dues</h3>
 <p class="text-gray-800 font-bold text-gray-800" id="feesDisplay">--</p>
-<button class="bg-gradient-to-r from-purple-500 to-indigo-600 hover:from-indigo-500 hover:to-purple-700 text-white px-4 py-2 rounded-lg font-semibold transition-all duration-300 hover:scale-105 animate__animated animate__pulse animate__fast hover:shadow-xl hover:shadow-purple-500/40 transition-shadow duration-300" id="clearDuesBtn" onclick="openPaymentPage()">Clear Dues</button>
+<button class="bg-gradient-to-r from-purple-500 to-indigo-600 hover:from-indigo-500 hover:to-purple-700 text-white px-4 py-2 rounded-lg font-semibold transition-all duration-300 hover:scale-105    hover:shadow-xl hover:shadow-purple-500/40 transition-shadow duration-300" id="clearDuesBtn" onclick="openPaymentPage()">Clear Dues</button>
 </div>
-<div class="bg-gradient-to-br from-yellow-50 via-white to-green-100 border border-gray-300 shadow-xl rounded-2xl p-6 animate__animated animate__fadeInUp animate__fast animate__delay-1s hover:animate__pulse transition-all duration-300 hover:scale-105 animate__animated animate__fadeInUp animate__slow">
+<div class="bg-gradient-to-br from-yellow-50 via-white to-green-100 border border-gray-300 shadow-xl rounded-2xl p-6           -1s hover: transition-all duration-300 hover:scale-105   ">
 <h3 class="text-gray-800 font-semibold text-gray-800 text-gray-800 mb-2">Upcoming Holidays</h3>
 <p class="text-gray-800 font-bold text-gray-800" id="holidayDisplay">07-Jun-2025 - Bakrid</p>
 </div>
-<div class="bg-gradient-to-br from-yellow-50 via-white to-green-100 border border-gray-300 shadow-xl rounded-2xl p-6 animate__animated animate__fadeInUp animate__fast animate__delay-1s hover:animate__pulse transition-all duration-300 hover:scale-105 animate__animated animate__fadeInUp animate__slow">
+<div class="bg-gradient-to-br from-yellow-50 via-white to-green-100 border border-gray-300 shadow-xl rounded-2xl p-6           -1s hover: transition-all duration-300 hover:scale-105   ">
 <h3 class="text-gray-800 font-semibold text-gray-800 text-gray-800 mb-4">Examination Registration</h3>
-<a class="bg-gradient-to-r from-green-500 to-lime-500 hover:from-lime-500 hover:to-green-600 text-white px-4 py-2 rounded-lg font-semibold transition duration-300 animate__animated animate__fadeIn hover:shadow-xl hover:shadow-purple-500/40 transition-shadow duration-300" href="#" id="admitCardLink" onclick="return validateAdmitCardDownload()">
+<a class="bg-gradient-to-r from-green-500 to-lime-500 hover:from-lime-500 hover:to-green-600 text-white px-4 py-2 rounded-lg font-semibold transition duration-300   hover:shadow-xl hover:shadow-purple-500/40 transition-shadow duration-300" href="#" id="admitCardLink" onclick="return validateAdmitCardDownload()">
   Download Admit Card
 </a>
 </div>
 </div>
 <!-- Notices Section -->
-<div class="bg-gradient-to-br from-pink-100 via-yellow-100 to-white mt-8 shadow-lg rounded-xl p-6 animate__animated animate__fadeInUp animate__fast">
+<div class="bg-gradient-to-br from-pink-100 via-yellow-100 to-white mt-8 shadow-lg rounded-xl p-6          ">
 <h3 class="text-gray-800 font-bold mb-4 text-gray-800 text-gray-800">Important Notices</h3>
-<ul class="space-y-4 animate__animated animate__fadeIn animate__faster" id="notices">
+<ul class="space-y-4   " id="notices">
 <!-- Dynamic notices go here -->
 </ul>
 </div>
@@ -220,6 +249,7 @@
     // Pending payments list
     // Each pending payment: { student: string, receiptDataUrl: string, utr: string }
     let pendingPayments = [];
+let confirmedPayments = [];
 
     let currentUser = null;
     let currentRole = null;
@@ -429,6 +459,7 @@
       document.getElementById("paymentPage").classList.remove("hidden");
 
       // Set QR code image src for payment
+  renderPaymentHistory();
   document.getElementById("qrDueAmount").textContent = "Your Dues: Rs. " + studentData[currentUser].fees.toFixed(2);
       const qrImg = document.getElementById("paymentQrCode");
       if (paymentQrCodeDataUrl) {
@@ -452,29 +483,37 @@
     // --- Submit payment receipt and UTR (student) ---
     
 
+
+
+
 function submitPayment() {
   const receiptInput = document.getElementById("paymentReceipt");
   const utrInput = document.getElementById("utrInput");
 
   if (receiptInput.files.length === 0) {
-    alert("Please upload your payment receipt.");
+    alert("Please upload your payment receipt (image only).");
     return;
   }
 
   const utr = utrInput.value.trim();
-  if (!utr) {
-    alert("Please enter your payment UTR number.");
+  if (!/^[0-9]{8,}$/.test(utr)) {
+    alert("Please enter a valid UTR number (minimum 8 digits, numbers only).");
     return;
   }
 
   const file = receiptInput.files[0];
-  const reader = new FileReader();
+  if (!file.type.startsWith("image/")) {
+    alert("Only image files are allowed for receipt.");
+    return;
+  }
 
+  const reader = new FileReader();
   reader.onload = function (e) {
     pendingPayments.push({
       student: currentUser,
       receiptDataUrl: e.target.result,
-      utr: utr
+      utr: utr,
+      amount: studentData[currentUser].fees.toFixed(2)
     });
 
     alert("KINDLY WAIT FOR CONFIRMATION BY ADMIN");
@@ -483,6 +522,9 @@ function submitPayment() {
 
   reader.readAsDataURL(file);
 }
+
+
+
             
 
     
@@ -493,7 +535,10 @@ function submitPayment() {
 
   // Remove the rejected payment
   pendingPayments.splice(index, 1);
+  const now = getISTDateTime();
+  confirmedPayments.push({ student: payment.student, amount: payment.amount || '--', utr: payment.utr, status: 'REJECTED', date: now });
   alert(`Payment request from ${payment.student} has been rejected.`);
+  renderPaymentHistory();
 
   // Refresh admin panel
   renderPendingPayments();
@@ -646,7 +691,10 @@ function confirmPayment(index) {
   // Remove from pending
   pendingPayments.splice(index, 1);
 
+  const now = getISTDateTime();
+  confirmedPayments.push({ student: payment.student, amount: studentData[payment.student]?.fees || '--', utr: payment.utr, status: 'APPROVED', date: now });
   alert(`Payment confirmed for ${payment.student}. Dues cleared.`);
+  renderPaymentHistory();
 
   // Refresh admin panel
   renderPendingPayments();
@@ -660,9 +708,46 @@ function rejectPayment(index) {
   if (!payment) return;
 
   pendingPayments.splice(index, 1);
+  const now = getISTDateTime();
+  confirmedPayments.push({ student: payment.student, amount: payment.amount || '--', utr: payment.utr, status: 'REJECTED', date: now });
   alert(`Payment request from ${payment.student} has been rejected.`);
+  renderPaymentHistory();
   renderPendingPayments();
 }
+
+function getISTDateTime() {
+  return new Date().toLocaleString("en-IN", { timeZone: "Asia/Kolkata" });
+}
+
+
+function renderPaymentHistory() {
+  const table = document.getElementById("paymentHistoryTable");
+  if (!table) return;
+
+  table.innerHTML = "";
+  const history = [...pendingPayments.map(p => ({...p, status: 'PENDING'})), ...confirmedPayments];
+  history.forEach((p, index) => {
+    const row = document.createElement("tr");
+    const statusColor = p.status === 'APPROVED' ? 'green' : p.status === 'REJECTED' ? 'red' : 'orange';
+    row.innerHTML = `
+      <td class="py-2 px-4 border-b">${index + 1}</td>
+      <td class="py-2 px-4 border-b">${p.utr || "--"}</td>
+      <td class="py-2 px-4 border-b">${p.amount || "--"}</td>
+      <td class="py-2 px-4 border-b text-${statusColor}-600 font-semibold">${p.status}</td>
+      <td class="py-2 px-4 border-b">${p.date || "--"}</td>
+    `;
+    table.appendChild(row);
+  });
+}
+
+
+function scrollPendingToBottom() {
+  const container = document.getElementById("pendingPaymentsContainer");
+  if (container) {
+    container.scrollTo({ top: container.scrollHeight, behavior: 'smooth' });
+  }
+}
+
 </script>
 </body>
 </html>
