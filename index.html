@@ -176,6 +176,12 @@
 <td class="py-2 px-4 border-b text-center">456</td>
 <td class="py-2 px-4 border-b text-center">123</td>
 </tr>
+<tr class="hover:bg-yellow-100   ">
+<td class="py-2 px-4 border-b text-center">4</td>
+<td class="py-2 px-4 border-b text-center">AKRITI</td>
+<td class="py-2 px-4 border-b text-center">445</td>
+<td class="py-2 px-4 border-b text-center">321</td>
+</tr>
 </tbody>
 </table>
 </div>
@@ -227,7 +233,8 @@
       student: [
         { username: "KUNAL", password: "123" },
         { username: "AKSHAT", password: "123" },
-        { username: "OM", password: "123" }
+        { username: "OM", password: "123" },
+        { username: "AKRITI", password: "321" }
       ],
       admin: [
         { username: "ADMIN", password: "admin123" },
@@ -238,7 +245,8 @@
     const studentData = {
       KUNAL: { attendance: 82.54, fees: 0 },
       AKSHAT: { attendance: 78.12, fees: 500 },
-      OM: { attendance: 88.90, fees: 200 }
+      OM: { attendance: 88.90, fees: 200 },
+      AKRITI: { attendance: 70.90, fees: 20000 }
     };
 
     let notices = [];
@@ -581,7 +589,8 @@ link.onclick = null;
 let subjectWiseData = {
   KUNAL: { "C PROGRAM": 80, PYTHON: 70, OOPS: 80, DBMS: 77, MATHS: 86 },
   AKSHAT: { "C PROGRAM": 65, PYTHON: 75, OOPS: 60, DBMS: 72, MATHS: 68 },
-  OM: { "C PROGRAM": 90, PYTHON: 85, OOPS: 88, DBMS: 92, MATHS: 91 }
+  OM: { "C PROGRAM": 90, PYTHON: 85, OOPS: 88, DBMS: 92, MATHS: 91 },
+  AKRITI: { "C PROGRAM": 90, PYTHON: 85, OOPS: 88, DBMS: 92, MATHS: 91 }
 };
 
 function updateSubjectAttendance() {
