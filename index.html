@@ -571,11 +571,13 @@ function submitPayment() {
     const baseURL = "https://github.com/Kunal9608/admit-card-portal/raw/main/";
     const fileName = `AdmitCard_${username}.pdf`;
     const link = document.createElement('a');
-link.href = baseURL + fileName;
-link.setAttribute('download', fileName);
-document.body.appendChild(link);
-link.click();
-document.body.removeChild(link);
+const baseURL = "https://github.com/Kunal9608/admit-card-portal/raw/main/";  
+const fileName = `AdmitCard_${username}.pdf`;  
+link.href = baseURL + fileName;  
+link.setAttribute("download", fileName);  
+link.onclick = null;
+
+
   }
     }
 
