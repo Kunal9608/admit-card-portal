@@ -568,10 +568,7 @@ function submitPayment() {
       alert("FEE DUES PENDING. PLEASE CLEAR YOUR DUES TO DOWNLOAD ADMIT CARD.");
     };
   } else {
-    const baseURL = "https://github.com/Kunal9608/admit-card-portal/raw/main/";
-    const fileName = `AdmitCard_${username}.pdf`;
-    const link = document.createElement('a');
-const baseURL = "https://github.com/Kunal9608/admit-card-portal/raw/main/";  
+    const baseURL = "https://github.com/Kunal9608/admit-card-portal/raw/main/";  
 const fileName = `AdmitCard_${username}.pdf`;  
 link.href = baseURL + fileName;  
 link.setAttribute("download", fileName);  
