@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="en" class="dark">
+<head>
+  <meta charset="utf-8"/>
+  <meta content="width=device-width, initial-scale=1" name="viewport"/>
+  <title>COLLEGE PAGE</title>
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css" rel="stylesheet"/>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&display=swap" rel="stylesheet"/>
+  <script src="https://cdn.tailwindcss.com"></script>
+<script>
+  tailwind.config = {
+    darkMode: 'class',
+  }
+</script>
+
+  <style>
+    * {
+      font-family: 'Poppins', sans-serif;
+    }
+  </style>
+</head>
+<body class="bg-black text-white flex items-center justify-center min-h-screen px-4 py-8  ">
+
+<div class="hidden w-full max-w-md p-6 bg-gradient-to-br from-pink-100 via-red-100 to-white text-gray-900 rounded-xl shadow-xl           " id="paymentPage">
+<h2 class="text-gray-800 font-bold text-gray-800 text-gray-800 mb-4">Clear Dues</h2>
+<!-- QR Code Display -->
+<div class="mb-6 text-center   ">
+<img alt="Payment QR Code" class="mx-auto max-w-xs rounded-lg border border-gray-600 p-2 bg-gradient-to-r from-pink-500 to-red-400 text-white bg-gray-900 shadow hover:shadow-xl hover:shadow-purple-500/40 transition-shadow duration-300" id="paymentQrCode" class="  " src=""/>
+<p class="text-gray-800 mt-2" id="qrMessage">Scan the QR code to pay your dues.</p>
+<p class="text-red-600 font-semibold text-lg mt-2  " id="qrDueAmount">Your Dues: --</p>
+</div>
+<!-- Upload receipt and enter UTR -->
+<div class="mb-4">
+<label class="text-gray-800">Upload Payment Receipt</label>
+<input class="w-full p-3 border border-gray-300 rounded bg-white text-gray-800 shadow-sm focus:ring-2 focus:ring-purple-400" id="paymentReceipt" accept="image/*" type="file"/>
+</div>
+<div class="mb-4">
+<label class="text-gray-800">Enter UTR Number</label>
+<input class="w-full p-3 border border-gray-300 rounded bg-white text-gray-800 shadow-sm focus:ring-2 focus:ring-purple-400" id="utrInput" placeholder="Enter UTR" type="text"/>
+</div>
+<button class="bg-gradient-to-r from-purple-500 to-indigo-600 hover:from-indigo-500 hover:to-purple-700 text-white px-4 py-2 rounded-lg font-semibold transition-all duration-300 hover:scale-105    hover:shadow-xl hover:shadow-purple-500/40 transition-shadow duration-300" onclick="submitPayment()">Submit</button>
+<button class="bg-gradient-to-r from-purple-500 to-indigo-600 hover:from-indigo-500 hover:to-purple-700 text-white px-4 py-2 rounded-lg font-semibold transition-all duration-300 hover:scale-105    hover:shadow-xl hover:shadow-purple-500/40 transition-shadow duration-300" onclick="goBackToDashboard()">Back to Dashboard</button>
+
+<!-- Payment History -->
+<div class="mt-6 border border-gray-300 rounded-xl shadow-lg p-4 bg-white text-gray-800">
+  <h3 class="text-lg font-bold text-gray-800 mb-4">Payment History</h3>
+  <div class="overflow-x-auto">
+    <table class="min-w-full bg-white text-gray-800 border border-gray-300 rounded-lg shadow-sm">
+      <thead class="bg-gray-100">
+        <tr>
+          <th class="py-2 px-4 border-b text-left">S.No</th>
+          <th class="py-2 px-4 border-b text-left">UTR</th>
+          <th class="py-2 px-4 border-b text-left">Amount</th>
+          <th class="py-2 px-4 border-b text-left">Status</th>
+          <th class="py-2 px-4 border-b text-left">Date & Time (IST)</th>
+        </tr>
+      </thead>
+      <tbody id="paymentHistoryTable">
+        <!-- Payment history rows go here -->
+      </tbody>
+    </table>
+  </div>
+</div>
+
+
+</div>
+</body>
+</html>
