@@ -32,39 +32,71 @@
       margin-bottom: 1.5rem;
     }
 
+    .input-group {
+      display: flex;
+      flex-direction: column;
+      gap: 1rem;
+      margin-bottom: 1rem;
+    }
+
+    .otp-row {
+      display: flex;
+      gap: 0.5rem;
+    }
+
     input {
-      width: 100%;
+      flex: 1;
       padding: 0.75rem;
       border: 1px solid #333;
       border-radius: 5px;
       background-color: #2a2a2a;
       color: white;
-      margin-bottom: 1rem;
       font-size: 1rem;
     }
 
-    button {
+    button.get-otp-btn {
+      padding: 0 1rem;
+      background-color: #ff4d4d;
+      color: white;
+      border: none;
+      border-radius: 5px;
+      cursor: pointer;
+      transition: background 0.3s ease;
+      white-space: nowrap;
+    }
+
+    button.get-otp-btn:hover {
+      background-color: #cc0000;
+    }
+
+    button.submit-btn {
       width: 100%;
       padding: 0.75rem;
-      background-color: #ff4d4d;
+      background-color: #cc0000;
       color: white;
       border: none;
       border-radius: 5px;
       font-size: 1rem;
       cursor: pointer;
       transition: background 0.3s ease;
+      margin-top: 1rem;
     }
 
-    button:hover {
-      background-color: #cc0000;
+    button.submit-btn:hover {
+      background-color: #990000;
     }
 
     .error {
       color: #ff4d4d;
       font-size: 0.85rem;
-      margin-top: -0.5rem;
-      margin-bottom: 1rem;
       min-height: 1rem;
+    }
+
+    p.footer {
+      text-align: center;
+      margin-top: 1rem;
+      font-size: 0.9rem;
+      color: #aaa;
     }
   </style>
 </head>
@@ -73,21 +105,26 @@
   <div class="container">
     <h1>Login</h1>
 
-    <form id="emailForm">
-      <input type="email" id="email" placeholder="Enter your email" required />
-      <div class="error" id="emailError"></div>
-      <button type="submit">GET OTP</button>
+    <form id="authForm">
+      <div class="input-group">
+        <label>Email Address</label>
+        <input type="email" id="email" placeholder="you@example.com" required />
+        <div class="error" id="emailError"></div>
+      </div>
+
+      <div class="input-group">
+        <label>Enter OTP</label>
+        <div class="otp-row">
+          <input type="text" id="otp" maxlength="6" placeholder="123456" required />
+          <button type="button" id="getOtpBtn">GET OTP</button>
+        </div>
+        <div class="error" id="otpError"></div>
+      </div>
+
+      <button type="submit" class="submit-btn">Submit OTP</button>
     </form>
 
-    <form id="otpForm" style="display: none;">
-      <input type="text" id="otp" maxlength="6" placeholder="Enter OTP" required />
-      <div class="error" id="otpError"></div>
-      <button type="submit">Submit OTP</button>
-    </form>
-
-    <p style="text-align:center; margin-top:1rem; font-size:0.9rem;">
-      Demo only. No backend required.
-    </p>
+    <p class="footer">Demo only. No backend required.</p>
   </div>
 
   <script>
@@ -96,21 +133,22 @@
       emailjs.init("XdjVi9bwwdY2h9WHD"); // Your Public Key
     })();
 
-    const emailForm = document.getElementById('emailForm');
-    const otpForm = document.getElementById('otpForm');
+    const form = document.getElementById('authForm');
     const emailInput = document.getElementById('email');
     const otpInput = document.getElementById('otp');
+    const getOtpBtn = document.getElementById('getOtpBtn');
+
     const emailError = document.getElementById('emailError');
     const otpError = document.getElementById('otpError');
 
     let generatedOtp = '';
 
-    emailForm.addEventListener('submit', function (e) {
-      e.preventDefault(); // ⚠️ Must be first line inside handler
-
+    // Send OTP on "GET OTP" click
+    getOtpBtn.addEventListener('click', function () {
       const email = emailInput.value.trim();
       emailError.textContent = '';
-      
+      otpError.textContent = '';
+
       if (!validateEmail(email)) {
         emailError.textContent = 'Please enter a valid email address.';
         return;
@@ -127,8 +165,6 @@
       })
       .then(() => {
         alert('✅ OTP sent to your email!');
-        emailForm.style.display = 'none';
-        otpForm.style.display = 'block';
       })
       .catch(err => {
         console.error("Failed to send OTP:", err);
@@ -136,10 +172,11 @@
       });
     });
 
-    otpForm.addEventListener('submit', function (e) {
+    // Validate OTP on form submit
+    form.addEventListener('submit', function (e) {
       e.preventDefault();
-      const enteredOtp = otpInput.value.trim();
       otpError.textContent = '';
+      const enteredOtp = otpInput.value.trim();
 
       if (enteredOtp === generatedOtp) {
         alert('🎉 OTP Verified Successfully!');
