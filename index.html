@@ -148,8 +148,8 @@
           console.log("Generated OTP:", generatedOtp);
 
           // Send OTP via EmailJS
-          emailjs.send("service_44phjaw", "template_g5sayk2", {
-            to_email: email,
+          emailjs.send("service_44phjaw", "template_b6fw342", {
+            email: email,
             otp_code: generatedOtp
           })
           .then(() => {
