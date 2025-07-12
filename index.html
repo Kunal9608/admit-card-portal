@@ -12,8 +12,8 @@
     body {
       margin: 0;
       font-family: 'Segoe UI', sans-serif;
-      background-color: #121212;
-      color: #fff;
+      background-color: #f5f5f5;
+      color: #333;
       display: flex;
       align-items: center;
       justify-content: center;
@@ -21,17 +21,17 @@
     }
 
     .container {
-      background-color: #1e1e1e;
+      background-color: #fff;
       padding: 2rem;
       border-radius: 10px;
-      box-shadow: 0 0 15px rgba(255, 0, 0, 0.4);
+      box-shadow: 0 0 15px rgba(255, 99, 99, 0.2);
       width: 100%;
       max-width: 400px;
     }
 
     h1 {
       text-align: center;
-      color: #ff4d4d;
+      color: #cc0000;
       margin-bottom: 1.5rem;
     }
 
@@ -50,16 +50,16 @@
     input {
       flex: 1;
       padding: 0.75rem;
-      border: 1px solid #333;
+      border: 1px solid #ccc;
       border-radius: 5px;
-      background-color: #2a2a2a;
-      color: white;
+      background-color: #fafafa;
+      color: #333;
       font-size: 1rem;
     }
 
     button.get-otp-btn,
     button.submit-btn {
-      padding: 0 1rem;
+      padding: 0.6rem 1rem;
       background-color: #ff4d4d;
       color: white;
       border: none;
@@ -75,7 +75,7 @@
     }
 
     .error {
-      color: #ff4d4d;
+      color: #cc0000;
       font-size: 0.85rem;
       min-height: 1rem;
     }
@@ -84,7 +84,7 @@
       text-align: center;
       margin-top: 1rem;
       font-size: 0.9rem;
-      color: #aaa;
+      color: #888;
     }
   </style>
 </head>
@@ -117,70 +117,70 @@
 
   <script>
     // Initialize EmailJS
-    (function () {
+    document.addEventListener("DOMContentLoaded", function () {
       emailjs.init("XdjVi9bwwdY2h9WHD"); // Your Public Key
-    })();
 
-    const emailInput = document.getElementById('email');
-    const otpInput = document.getElementById('otp');
-    const getOtpBtn = document.getElementById('getOtpBtn');
+      const emailInput = document.getElementById('email');
+      const otpInput = document.getElementById('otp');
+      const getOtpBtn = document.getElementById('getOtpBtn');
 
-    const emailError = document.getElementById('emailError');
-    const otpError = document.getElementById('otpError');
+      const emailError = document.getElementById('emailError');
+      const otpError = document.getElementById('otpError');
 
-    let generatedOtp = '';
+      let generatedOtp = '';
 
-    // Ensure the button exists before attaching listener
-    if (getOtpBtn) {
-      getOtpBtn.addEventListener('click', function () {
-        console.log("GET OTP clicked");
+      // Ensure the button exists before attaching listener
+      if (getOtpBtn) {
+        getOtpBtn.addEventListener('click', function () {
+          console.log("GET OTP clicked");
 
-        const email = emailInput.value.trim();
-        emailError.textContent = '';
-        otpError.textContent = '';
+          const email = emailInput.value.trim();
+          emailError.textContent = '';
+          otpError.textContent = '';
 
-        if (!validateEmail(email)) {
-          emailError.textContent = 'Please enter a valid email address.';
-          return;
-        }
+          if (!validateEmail(email)) {
+            emailError.textContent = 'Please enter a valid email address.';
+            return;
+          }
 
-        // Generate 6-digit OTP
-        generatedOtp = Math.floor(100000 + Math.random() * 900000).toString();
-        console.log("Generated OTP:", generatedOtp);
+          // Generate 6-digit OTP
+          generatedOtp = Math.floor(100000 + Math.random() * 900000).toString();
+          console.log("Generated OTP:", generatedOtp);
 
-        // Send OTP via EmailJS
-        emailjs.send("service_44phjaw", "template_g5sayk2", {
-          to_email: email,
-          otp_code: generatedOtp
-        })
-        .then(() => {
-          alert('✅ OTP sent to your email!');
-        })
-        .catch(err => {
-          console.error("Failed to send OTP:", err);
-          emailError.textContent = 'Failed to send OTP. Check console for details.';
+          // Send OTP via EmailJS
+          emailjs.send("service_44phjaw", "template_g5sayk2", {
+            to_email: email,
+            otp_code: generatedOtp
+          })
+          .then(() => {
+            alert('✅ OTP sent to your email!');
+          })
+          .catch(err => {
+            console.error("Failed to send OTP:", err);
+            emailError.textContent = 'Failed to send OTP. Check console for details.';
+          });
         });
-      });
-    } else {
-      console.error("Button not found");
-    }
-
-    // Handle form submission
-    document.getElementById('authForm').addEventListener('submit', function (e) {
-      e.preventDefault();
-      otpError.textContent = '';
-      const enteredOtp = otpInput.value.trim();
-
-      if (enteredOtp === generatedOtp) {
-        alert('🎉 OTP Verified Successfully!');
       } else {
-        otpError.textContent = '❌ Invalid OTP. Please try again.';
+        console.error("Button not found");
+      }
+
+      // Handle form submission
+      document.getElementById('authForm').addEventListener('submit', function (e) {
+        e.preventDefault();
+        otpError.textContent = '';
+        const enteredOtp = otpInput.value.trim();
+
+        if (enteredOtp === generatedOtp) {
+          alert('🎉 OTP Verified Successfully!');
+        } else {
+          otpError.textContent = '❌ Invalid OTP. Please try again.';
+        }
+      });
+
+      function validateEmail(email) {
+        return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
       }
     });
-
-    function validateEmail(email) {
-      return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
-    }
   </script>
 </body>
 </html>
