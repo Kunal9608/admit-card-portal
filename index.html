@@ -73,7 +73,7 @@
   <div class="container">
     <h1>Login</h1>
 
-    <form id="emailForm" style="display: block;">
+    <form id="emailForm">
       <input type="email" id="email" placeholder="Enter your email" required />
       <div class="error" id="emailError"></div>
       <button type="submit">GET OTP</button>
@@ -91,7 +91,7 @@
   </div>
 
   <script>
-    // ✅ Initialize EmailJS
+    // Initialize EmailJS
     (function () {
       emailjs.init("XdjVi9bwwdY2h9WHD"); // Your Public Key
     })();
@@ -106,9 +106,11 @@
     let generatedOtp = '';
 
     emailForm.addEventListener('submit', function (e) {
-      e.preventDefault();
+      e.preventDefault(); // ⚠️ Must be first line inside handler
+
       const email = emailInput.value.trim();
       emailError.textContent = '';
+      
       if (!validateEmail(email)) {
         emailError.textContent = 'Please enter a valid email address.';
         return;
@@ -116,6 +118,7 @@
 
       // Generate 6-digit OTP
       generatedOtp = Math.floor(100000 + Math.random() * 900000).toString();
+      console.log("Generated OTP:", generatedOtp);
 
       // Send OTP via EmailJS
       emailjs.send("service_44phjaw", "template_g5sayk2", {
@@ -128,8 +131,8 @@
         otpForm.style.display = 'block';
       })
       .catch(err => {
-        console.error(err);
-        emailError.textContent = 'Failed to send OTP. Try again.';
+        console.error("Failed to send OTP:", err);
+        emailError.textContent = 'Failed to send OTP. Check console for details.';
       });
     });
 
@@ -140,7 +143,6 @@
 
       if (enteredOtp === generatedOtp) {
         alert('🎉 OTP Verified Successfully!');
-        // You can redirect or proceed here
       } else {
         otpError.textContent = '❌ Invalid OTP. Please try again.';
       }
