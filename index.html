@@ -1,119 +1,145 @@
-
 <!DOCTYPE html>
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>Login with Email & OTP</title>
-  <script src="https://cdn.jsdelivr.net/npm/emailjs-com@3/dist/email.min.js"></script>
-  <style>
-    body {
-      font-family: Arial, sans-serif;
-      background: #f4f4f4;
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      height: 100vh;
-    }
-    .container {
-      background: white;
-      padding: 30px;
-      border-radius: 8px;
-      box-shadow: 0 0 10px #ccc;
-      width: 320px;
-    }
-    input {
-      padding: 10px;
-      margin: 10px 0;
-      border-radius: 5px;
-      border: 1px solid #ccc;
-      width: 100%;
-      box-sizing: border-box;
-    }
-    .row {
-      display: flex;
-      align-items: center;
-    }
-    .row input {
-      flex: 2;
-      margin-right: 10px;
-    }
-    .row button {
-      flex: 1;
-    }
-    button {
-      padding: 10px;
-      background: #007BFF;
-      border: none;
-      color: white;
-      border-radius: 5px;
-      cursor: pointer;
-      width: 100%;
-      margin-top: 10px;
-    }
-    .success {
-      color: green;
-      font-size: 14px;
-      margin-top: 10px;
-    }
-  </style>
+  <title>Login with Email OTP</title>
+  <script src="https://cdn.tailwindcss.com "></script>
+  <script src="https://cdn.jsdelivr.net/npm/emailjs-com @3/dist/email.min.js"></script>
+  <!-- Google reCAPTCHA -->
+  <script src="https://www.google.com/recaptcha/api.js " async defer></script>
 </head>
-<body>
+<body class="bg-gray-100 flex items-center justify-center min-h-screen">
 
-  <div class="container">
-    <h2>Email Login</h2>
+  <div class="w-full max-w-md bg-white rounded-xl shadow-lg p-8 space-y-6">
+    <h2 class="text-2xl font-bold text-center text-gray-800">Login with Email</h2>
 
-    <input type="email" id="email" placeholder="Enter your email" required />
-
-    <div class="row">
-      <input type="text" id="otp" placeholder="Enter OTP" />
-      <button onclick="sendOTP()">Get OTP</button>
+    <!-- Email Input -->
+    <div class="space-y-2">
+      <label for="email" class="block text-sm font-medium text-gray-700">Email Address</label>
+      <input type="email"
+             id="email"
+             placeholder="you@example.com"
+             class="w-full px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"/>
     </div>
 
-    <button onclick="verifyOTP()">Submit</button>
+    <!-- OTP Request -->
+    <div class="flex items-center space-x-2">
+      <input type="text"
+             id="otp"
+             placeholder="Enter OTP"
+             class="flex-1 px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"/>
+      <button onclick="sendOTP()"
+              class="px-4 py-2 bg-blue-600 text-white rounded-md hover:bg-blue-700 transition">
+        Get OTP
+      </button>
+    </div>
 
-    <p id="msg" class="success"></p>
+    <!-- reCAPTCHA -->
+    <div class="flex justify-center">
+      <div class="g-recaptcha" data-sitekey="YOUR_RECAPTCHA_SITE_KEY"></div>
+    </div>
+
+    <!-- Submit Button -->
+    <button onclick="verifyOTP()"
+            id="submitBtn"
+            disabled
+            class="w-full py-2 bg-green-600 text-white rounded-md hover:bg-green-700 transition disabled:opacity-50 disabled:cursor-not-allowed">
+      Submit
+    </button>
+
+    <!-- Status Message -->
+    <div id="message" class="mt-4 text-center hidden text-sm font-medium"></div>
   </div>
 
   <script>
-    emailjs.init("XdjVi9bwwdY2h9WHD"); // Your Public Key
+    // Initialize EmailJS
+    (function () {
+      emailjs.init("XdjVi9bwwdY2h9WHD"); // Replace with your public key
+    })();
 
     let generatedOTP = "";
+    let isRecaptchaVerified = false;
 
+    const emailInput = document.getElementById("email");
+    const otpInput = document.getElementById("otp");
+    const submitBtn = document.getElementById("submitBtn");
+    const messageEl = document.getElementById("message");
+
+    // Enable/Disable Submit Button
+    [emailInput, otpInput].forEach(input => {
+      input.addEventListener("input", () => {
+        submitBtn.disabled = !(emailInput.value.trim() && otpInput.value.trim() && isRecaptchaVerified);
+      });
+    });
+
+    // reCAPTCHA Verified Callback
+    function onSubmit(token) {
+      isRecaptchaVerified = true;
+      submitBtn.disabled = !(emailInput.value.trim() && otpInput.value.trim());
+      showMessage("reCAPTCHA verified!", "green");
+    }
+
+    // Send OTP
     function sendOTP() {
-      const email = document.getElementById("email").value;
-      if (!email) return alert("Please enter your email");
+      const email = emailInput.value.trim();
+      if (!email) return showMessage("Please enter your email", "red");
 
-      generatedOTP = Math.floor(1000 + Math.random() * 9000).toString();
+      // Check reCAPTCHA
+      if (!isRecaptchaVerified) {
+        showMessage("Please complete the reCAPTCHA", "red");
+        return;
+      }
+
+      generatedOTP = Math.floor(10000 + Math.random() * 90000).toString();
 
       const templateParams = {
         email: email,
-        otp_code: generatedOTP,
+        otp_code: generatedOTP
       };
 
+      showMessage("Sending OTP...", "blue");
+
       emailjs.send("service_44phjaw", "template_b6fw342", templateParams)
-        .then(function(response) {
-          console.log("SUCCESS!", response.status, response.text);
-          document.getElementById("msg").textContent = "OTP sent to your email.";
-        }, function(error) {
-          console.log("FAILED...", error);
-          alert("Failed to send OTP. Try again.");
+        .then(() => {
+          showMessage("OTP sent to your email", "green");
+        })
+        .catch(() => {
+          showMessage("Failed to send OTP. Try again.", "red");
         });
     }
 
-  function verifyOTP() {
-    const userOTP = document.getElementById("otp").value;
-    if (userOTP === generatedOTP) {
-      document.getElementById("msg").textContent = "Login Successful!";
-      // ✅ Redirect after 1 second
-      setTimeout(() => {
-        window.location.href = "dashboard.html"; // replace with your page
-      }, 1000);
-    } else {
-      alert("Incorrect OTP. Try again.");
-    }
-  }
-  </script>
+    // Verify OTP
+    function verifyOTP() {
+      const email = emailInput.value.trim();
+      const enteredOTP = otpInput.value.trim();
 
+      if (!email || !enteredOTP) {
+        showMessage("Please enter your email and OTP", "red");
+        return;
+      }
+
+      if (!isRecaptchaVerified) {
+        showMessage("Please complete the reCAPTCHA", "red");
+        return;
+      }
+
+      if (enteredOTP === generatedOTP) {
+        showMessage("✅ Login successful!", "green");
+        setTimeout(() => {
+          window.location.href = "dashboard.html"; // Replace with your dashboard
+        }, 1000);
+      } else {
+        showMessage("❌ Invalid OTP. Please try again.", "red");
+      }
+    }
+
+    // Show message
+    function showMessage(text, color) {
+      messageEl.textContent = text;
+      messageEl.className = `mt-4 text-center text-sm font-medium text-${color}-600`;
+      messageEl.classList.remove("hidden");
+    }
+  </script>
 </body>
 </html>
