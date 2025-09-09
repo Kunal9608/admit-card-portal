@@ -1,145 +1,659 @@
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>Login with Email OTP</title>
-  <script src="https://cdn.tailwindcss.com "></script>
-  <script src="https://cdn.jsdelivr.net/npm/emailjs-com @3/dist/email.min.js"></script>
-  <!-- Google reCAPTCHA -->
-  <script src="https://www.google.com/recaptcha/api.js " async defer></script>
+  <meta charset="utf-8"/>
+  <meta content="width=device-width, initial-scale=1" name="viewport"/>
+  <title>Student & Admin Portal</title>
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css" rel="stylesheet"/>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&display=swap" rel="stylesheet"/>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <style>
+    * {
+      font-family: 'Poppins', sans-serif;
+    }
+  </style>
 </head>
-<body class="bg-gray-100 flex items-center justify-center min-h-screen">
+<body class="bg-gradient-to-br from-purple-200 via-pink-100 to-yellow-100 text-gray-900 flex items-center justify-center min-h-screen px-4 py-8 animate__animated animate__fadeIn">
+  <!-- The rest of the content will be filled in from original file -->
 
-  <div class="w-full max-w-md bg-white rounded-xl shadow-lg p-8 space-y-6">
-    <h2 class="text-2xl font-bold text-center text-gray-800">Login with Email</h2>
+<!-- Login Page -->
+<button class="hidden" onclick="// removed dark toggle">
+  Toggle Theme
+</button>
+<div class="w-full max-w-md mx-auto p-8 bg-black text-yellow-400 rounded-xl shadow-lg border border-yellow-500" id="loginPage">
+<h2 class="text-3xl font-extrabold text-center text-yellow-400 mb-6 animate__animated animate__bounce">LOGIN PORTAL</h2>
+<div class="mb-4">
+<label class="block text-yellow-300 font-medium mb-1">Username</label>
+<input class="w-full p-3 border border-yellow-500 rounded-lg focus:outline-none focus:ring-2 focus:ring-yellow-400 bg-black text-yellow-200" id="username" placeholder="Enter Username" type="text"/>
+</div>
+<div class="mb-6 relative">
+<label class="block text-yellow-300 font-medium mb-1">Password</label>
+<input class="w-full p-3 border border-yellow-500 rounded-lg focus:outline-none focus:ring-2 focus:ring-yellow-400 bg-black text-yellow-200" id="password" placeholder="Enter Password" type="password"/>
+<button class="absolute right-3 top-[38px] text-yellow-300 text-base" onclick="togglePassword()" type="button">👁</button>
+</div>
+<button class="mx-auto block bg-yellow-400 hover:bg-yellow-300 text-black font-semibold py-2.5 px-6 rounded-lg transition duration-200" onclick="login()">Login</button>
+<p class="text-gray-800 mt-4 hidden text-gray-800 font-medium" id="errorMessage">Invalid credentials</p>
+</div>
+<!-- Payment Page -->
+<div class="hidden w-full max-w-md p-6 bg-gradient-to-br from-pink-100 via-red-100 to-white text-gray-900 rounded-xl shadow-xl animate__animated animate__fadeInRight" id="paymentPage">
+<h2 class="text-gray-800 font-bold text-gray-800 text-gray-800 mb-4">Clear Dues</h2>
+<!-- QR Code Display -->
+<div class="mb-6 text-center">
+<img alt="Payment QR Code" class="mx-auto max-w-xs rounded-lg border border-gray-600 p-2 bg-gradient-to-r from-pink-500 to-red-400 text-white bg-gray-900 shadow" id="paymentQrCode" src=""/>
+<p class="text-gray-800 mt-2" id="qrMessage">Scan the QR code to pay your dues.</p>
+<p class="text-red-600 font-semibold text-lg mt-2 animate__animated animate__fadeInDown" id="qrDueAmount">Your Dues: --</p>
+</div>
+<!-- Upload receipt and enter UTR -->
+<div class="mb-4">
+<label class="text-gray-800">Upload Payment Receipt</label>
+<input class="w-full p-3 border border-gray-300 rounded bg-white text-gray-800 shadow-sm focus:ring-2 focus:ring-purple-400" id="paymentReceipt" type="file"/>
+</div>
+<div class="mb-4">
+<label class="text-gray-800">Enter UTR Number</label>
+<input class="w-full p-3 border border-gray-300 rounded bg-white text-gray-800 shadow-sm focus:ring-2 focus:ring-purple-400" id="utrInput" placeholder="Enter UTR" type="text"/>
+</div>
+<button class="bg-gradient-to-r from-purple-500 to-indigo-600 hover:from-indigo-500 hover:to-purple-700 text-white px-4 py-2 rounded-lg font-semibold transition-all duration-300 hover:scale-105 animate__animated animate__pulse" onclick="submitPayment()">Submit</button>
+<button class="bg-gradient-to-r from-purple-500 to-indigo-600 hover:from-indigo-500 hover:to-purple-700 text-white px-4 py-2 rounded-lg font-semibold transition-all duration-300 hover:scale-105 animate__animated animate__pulse" onclick="goBackToDashboard()">Back to Dashboard</button>
+</div>
+<!-- Dashboard -->
+<div class="hidden w-full max-w-6xl p-6 mx-auto bg-gradient-to-br from-white via-blue-50 to-pink-100 text-gray-900 rounded-xl shadow-2xl animate__animated animate__fadeInUp" id="dashboard">
+<div class="flex justify-between items-center mb-6">
+<h1 class="text-gray-800 font-bold text-gray-800 text-gray-800">Dashboard</h1>
+<button class="bg-red-500 hover:bg-red-600 text-black px-4 py-2 rounded-lg font-semibold transition-all duration-300 hover:scale-105 animate__animated animate__pulse" onclick="logout()">Logout</button>
+</div>
+<!-- Admin Controls -->
+<div class="mb-8 p-6 bg-gradient-to-br from-orange-100 via-yellow-100 to-white border border-yellow-300 rounded-xl shadow-lg animate__animated animate__zoomIn" id="adminControls">
+<h2 class="text-gray-800 font-bold mb-4 text-gray-800">Admin Panel</h2>
+<!-- Student data update -->
+<div class="grid grid-cols-1 md:grid-cols-3 gap-4 mb-4">
+<select class="p-3 border border-gray-600 rounded-lg bg-gradient-to-r from-pink-500 to-red-400 text-white bg-gray-900 text-gray-800 text-gray-100" id="studentSelector"></select>
+<input class="w-full p-3 border border-gray-300 rounded bg-white text-gray-800 shadow-sm focus:ring-2 focus:ring-purple-400" id="updateAttendance" placeholder="Update Attendance (%)" type="number"/>
+<input class="w-full p-3 border border-gray-300 rounded bg-white text-gray-800 shadow-sm focus:ring-2 focus:ring-purple-400" id="updateFees" placeholder="Update Fee Dues" type="number"/>
+</div>
+<button class="bg-gradient-to-r from-purple-500 to-indigo-600 hover:from-indigo-500 hover:to-purple-700 text-white px-4 py-2 rounded-lg font-semibold transition-all duration-300 hover:scale-105 animate__animated animate__pulse" onclick="updateStudentData()">Update Student Info</button>
+<div class="grid grid-cols-2 md:grid-cols-5 gap-4 mb-4">
+<input class="w-full p-3 border border-gray-300 rounded bg-white text-gray-800 shadow-sm focus:ring-2 focus:ring-purple-400" id="C_PROGRAM_input" placeholder="C PROGRAM" type="number"/>
+<input class="w-full p-3 border border-gray-300 rounded bg-white text-gray-800 shadow-sm focus:ring-2 focus:ring-purple-400" id="PYTHON_input" placeholder="PYTHON" type="number"/>
+<input class="w-full p-3 border border-gray-300 rounded bg-white text-gray-800 shadow-sm focus:ring-2 focus:ring-purple-400" id="OOPS_input" placeholder="OOPS" type="number"/>
+<input class="w-full p-3 border border-gray-300 rounded bg-white text-gray-800 shadow-sm focus:ring-2 focus:ring-purple-400" id="DBMS_input" placeholder="DBMS" type="number"/>
+<input class="w-full p-3 border border-gray-300 rounded bg-white text-gray-800 shadow-sm focus:ring-2 focus:ring-purple-400" id="MATHS_input" placeholder="MATHS" type="number"/>
+</div>
+<button class="bg-gradient-to-r from-purple-500 to-indigo-600 hover:from-indigo-500 hover:to-purple-700 text-white px-4 py-2 rounded-lg font-semibold transition-all duration-300 hover:scale-105 animate__animated animate__pulse" onclick="updateSubjectAttendance()">Update Subject Attendance</button>
+<!-- Post Notice -->
+<div class="mt-6">
+<input class="w-full p-3 border border-gray-300 rounded bg-white text-gray-800 shadow-sm focus:ring-2 focus:ring-purple-400" id="newNotice" placeholder="Enter Notice for Students" type="text"/>
+<button class="bg-gradient-to-r from-purple-500 to-indigo-600 hover:from-indigo-500 hover:to-purple-700 text-white px-4 py-2 rounded-lg font-semibold transition-all duration-300 hover:scale-105 animate__animated animate__pulse" onclick="postNotice()">Post Notice</button>
+</div>
+<!-- Payment QR Upload -->
+<div class="mt-8 border border-gray-600-t pt-6">
+<h3 class="text-gray-800 font-semibold mb-2">Set / Update Payment QR Code</h3>
+<input accept="image/*" class="w-full p-3 border border-gray-300 rounded bg-white text-gray-800 shadow-sm focus:ring-2 focus:ring-purple-400" id="qrUploader" type="file"/>
+<br/>
+<img alt="QR Code Preview" class="w-32 h-auto max-w-xs rounded-lg border border-gray-600 p-2 bg-gradient-to-r from-pink-500 to-red-400 text-white bg-gray-900 shadow mb-4" id="adminQrPreview" src=""/>
+<br/>
+<button class="bg-gradient-to-r from-purple-500 to-indigo-600 hover:from-indigo-500 hover:to-purple-700 text-white px-4 py-2 rounded-lg font-semibold transition-all duration-300 hover:scale-105 animate__animated animate__pulse" onclick="uploadQrCode()">Upload QR Code</button>
+</div>
+<!-- Pending Payments Section -->
+<div class="mt-8 p-4 bg-gray-100 rounded-lg">
+<h3 class="text-gray-800 font-semibold mb-2">Pending Payments</h3>
+<div class="space-y-4 max-h-64 overflow-y-auto border border-gray-600 p-3 bg-gradient-to-r from-pink-500 to-red-400 text-white bg-gray-900 rounded shadow-inner" id="pendingPaymentsContainer">
+<!-- Pending payment entries will be added here dynamically -->
+</div>
+</div>
+<div class="mt-8 border-t pt-6">
+<h3 class="text-lg font-semibold mb-2 text-gray-800">Update Upcoming Holiday</h3>
+<div class="grid grid-cols-1 md:grid-cols-2 gap-4 mb-4">
+<input class="p-2 border border-gray-400 rounded bg-white text-gray-800" id="holidayDateInput" type="date"/>
+<input class="p-2 border border-gray-400 rounded bg-white text-gray-800" id="holidayOccasionInput" placeholder="Enter Occasion" type="text"/>
+</div>
+<button class="bg-green-600 hover:bg-green-700 text-white px-4 py-2 rounded-lg font-semibold" onclick="updateHoliday()">Update Holiday</button>
+<!-- Student Info Table -->
+<div class="mt-8 border-t pt-6 animate__animated animate__fadeInUp">
+<h3 class="text-lg font-semibold mb-4 text-gray-800 animate__animated animate__bounceInLeft">All Student Details</h3>
+<div class="overflow-x-auto animate__animated animate__fadeIn">
+<table class="min-w-full bg-white text-gray-800 border border-gray-300 rounded-lg shadow-lg animate__animated animate__zoomIn">
+<thead class="bg-yellow-300 text-black">
+<tr>
+<th class="py-2 px-4 border-b">S.No</th>
+<th class="py-2 px-4 border-b">Student Name</th>
+<th class="py-2 px-4 border-b">Mobile Number</th>
+<th class="py-2 px-4 border-b">Password</th>
+</tr>
+</thead>
+<tbody>
+<tr class="hover:bg-yellow-100">
+<td class="py-2 px-4 border-b text-center">1</td>
+<td class="py-2 px-4 border-b text-center">KUNAL</td>
+<td class="py-2 px-4 border-b text-center">890</td>
+<td class="py-2 px-4 border-b text-center">123</td>
+</tr>
+<tr class="hover:bg-yellow-100">
+<td class="py-2 px-4 border-b text-center">2</td>
+<td class="py-2 px-4 border-b text-center">AKSHAT</td>
+<td class="py-2 px-4 border-b text-center">678</td>
+<td class="py-2 px-4 border-b text-center">123</td>
+</tr>
+<tr class="hover:bg-yellow-100">
+<td class="py-2 px-4 border-b text-center">3</td>
+<td class="py-2 px-4 border-b text-center">OM</td>
+<td class="py-2 px-4 border-b text-center">456</td>
+<td class="py-2 px-4 border-b text-center">123</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+</div></div>
+<!-- Student Dashboard -->
+<div class="space-y-6" id="studentDashboard">
+<div class="bg-gradient-to-br from-yellow-50 via-white to-green-100 border border-gray-300 shadow-xl rounded-2xl p-6 transition-all duration-300 hover:scale-105 animate__animated animate__fadeInUp">
+<h3 class="text-gray-800 font-semibold text-gray-800 text-gray-800 mb-2">Sem 4 Attendance</h3>
+<div class="bg-gradient-to-br from-white to-blue-100 shadow-xl border border-gray-600 border border-gray-600-blue-200 rounded-2xl p-6">
+<h3 class="text-gray-800 font-semibold text-gray-800 text-gray-800 mb-2">Sem 4 Attendance</h3>
+<p class="text-gray-800 font-bold text-gray-800" id="attendanceDisplay">--%</p>
+<button class="bg-gradient-to-r from-purple-500 to-indigo-600 hover:from-indigo-500 hover:to-purple-700 text-white px-4 py-2 rounded-lg font-semibold transition-all duration-300 hover:scale-105 animate__animated animate__pulse" onclick="toggleAttendanceDetails()">VIEW</button>
+<div class="mt-4 hidden text-sm text-gray-700 text-gray-200 space-y-1" id="subjectAttendanceDetails"></div>
+<p class="text-gray-800 text-gray-800 text-gray-800 mt-2">*Based on credit papers only. Contact HoD for updates.</p>
+</div>
+<p class="text-gray-800 text-gray-800 text-gray-800 mt-2">*Based on credit papers only. Contact HoD for updates.</p>
+</div>
+<div class="bg-gradient-to-br from-yellow-50 via-white to-green-100 border border-gray-300 shadow-xl rounded-2xl p-6 transition-all duration-300 hover:scale-105 animate__animated animate__fadeInUp">
+<h3 class="text-gray-800 font-semibold text-gray-800 text-gray-800 mb-2">Fee Dues</h3>
+<p class="text-gray-800 font-bold text-gray-800" id="feesDisplay">--</p>
+<button class="bg-gradient-to-r from-purple-500 to-indigo-600 hover:from-indigo-500 hover:to-purple-700 text-white px-4 py-2 rounded-lg font-semibold transition-all duration-300 hover:scale-105 animate__animated animate__pulse" id="clearDuesBtn" onclick="openPaymentPage()">Clear Dues</button>
+</div>
+<div class="bg-gradient-to-br from-yellow-50 via-white to-green-100 border border-gray-300 shadow-xl rounded-2xl p-6 transition-all duration-300 hover:scale-105 animate__animated animate__fadeInUp">
+<h3 class="text-gray-800 font-semibold text-gray-800 text-gray-800 mb-2">Upcoming Holidays</h3>
+<p class="text-gray-800 font-bold text-gray-800" id="holidayDisplay">07-Jun-2025 - Bakrid</p>
+</div>
+<div class="bg-gradient-to-br from-yellow-50 via-white to-green-100 border border-gray-300 shadow-xl rounded-2xl p-6 transition-all duration-300 hover:scale-105 animate__animated animate__fadeInUp">
+<h3 class="text-gray-800 font-semibold text-gray-800 text-gray-800 mb-4">Examination Registration</h3>
+<a class="bg-gradient-to-r from-green-500 to-lime-500 hover:from-lime-500 hover:to-green-600 text-white px-4 py-2 rounded-lg font-semibold transition duration-300 animate__animated animate__fadeIn" href="#" id="admitCardLink" onclick="return validateAdmitCardDownload()">
+  Download Admit Card
+</a>
+</div>
+</div>
+<!-- Notices Section -->
+<div class="bg-gradient-to-br from-pink-100 via-yellow-100 to-white mt-8 shadow-lg rounded-xl p-6 animate__animated animate__fadeIn">
+<h3 class="text-gray-800 font-bold mb-4 text-gray-800 text-gray-800">Important Notices</h3>
+<ul class="space-y-4" id="notices">
+<!-- Dynamic notices go here -->
+</ul>
+</div>
+</div>
+<script>
+    // --- Data & Variables ---
 
-    <!-- Email Input -->
-    <div class="space-y-2">
-      <label for="email" class="block text-sm font-medium text-gray-700">Email Address</label>
-      <input type="email"
-             id="email"
-             placeholder="you@example.com"
-             class="w-full px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"/>
-    </div>
+    const users = {
+      student: [
+        { username: "KUNAL", password: "123" },
+        { username: "AKSHAT", password: "123" },
+        { username: "OM", password: "123" }
+      ],
+      admin: [
+        { username: "ADMIN", password: "admin123" },
+        { username: "ROHAN", password: "456" }
+      ]
+    };
 
-    <!-- OTP Request -->
-    <div class="flex items-center space-x-2">
-      <input type="text"
-             id="otp"
-             placeholder="Enter OTP"
-             class="flex-1 px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"/>
-      <button onclick="sendOTP()"
-              class="px-4 py-2 bg-blue-600 text-white rounded-md hover:bg-blue-700 transition">
-        Get OTP
-      </button>
-    </div>
+    const studentData = {
+      KUNAL: { attendance: 82.54, fees: 0 },
+      AKSHAT: { attendance: 78.12, fees: 500 },
+      OM: { attendance: 88.90, fees: 200 }
+    };
 
-    <!-- reCAPTCHA -->
-    <div class="flex justify-center">
-      <div class="g-recaptcha" data-sitekey="YOUR_RECAPTCHA_SITE_KEY"></div>
-    </div>
+    let notices = [];
 
-    <!-- Submit Button -->
-    <button onclick="verifyOTP()"
-            id="submitBtn"
-            disabled
-            class="w-full py-2 bg-green-600 text-white rounded-md hover:bg-green-700 transition disabled:opacity-50 disabled:cursor-not-allowed">
-      Submit
-    </button>
+    // Store payment QR Code as data URL or empty string initially
+    let paymentQrCodeDataUrl = "https://github.com/Kunal9608/admit-card-portal/raw/main/kunal.png";
 
-    <!-- Status Message -->
-    <div id="message" class="mt-4 text-center hidden text-sm font-medium"></div>
-  </div>
+    // Pending payments list
+    // Each pending payment: { student: string, receiptDataUrl: string, utr: string }
+    let pendingPayments = [];
 
-  <script>
-    // Initialize EmailJS
-    (function () {
-      emailjs.init("XdjVi9bwwdY2h9WHD"); // Replace with your public key
-    })();
+    let currentUser = null;
+    let currentRole = null;
 
-    let generatedOTP = "";
-    let isRecaptchaVerified = false;
+    // --- Login ---
 
-    const emailInput = document.getElementById("email");
-    const otpInput = document.getElementById("otp");
-    const submitBtn = document.getElementById("submitBtn");
-    const messageEl = document.getElementById("message");
+    function login() {
+      const usernameInput = document.getElementById("username");
+      const passwordInput = document.getElementById("password");
+      const username = usernameInput.value.trim().toUpperCase();
+      const password = passwordInput.value;
 
-    // Enable/Disable Submit Button
-    [emailInput, otpInput].forEach(input => {
-      input.addEventListener("input", () => {
-        submitBtn.disabled = !(emailInput.value.trim() && otpInput.value.trim() && isRecaptchaVerified);
+      const errorMessage = document.getElementById("errorMessage");
+
+      // Check student login
+      if (users.student.find(u => u.username === username && u.password === password)) {
+        currentUser = username;
+        currentRole = "student";
+      }
+      // Check admin login
+      else if (users.admin.find(u => u.username === username && u.password === password)) {
+        currentUser = username;
+        currentRole = "admin";
+      }
+      else {
+        errorMessage.classList.remove("hidden");
+        return;
+      }
+
+      // Clear error message
+      errorMessage.classList.add("hidden");
+
+      // Hide login page and show dashboard
+      document.getElementById("loginPage").classList.add("hidden");
+      document.getElementById("dashboard").classList.remove("hidden");
+      document.getElementById("paymentPage").classList.add("hidden");
+
+      // Show admin or student dashboard accordingly
+      document.getElementById("adminControls").classList.toggle("hidden", currentRole !== "admin");
+      document.getElementById("studentDashboard").classList.toggle("hidden", currentRole !== "student");
+
+      if (currentRole === "student") {
+        loadStudentDashboard();
+      } else if (currentRole === "admin") {
+        loadAdminPanel();
+        renderPendingPayments();
+      }
+
+      // Clear login inputs
+      usernameInput.value = "";
+      passwordInput.value = "";
+    }
+
+    function logout() {
+      currentUser = null;
+      currentRole = null;
+      document.getElementById("loginPage").classList.remove("hidden");
+      document.getElementById("dashboard").classList.add("hidden");
+      document.getElementById("paymentPage").classList.add("hidden");
+    }
+
+    // --- Student Dashboard Load ---
+    function loadStudentDashboard() {
+      if (!currentUser || currentRole !== "student") return;
+
+      const attendance = studentData[currentUser].attendance;
+      const fees = studentData[currentUser].fees;
+
+      document.getElementById("attendanceDisplay").textContent = attendance.toFixed(2) + "%";
+      document.getElementById("feesDisplay").textContent = "Rs. " + fees.toFixed(2);
+
+      // Show Clear Dues button only if dues > 0
+      document.getElementById("clearDuesBtn").classList.toggle("hidden", fees <= 0);
+
+      setAdmitCardLink(currentUser);
+      renderNotices();
+    }
+
+    // --- Admin Panel Load ---
+    function loadAdminPanel() {
+      if (!currentUser || currentRole !== "admin") return;
+
+      // Populate student selector
+      const selector = document.getElementById("studentSelector");
+      selector.innerHTML = "";
+      Object.keys(studentData).forEach(student => {
+        const option = document.createElement("option");
+        option.value = student;
+        option.textContent = student;
+        selector.appendChild(option);
       });
+
+      // Show uploaded QR code if any
+      const adminQrPreview = document.getElementById("adminQrPreview");
+      adminQrPreview.src = paymentQrCodeDataUrl || "";
+
+      // Load pending payments
+      renderPendingPayments();
+
+      renderNotices();
+    }
+
+    // --- Update student data (admin) ---
+    function updateStudentData() {
+      const selector = document.getElementById("studentSelector");
+      const attendanceInput = document.getElementById("updateAttendance");
+      const feesInput = document.getElementById("updateFees");
+
+      const student = selector.value;
+      const attendanceVal = attendanceInput.value.trim();
+      const feesVal = feesInput.value.trim();
+
+      if (attendanceVal !== "") {
+        const attNum = parseFloat(attendanceVal);
+        if (isNaN(attNum) || attNum < 0 || attNum > 100) {
+          alert("Please enter valid attendance % (0-100).");
+          return;
+        }
+        studentData[student].attendance = attNum;
+      }
+      if (feesVal !== "") {
+        const feesNum = parseFloat(feesVal);
+        if (isNaN(feesNum) || feesNum < 0) {
+          alert("Please enter valid fees dues (>=0).");
+          return;
+        }
+        studentData[student].fees = feesNum;
+      }
+
+      alert("Student data updated.");
+
+      // Refresh dashboard if current user is updated student
+      if (currentRole === "student" && currentUser === student) {
+        loadStudentDashboard();
+      }
+
+      // Clear input fields
+      attendanceInput.value = "";
+      feesInput.value = "";
+    }
+
+    // --- Post new notice (admin) ---
+    function postNotice() {
+  const noticeInput = document.getElementById("newNotice");
+  const title = noticeInput.value.trim();
+  if (!title) {
+    alert("Please enter a notice.");
+    return;
+  }
+
+  const newNotice = {
+    title: title,
+    department: "ADMIN", // or pull from a dropdown if needed
+    date: new Date().toLocaleDateString("en-GB") // e.g., 03/06/2025
+  };
+
+  notices.push(newNotice);
+  noticeInput.value = "";
+  renderNotices();
+}
+
+    // --- Render notices for both admin & student ---
+    function renderNotices() {
+      const ul = document.getElementById("notices");
+      ul.innerHTML = "";
+      if (notices.length === 0) {
+        ul.innerHTML = "<li class='text-gray-500 text-gray-400 italic'>No notices posted yet.</li>";
+        return;
+      }
+      notices.forEach(({ title, department, date }) => {
+  const li = document.createElement("li");
+  li.className = "flex items-start gap-4 bg-gray-50 hover:bg-gray-100 rounded-lg p-4 shadow-sm";
+
+  li.innerHTML = `
+    <div class="text-xs font-semibold text-indigo-600 uppercase w-32">
+      ${department}<br/>
+      <span class="text-gray-500 text-gray-400">${date}</span>
+    </div>
+    <div class="text-blue-900 font-bold text-lg">
+      ${title}
+    </div>
+  `;
+  ul.appendChild(li);
+});
+    }
+
+    // --- Payment QR Code Upload (admin) ---
+    function uploadQrCode() {
+      const fileInput = document.getElementById("qrUploader");
+      const file = fileInput.files[0];
+      if (!file) {
+        alert("Please select an image file.");
+        return;
+      }
+      const reader = new FileReader();
+      reader.onload = function (e) {
+        paymentQrCodeDataUrl = e.target.result;
+        document.getElementById("adminQrPreview").src = paymentQrCodeDataUrl;
+        alert("QR Code uploaded successfully.");
+      };
+      reader.readAsDataURL(file);
+    }
+
+    // --- Open payment page from student dashboard ---
+    function openPaymentPage() {
+      document.getElementById("dashboard").classList.add("hidden");
+      document.getElementById("paymentPage").classList.remove("hidden");
+
+      // Set QR code image src for payment
+  document.getElementById("qrDueAmount").textContent = "Your Dues: Rs. " + studentData[currentUser].fees.toFixed(2);
+      const qrImg = document.getElementById("paymentQrCode");
+      if (paymentQrCodeDataUrl) {
+        qrImg.src = paymentQrCodeDataUrl;
+      } else {
+        qrImg.src = "";
+        document.getElementById("qrMessage").textContent = "Kindly wait a few seconds for UTR confirmation...";
+      }
+
+      // Clear receipt and UTR inputs
+      document.getElementById("paymentReceipt").value = "";
+      document.getElementById("utrInput").value = "";
+    }
+
+    // --- Go back to dashboard from payment page ---
+    function goBackToDashboard() {
+      document.getElementById("paymentPage").classList.add("hidden");
+      document.getElementById("dashboard").classList.remove("hidden");
+    }
+
+    // --- Submit payment receipt and UTR (student) ---
+    
+
+function submitPayment() {
+  const receiptInput = document.getElementById("paymentReceipt");
+  const utrInput = document.getElementById("utrInput");
+
+  if (receiptInput.files.length === 0) {
+    alert("Please upload your payment receipt.");
+    return;
+  }
+
+  const utr = utrInput.value.trim();
+  if (!utr) {
+    alert("Please enter your payment UTR number.");
+    return;
+  }
+
+  const file = receiptInput.files[0];
+  const reader = new FileReader();
+
+  reader.onload = function (e) {
+    pendingPayments.push({
+      student: currentUser,
+      receiptDataUrl: e.target.result,
+      utr: utr
     });
 
-    // reCAPTCHA Verified Callback
-    function onSubmit(token) {
-      isRecaptchaVerified = true;
-      submitBtn.disabled = !(emailInput.value.trim() && otpInput.value.trim());
-      showMessage("reCAPTCHA verified!", "green");
+    alert("KINDLY WAIT FOR CONFIRMATION BY ADMIN");
+    goBackToDashboard();
+  };
+
+  reader.readAsDataURL(file);
+}
+            
+
+    
+    // reject payment 
+    function rejectPayment(index) {
+  const payment = pendingPayments[index];
+  if (!payment) return;
+
+  // Remove the rejected payment
+  pendingPayments.splice(index, 1);
+  alert(`Payment request from ${payment.student} has been rejected.`);
+
+  // Refresh admin panel
+  renderPendingPayments();
+}
+
+    // --- Admit Card download validation --
+
+    function setAdmitCardLink(username) {
+  const link = document.getElementById("admitCardLink");
+
+  const attendance = parseFloat(studentData[username].attendance);
+  const fees = parseFloat(studentData[username].fees);
+
+  // Condition: Attendance must be >= 75 and Fees must be 0
+  if (attendance < 75) {
+    link.href = "#";
+    link.removeAttribute("download");
+    link.onclick = (e) => {
+      e.preventDefault();
+      alert("YOUR ATTENDANCE IS BELOW 75% YOU CAN'T SIT IN EXAM, CONTACT EXAMINATION DEPARTMENT.");
+    };
+  } else if (fees > 0) {
+    link.href = "#";
+    link.removeAttribute("download");
+    link.onclick = (e) => {
+      e.preventDefault();
+      alert("FEE DUES PENDING. PLEASE CLEAR YOUR DUES TO DOWNLOAD ADMIT CARD.");
+    };
+  } else {
+    const baseURL = "https://github.com/Kunal9608/admit-card-portal/raw/main/";
+    const fileName = `AdmitCard_${username}.pdf`;
+    link.href = baseURL + fileName;
+    link.setAttribute("download", fileName);
+    link.onclick = null;
+  }
     }
 
-    // Send OTP
-    function sendOTP() {
-      const email = emailInput.value.trim();
-      if (!email) return showMessage("Please enter your email", "red");
-
-      // Check reCAPTCHA
-      if (!isRecaptchaVerified) {
-        showMessage("Please complete the reCAPTCHA", "red");
-        return;
-      }
-
-      generatedOTP = Math.floor(10000 + Math.random() * 90000).toString();
-
-      const templateParams = {
-        email: email,
-        otp_code: generatedOTP
-      };
-
-      showMessage("Sending OTP...", "blue");
-
-      emailjs.send("service_44phjaw", "template_b6fw342", templateParams)
-        .then(() => {
-          showMessage("OTP sent to your email", "green");
-        })
-        .catch(() => {
-          showMessage("Failed to send OTP. Try again.", "red");
-        });
-    }
-
-    // Verify OTP
-    function verifyOTP() {
-      const email = emailInput.value.trim();
-      const enteredOTP = otpInput.value.trim();
-
-      if (!email || !enteredOTP) {
-        showMessage("Please enter your email and OTP", "red");
-        return;
-      }
-
-      if (!isRecaptchaVerified) {
-        showMessage("Please complete the reCAPTCHA", "red");
-        return;
-      }
-
-      if (enteredOTP === generatedOTP) {
-        showMessage("✅ Login successful!", "green");
-        setTimeout(() => {
-          window.location.href = "dashboard.html"; // Replace with your dashboard
-        }, 1000);
-      } else {
-        showMessage("❌ Invalid OTP. Please try again.", "red");
-      }
-    }
-
-    // Show message
-    function showMessage(text, color) {
-      messageEl.textContent = text;
-      messageEl.className = `mt-4 text-center text-sm font-medium text-${color}-600`;
-      messageEl.classList.remove("hidden");
-    }
   </script>
+<script>
+let subjectWiseData = {
+  KUNAL: { "C PROGRAM": 80, PYTHON: 70, OOPS: 80, DBMS: 77, MATHS: 86 },
+  AKSHAT: { "C PROGRAM": 65, PYTHON: 75, OOPS: 60, DBMS: 72, MATHS: 68 },
+  OM: { "C PROGRAM": 90, PYTHON: 85, OOPS: 88, DBMS: 92, MATHS: 91 }
+};
+
+function updateSubjectAttendance() {
+  const student = document.getElementById("studentSelector").value;
+  const fields = ["C PROGRAM", "PYTHON", "OOPS", "DBMS", "MATHS"];
+  subjectWiseData[student] = {};
+  for (let subject of fields) {
+    const id = subject.replace(/ /g, '_') + '_input';
+    const val = parseFloat(document.getElementById(id).value);
+    subjectWiseData[student][subject] = !isNaN(val) ? val : 0;
+  }
+  alert("Subject attendance updated for " + student);
+  if (currentUser === student && currentRole === "student") {
+    loadStudentDashboard();
+  }
+}
+
+function toggleAttendanceDetails() {
+  if (!currentUser || currentRole !== "student") return;
+  const details = document.getElementById("subjectAttendanceDetails");
+  const studentSubjects = subjectWiseData[currentUser];
+  if (!studentSubjects) return;
+  const avg = Object.values(studentSubjects).reduce((a, b) => a + b, 0) / Object.values(studentSubjects).length;
+  document.getElementById("attendanceDisplay").textContent = avg.toFixed(2) + "%";
+  let html = "";
+  for (const [subject, value] of Object.entries(studentSubjects)) {
+    html += `<p>${subject}: <strong>${value}%</strong></p>`;
+  }
+  details.innerHTML = html;
+  details.classList.toggle("hidden");
+}
+
+function loadStudentDashboard() {
+  if (!currentUser || currentRole !== "student") return;
+  const subjects = subjectWiseData[currentUser];
+  const avg = Object.values(subjects).reduce((a, b) => a + b, 0) / Object.values(subjects).length;
+  document.getElementById("attendanceDisplay").textContent = avg.toFixed(2) + "%";
+  const fees = studentData[currentUser].fees;
+  document.getElementById("feesDisplay").textContent = "Rs. " + fees.toFixed(2);
+  document.getElementById("clearDuesBtn").classList.toggle("hidden", fees <= 0);
+  setAdmitCardLink(currentUser);
+  renderNotices();
+}
+</script>
+<script>
+function togglePassword() {
+  const pwd = document.getElementById("password");
+  const btn = document.querySelector('button[onclick="togglePassword()"]');
+  if (pwd.type === "password") {
+    pwd.type = "text";
+    btn.textContent = "👁‍🗨";
+  } else {
+    pwd.type = "password";
+    btn.textContent = "👁";
+  }
+}
+
+
+function updateHoliday() {
+  const date = document.getElementById("holidayDateInput").value;
+  const occasion = document.getElementById("holidayOccasionInput").value.trim();
+  if (!date || !occasion) {
+    alert("Please fill both date and occasion.");
+    return;
+  }
+  const formatted = new Date(date).toLocaleDateString("en-GB", { day: "2-digit", month: "short", year: "numeric" });
+  const holidayDisplay = document.getElementById("holidayDisplay");
+  holidayDisplay.textContent = `${formatted} - ${occasion}`;
+  alert("Holiday updated successfully.");
+}
+</script>
+<script>
+function renderPendingPayments() {
+  const container = document.getElementById("pendingPaymentsContainer");
+  container.innerHTML = "";
+
+  if (pendingPayments.length === 0) {
+    container.innerHTML = "<p class='text-gray-400 italic'>No pending payments.</p>";
+    return;
+  }
+
+  pendingPayments.forEach((payment, index) => {
+    const div = document.createElement("div");
+    div.className = "border border-gray-600 rounded-lg p-3 bg-gradient-to-r from-pink-500 to-red-400 text-white bg-gray-900 shadow";
+
+    div.innerHTML = `
+      <p class="font-semibold mb-2">Student: ${payment.student}</p>
+      <p class="mb-2">UTR: <span class="font-mono">${payment.utr}</span></p>
+      <img src="${payment.receiptDataUrl}" alt="Payment Receipt" class="w-32 h-auto rounded-lg border border-gray-600 mb-2"/>
+      <button onclick="confirmPayment(${index})" class="bg-green-500 hover:bg-green-600 text-white px-4 py-1 rounded font-semibold">Confirm</button>
+      <button onclick="rejectPayment(${index})" class="bg-red-500 hover:bg-red-600 text-white px-4 py-1 rounded font-semibold ml-2">Reject</button>
+    `;
+
+    container.appendChild(div);
+  });
+}
+</script><script>
+function confirmPayment(index) {
+  const payment = pendingPayments[index];
+  if (!payment) return;
+
+  // Clear dues for student
+  if (studentData[payment.student]) {
+    studentData[payment.student].fees = 0;
+  }
+
+  // Remove from pending
+  pendingPayments.splice(index, 1);
+
+  alert(`Payment confirmed for ${payment.student}. Dues cleared.`);
+
+  // Refresh admin panel
+  renderPendingPayments();
+  if (currentRole === "student" && currentUser === payment.student) {
+    loadStudentDashboard();
+  }
+}
+
+function rejectPayment(index) {
+  const payment = pendingPayments[index];
+  if (!payment) return;
+
+  pendingPayments.splice(index, 1);
+  alert(`Payment request from ${payment.student} has been rejected.`);
+  renderPendingPayments();
+}
+</script>
 </body>
 </html>
