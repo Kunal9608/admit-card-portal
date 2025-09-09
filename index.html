@@ -25,7 +25,7 @@
 <h2 class="text-3xl font-extrabold text-center text-yellow-400 mb-6 animate__animated animate__bounce">LOGIN PORTAL</h2>
 <div class="mb-4">
 <label class="block text-yellow-300 font-medium mb-1">Username</label>
-<input class="w-full p-3 border border-yellow-500 rounded-lg focus:outline-none focus:ring-2 focus:ring-yellow-400 bg-black text-yellow-200" id="username" placeholder="Enter Username" type="text"/>
+<input class="w-full p-3 border border-yellow-500 rounded-lg focus:outline-none focus:ring-2 focus:ring-yellow-400 bg-black text-yellow-200" id="username" placeholder="Enter Username or Email" type="text"/>
 </div>
 <div class="mb-6 relative">
 <label class="block text-yellow-300 font-medium mb-1">Password</label>
@@ -117,7 +117,7 @@
 <tr>
 <th class="py-2 px-4 border-b">S.No</th>
 <th class="py-2 px-4 border-b">Student Name</th>
-<th class="py-2 px-4 border-b">Mobile Number</th>
+<th class="py-2 px-4 border-b">Email ID</th>
 <th class="py-2 px-4 border-b">Password</th>
 </tr>
 </thead>
@@ -125,19 +125,19 @@
 <tr class="hover:bg-yellow-100">
 <td class="py-2 px-4 border-b text-center">1</td>
 <td class="py-2 px-4 border-b text-center">KUNAL</td>
-<td class="py-2 px-4 border-b text-center">890</td>
+<td class="py-2 px-4 border-b text-center">kunaldixit.2995@gmail.com</td>
 <td class="py-2 px-4 border-b text-center">123</td>
 </tr>
 <tr class="hover:bg-yellow-100">
 <td class="py-2 px-4 border-b text-center">2</td>
 <td class="py-2 px-4 border-b text-center">AKSHAT</td>
-<td class="py-2 px-4 border-b text-center">678</td>
+<td class="py-2 px-4 border-b text-center">linuxmodder.2995@gmail.com</td>
 <td class="py-2 px-4 border-b text-center">123</td>
 </tr>
 <tr class="hover:bg-yellow-100">
 <td class="py-2 px-4 border-b text-center">3</td>
 <td class="py-2 px-4 border-b text-center">OM</td>
-<td class="py-2 px-4 border-b text-center">456</td>
+<td class="py-2 px-4 border-b text-center">lastone.exam2005@gmail.com</td>
 <td class="py-2 px-4 border-b text-center">123</td>
 </tr>
 </tbody>
@@ -187,9 +187,9 @@
 
     const users = {
       student: [
-        { username: "KUNAL", password: "123" },
-        { username: "AKSHAT", password: "123" },
-        { username: "OM", password: "123" }
+        { username: "KUNAL", email: "kunaldixit.2995@gmail.com", password: "123" },
+        { username: "AKSHAT", email: "linuxmodder.2995@gmail.com", password: "123" },
+        { username: "OM", email: "lastone.exam2005@gmail.com", password: "123" }
       ],
       admin: [
         { username: "ADMIN", password: "admin123" },
@@ -217,25 +217,32 @@
 
     // --- Login ---
 
-    function login() {
+    
+function login() {
       const usernameInput = document.getElementById("username");
       const passwordInput = document.getElementById("password");
-      const username = usernameInput.value.trim().toUpperCase();
+      const enteredValue = usernameInput.value.trim();
       const password = passwordInput.value;
-
       const errorMessage = document.getElementById("errorMessage");
 
-      // Check student login
-      if (users.student.find(u => u.username === username && u.password === password)) {
-        currentUser = username;
+      // Try student login by username or email
+      let student = users.student.find(u =>
+        (u.username.toUpperCase() === enteredValue.toUpperCase() || (u.email && u.email.toLowerCase() === enteredValue.toLowerCase()))
+        && u.password === password
+      );
+
+      // Try admin login by username only
+      let admin = users.admin.find(u =>
+        u.username.toUpperCase() === enteredValue.toUpperCase() && u.password === password
+      );
+
+      if (student) {
+        currentUser = student.username;
         currentRole = "student";
-      }
-      // Check admin login
-      else if (users.admin.find(u => u.username === username && u.password === password)) {
-        currentUser = username;
+      } else if (admin) {
+        currentUser = admin.username;
         currentRole = "admin";
-      }
-      else {
+      } else {
         errorMessage.classList.remove("hidden");
         return;
       }
@@ -263,8 +270,7 @@
       usernameInput.value = "";
       passwordInput.value = "";
     }
-
-    function logout() {
+function logout() {
       currentUser = null;
       currentRole = null;
       document.getElementById("loginPage").classList.remove("hidden");
